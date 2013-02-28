@@ -1,0 +1,34 @@
+/* YOUR CSS HERE */
+
+h1 {
+    font-size: 25px;
+    color: transparent;
+    background: url('../img/cncflora.png') no-repeat ;
+    height: 100px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+.login {
+}
+
+.login form {
+    text-align:left;
+    margin: 0 auto;
+    display: table;
+    position: relative;
+    width: auto;
+}
+
+.login form legend {
+    margin-bottom: 15px;
+}
+
+.login form input {
+}
+
+.login form p a {
+    text-transform: lowercase;
+}

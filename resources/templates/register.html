@@ -1,0 +1,19 @@
+{{> templates/header.html}}
+
+<div class="sixteen columns">
+    <form action="/register" method='POST'>
+        <fieldset>
+            <legend>Requisitar cadastro</legend>
+            <p>Esse formul&aacute;rio ir&aacute; gerar uma requisi&ccedil;&atilde;o de cadastro
+                no sistema CNCFlora, usarmos seu e-mail como forma de identifica&ccedil;o e de contato.</p>
+            <input id="name" name="name" placeholder='Nome' type="text" />
+            <input id="email" name="email" placeholder='E-mail' type="text" />
+            <input id="password" name="password" placeholder='Password' type="password" />
+            <button class="btn btn-success" type="submit">Enviar</button>
+        </fieldset>
+        <p>
+        	<a href="javascript:history.back()">Voltar</a>
+        </p>
+</div>
+
+{{> templates/footer.html}}
