@@ -105,6 +105,36 @@
     (str "START e=node:nodes(\"name:*" part "*\")"
          " RETURN e") )))
 
+(defn find-users-of-role
+  ""
+  [role]
+   (map :u (query! db
+    (str "START u=node:nodes(type='user')"
+         " , r=node:nodes(role='" role "')"
+         " MATCH u-[:IS]->r"
+         " RETURN u"))))
+
+(defn have-role?
+  ""
+  [user role] 
+  (not (empty?
+   (query! db
+    (str "START u=node:nodes(email='" (:email user) "')"
+         " ,r=node:nodes(role='" role "')"
+         " MATCH u-[rel:IS]->r"
+         " RETURN rel")))))
+
+(defn have-access?
+  ""
+  [user role ent] 
+    (not (empty?
+     (query! db
+      (str "START u=node:nodes(email='" (:email user) "')"
+           " ,e=node:nodes(value='" ent "')"
+           " MATCH u-[rel:ASSIGNED]->e"
+           " WHERE rel.role = '" role "'"
+           " RETURN rel")))))
+
 (defn -clear
   ""
   [] (for [n (get! db :type "entity" :raw)]

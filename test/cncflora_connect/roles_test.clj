@@ -65,12 +65,35 @@
     (find-entity "fab")
      => [{:name "Vicia faba" :value "vicia:faba" :type "entity"}]
     (find-entity "alba")
-     => []
-    ))
+     => []))
 
 (fact "Can find users by role/entity combination"
-  true => false)
+  (let [foo {:email "foo@bar.com" :password "123"}]
+    (create-user foo)
+    (register-role "editor")
+    (assign-role foo "editor")
+    (map :email (find-users-of-role "editor") )
+     => (list (:email foo ))
+    (remove-role "editor")
+    (delete-user foo)))
 
 (fact "Can work as a ACL"
-  true => false)
+  (let [foo {:email "foo@bar.com" :password "123"}]
+    (create-user foo)
+    (register-role "editor")
+    (register-role "coder")
+    (register-entity {:name "Vicia faba" :value "vicia:faba"})
+    (register-entity {:name "Vicia alba" :value "vicia:alba"})
+    (assign-role foo "editor")
+    (assign-entity foo "editor" "vicia:faba")
+    (have-role? foo "editor") => true
+    (have-role? foo "coder") => false
+    (have-access? foo "editor" "vicia:faba") => true 
+    (have-access? foo "editor" "vicia:alba")  => false 
+    (have-access? foo "coder" "vicia:alba") => false
+    (remove-role "editor")
+    (remove-role "coder")
+    (remove-entity "vicia:faba")
+    (remove-entity "vicia:alba")
+    (delete-user foo)))
 
