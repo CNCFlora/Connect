@@ -60,15 +60,14 @@
       (redirect "/register-bad")
       (do
         (create-user user)
-        (session/put! :logged true)
-        (session/put! :user (:email user))
         (redirect "/register-ok"))))
   (GET "/register-ok" [] (page "register-ok" {}))
   (GET "/register-bad" [] (page "register-bad" {}))
 
 
   (GET "/users" [] (page "users" {:users (get-users)}))
-  (GET "/dashboard" [] (page "dashboard" {}))
+  (GET "/dashboard" [] 
+   (page "dashboard" {:pendding (pendding)}))
 
 
   (POST "/_ca" {user :params}

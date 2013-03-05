@@ -35,8 +35,7 @@
   [user] 
     (if (valid-new-user? user)
       (create! db 
-          (assoc user :active false 
-                      :type "user"
+          (assoc user :type "user"
                       :uuid (uuid)
                       :status "waiting"
                       :password (enc (:password user)))
@@ -97,3 +96,7 @@
   [] 
   (not (empty? (get! db :role "admin"))))
 
+(defn pendding
+  ""
+  [] (map :u (query! db 
+      (str "START u=node:nodes(status='waiting') WHERE u.status = 'waiting' RETURN u"))))

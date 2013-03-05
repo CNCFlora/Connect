@@ -1,6 +1,15 @@
 {{> templates/header.html}}
 
-<div class="sixteen columns">
+<div class="eleven columns">
+    <h3>Cadastros Pendentes</h3>
+    <ul>
+        {{#pendding}}
+        <li> <a href="/user/{{uuid}}">{{name}}</a> ( {{email}} ) </li>
+        {{/pendding}}
+    </ul>
+</div>
+
+<div class="four columns offset-by-one">
     <form action="/logout" method="POST">
         <p>
             Bem vindo, {{user.name}}. 
@@ -8,28 +17,10 @@
         </p>
     </form>
     <form action="/search">
-        <label for="q">Busca</label>
+        <label for="q">Buscar usu&aacute;rio</label>
         <input id="q" name="q" type="text" placeholder='termo para busca' />
+        <button>Buscar</button>
     </form>
-</div>
-
-
-<div class="eight columns">
-    <h3>Buscar usu&aacute;rio</h3>
-</div>
-
-<div class="eight columns">
-    <h3>Cadastros Pendentes</h3>
-    <ul>
-        {{#pedding}}
-        <li>
-            <a href="/user/{{uuid}}">{{name}}</a>
-            <form action="/user/{{uuid}}/approve">
-                (<button class='btn btn-mini'>Aprovar</button>)
-            </form>
-        </li>
-        {{/pedding}}
-    </ul>
 </div>
 
 
