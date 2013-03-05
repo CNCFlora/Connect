@@ -27,7 +27,7 @@
   "Validate if an user ok to be created.
    Validates: unique e-mail."
   [user]
-  (let [r (query! db (str "START user=node:nodes(email='" (:email user) "') RETURN user"))]
+  (let [r (get! db :email (:email user))]
     (empty? r)))
 
 (defn create-user 
@@ -95,10 +95,5 @@
 (defn have-admin?
   ""
   [] 
-  (not (empty? 
-    (query! db 
-     (str "START user=node:nodes(type='user'),
-                 admin=node:nodes(role='admin')"
-          " MATCH user-[:IS]->admin"
-          " RETURN user")))))
+  (not (empty? (get! db :role "admin"))))
 

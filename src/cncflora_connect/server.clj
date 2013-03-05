@@ -22,7 +22,8 @@
     (str "templates/" html ".html")
     (assoc data
           :logged (session/get :logged) 
-          :user (find-by-email (session/get :user)))))
+          :user   (if (session/get :user)
+                    (find-by-email (session/get :user)) ))))
 
 (defn security
   ""
