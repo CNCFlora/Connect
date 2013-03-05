@@ -5,6 +5,7 @@
         stencil.core
         ring.util.response
         cncflora-connect.users
+        cncflora-connect.roles
         [noir.cookies  :only [wrap-noir-cookies]]
         [clojure.data.json :only [read-str write-str]])
   (:require [compojure.route :as route]
@@ -19,19 +20,21 @@
   [html data]
   (render-file
     (str "templates/" html ".html")
-    data))
+    (assoc data
+          :logged (session/get :logged) 
+          :user (find-by-email (session/get :user)))))
 
 (defn security
   ""
   [handler]
   (fn [req]
-   (if (not (nil? (some #{(:uri req)} ["/" "/login" "/register" "/login-bad" "/register-bad"]))) 
+   (if (not (nil? (some #{(:uri req)} ["/" "/login" "/register" "/login-bad" "/register-bad" "/_ca"]))) 
      (handler req)
      (if (or (.startsWith (:uri req) "/img")
              (.startsWith (:uri req) "/css")
              (.startsWith (:uri req) "/js"))
        (handler req)
-       (if (= "ok" (session/get :logged)) 
+       (if (session/get :logged) 
        (handler req)
        {:status 301 :headers
         {"Location" "/login"}})))))
@@ -42,7 +45,7 @@
   (GET "/login" [] (page "login" {}))
   (POST "/login" {user :params}
     (if (valid-user? user)
-      (do (session/put! :logged "ok") 
+      (do (session/put! :logged true) 
           (session/put! :user (:email user))
           (redirect "/dashboard"))
       (redirect "/login-bad")))
@@ -56,7 +59,7 @@
       (redirect "/register-bad")
       (do
         (create-user user)
-        (session/put! :logged "ok")
+        (session/put! :logged true)
         (session/put! :user (:email user))
         (redirect "/register-ok"))))
   (GET "/register-ok" [] (page "register-ok" {}))
@@ -66,6 +69,16 @@
   (GET "/users" [] (page "users" {:users (get-users)}))
   (GET "/dashboard" [] (page "dashboard" {}))
 
+
+  (POST "/_ca" {user :params}
+    (if (have-admin?)
+      {:status 400 :body "{\"success\":false,\"error\":\"Admin already exists.\"}"}
+      (do
+        (create-user user)
+        (approve-user user)
+        (register-role "admin")
+        (assign-role user "admin") 
+        {:status 201 :body "{\"success\":true}"})))
 
   (route/resources "/"))
 

@@ -48,14 +48,14 @@
   [user]
    (query! db
      (str "START user=node:nodes(email='" (:email user) "')"
-          "SET user.status = 'approved'")))
+          " SET user.status = 'approved'")))
 
 (defn block-user
   "Block an user account"
   [user]
    (query! db
      (str "START user=node:nodes(email='" (:email user) "')"
-          "SET user.status = 'blocked'")))
+          " SET user.status = 'blocked'")))
 
 
 (defn get-users
@@ -91,4 +91,14 @@
   "Deletes an user. Internal only."
   [user]
   (delete! db (first (get! db :email (:email user) :raw))))
+
+(defn have-admin?
+  ""
+  [] 
+  (not (empty? 
+    (query! db 
+     (str "START user=node:nodes(type='user'),
+                 admin=node:nodes(role='admin')"
+          " MATCH user-[:IS]->admin"
+          " RETURN user")))))
 

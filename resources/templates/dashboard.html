@@ -2,8 +2,35 @@
 
 <div class="sixteen columns">
     <form action="/logout" method="POST">
-        <button class="btn btn-cancel">Sair</button>
+        <p>
+            Bem vindo, {{user.name}}. 
+            <button class="btn btn-mini">Sair</button>
+        </p>
+    </form>
+    <form action="/search">
+        <label for="q">Busca</label>
+        <input id="q" name="q" type="text" placeholder='termo para busca' />
     </form>
 </div>
+
+
+<div class="eight columns">
+    <h3>Buscar usu&aacute;rio</h3>
+</div>
+
+<div class="eight columns">
+    <h3>Cadastros Pendentes</h3>
+    <ul>
+        {{#pedding}}
+        <li>
+            <a href="/user/{{uuid}}">{{name}}</a>
+            <form action="/user/{{uuid}}/approve">
+                (<button class='btn btn-mini'>Aprovar</button>)
+            </form>
+        </li>
+        {{/pedding}}
+    </ul>
+</div>
+
 
 {{> templates/footer.html}}
