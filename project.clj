@@ -14,4 +14,4 @@
                  [stencil "0.3.1"]
                  [lib-noir "0.4.6"]
                  [org.clojure/data.json "0.2.0"]]
-  :profiles {:dev {:dependencies [[midje "1.4.0"]]}})
+  :profiles {:dev {:dependencies [[midje "1.5-RC1"]]}})
