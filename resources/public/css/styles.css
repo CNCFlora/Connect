@@ -29,6 +29,15 @@ h2 {
 .login form input {
 }
 
+.login form p {
+    width: auto;
+}
+
 .login form p a {
     text-transform: lowercase;
 }
+
+nav li {
+    margin-bottom: 0;
+}
+
