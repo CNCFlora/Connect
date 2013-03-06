@@ -4,12 +4,13 @@
         cncflora-connect.roles))
 
 (fact "Can work with roles"
+  (register-role "admin")
   (register-role "editor")
   (register-role "editor")
   (register-role "programer")
   (register-role "wrong")
-  (remove-role "wrong")
-  (list-roles) => (list "editor" "programer" ))
+  (remove-role "wrong") 
+  (list-roles) => (list "admin" "programer" "editor" ))
 
 (fact "Can work with entities"
   (register-entity {:name "Vicia faba" :value "vicia:faba"})
