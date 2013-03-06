@@ -88,6 +88,8 @@
     (create-user user)
     (approve-user (find-by-email (:email user)))
     (redirect "/users/0"))
+  (GET "/search" {params :params}
+    (page "search" {:users (search-users (:q params)) :q (:q params)}))
 
 
 

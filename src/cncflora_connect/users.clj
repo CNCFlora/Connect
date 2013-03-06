@@ -121,3 +121,12 @@
   ""
   [] (map :u (query! db 
       (str "START u=node:nodes(status='waiting') WHERE u.status = 'waiting' RETURN u"))))
+
+(defn search-users
+  ""
+  [q] 
+  (map :u
+   (query! db
+    (str "START u=node:nodes(\"name:*" q "*\")"
+         " RETURN u"))) )
+
