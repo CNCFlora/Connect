@@ -85,7 +85,7 @@
     (page "pendding" {:pendding (get-pendding)}))
 
   (GET "/roles" []
-    (page "roles" {:roles (map #(hash-map :role %1) (list-roles) )}))
+    (page "roles" {:roles (map #(hash-map :role %1) (list-roles))}))
   (GET "/roles/:role/delete" [role]
     (page "roles-delete" {:role role}))
   (POST "/roles/:role/delete" {params :params}
@@ -97,6 +97,21 @@
     (register-role (:role role))
     (redirect "/roles"))
 
+
+  (GET "/entities/:pg" [pg]
+    (let [pg (Integer. pg)]
+      (page "entities" {:entities (list-entities)
+                        :prev (if (> 0 pg) (dec pg))
+                        :next (if (< (inc pg) (/ (count (list-entities)) 20)) (inc pg))}
+            )))
+  (GET "/entities/:entity/delete" [entity]
+    (page "entities-delete" {:entity entity}))
+  (POST "/entities/:entity/delete" {params :params}
+    (remove-entity (:entity params))
+    (redirect "/entities/0"))
+  (POST "/entities" {entity :params}
+    (register-entity entity)
+    (redirect "/entities/0"))
 
   (POST "/_ca" {user :params}
     (if (have-admin?)
