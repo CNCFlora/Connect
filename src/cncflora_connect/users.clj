@@ -117,7 +117,7 @@
   [] 
   (not (empty? (get! db :role "admin"))))
 
-(defn pendding
+(defn get-pendding
   ""
   [] (map :u (query! db 
       (str "START u=node:nodes(status='waiting') WHERE u.status = 'waiting' RETURN u"))))

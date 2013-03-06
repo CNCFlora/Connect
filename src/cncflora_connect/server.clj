@@ -69,7 +69,7 @@
 
 
   (GET "/dashboard" [] 
-   (page "dashboard" {:pendding (pendding)}))
+   (page "dashboard" {:pendding (get-pendding)}))
 
   (GET "/user/:uuid" [uuid] 
    (page "user" {:profile_user (find-by-uuid uuid)}))
@@ -81,6 +81,8 @@
     (page "users" {:users (get-users (Integer. pg))
                    :prev  (if (> 0 (Integer. pg)) (dec (Integer. pg)))
                    :next  (if (< (inc (Integer. pg) ) (/ (count (get-users)) 20)) (inc (Integer. pg)) )}))
+  (GET "/pendding" [pg]
+    (page "pendding" {:pendding (get-pendding)}))
 
   (GET "/roles" []
     (page "roles" {:roles (map #(hash-map :role %1) (list-roles) )}))
