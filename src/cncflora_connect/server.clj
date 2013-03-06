@@ -26,6 +26,7 @@
           :user   (if (session/get :user)
                     (find-by-email (session/get :user)) ))))
 
+
 (defn security
   ""
   [handler]
@@ -36,10 +37,11 @@
              (.startsWith (:uri req) "/css")
              (.startsWith (:uri req) "/js"))
        (handler req)
-       (if (session/get :logged) 
-       (handler req)
-       {:status 301 :headers
-        {"Location" "/login"}})))))
+       (if (and (session/get :logged) 
+                (have-role? (find-by-email (session/get :user)) "admin")) 
+        (handler req)
+        {:status 301 :headers
+          {"Location" "/login"}})))))
 
 (defroutes main
   (GET "/" [] (page "index" {}))
@@ -75,6 +77,10 @@
     (update-user user)
     (page "user" {:profile_user (find-by-uuid (:uuid user))
                   :message {:type "success" :message "Salvo com sucesso" }}))
+  (GET "/users/:pg" [pg]
+    (page "users" {:users (get-users (Integer. pg))
+                   :prev  (if (> 0 (Integer. pg)) (dec (Integer. pg)))
+                   :next  (if (< (inc (Integer. pg) ) (/ (count (get-users)) 20)) (inc (Integer. pg)) )}))
 
   (GET "/roles" []
     (page "roles" {:roles (map #(hash-map :role %1) (list-roles) )}))

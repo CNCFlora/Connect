@@ -56,12 +56,16 @@
      (str "START user=node:nodes(email='" (:email user) "')"
           " SET user.status = 'blocked'")))
 
-
 (defn get-users
-  "Return all users" 
-  [] (map :users
-      (query! db 
+  "Return all users or paginated" 
+  ([] (map :users
+       (query! db 
         "START users=node:nodes(type='user') return users")))
+  ([page] (map :users
+       (query! db 
+        (str "START users=node:nodes(type='user')"
+             " RETURN users"
+             " SKIP " (* page 20) " LIMIT 20")))))
 
 (defn valid-user?
   "Check a login validity, including approval status"

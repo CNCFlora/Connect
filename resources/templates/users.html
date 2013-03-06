@@ -1,10 +1,15 @@
 {{> templates/header.html}}
 
 <div class="sixteen columns">
+    <h3>Usu&aacute;rios cadastrados</h3>
     <ul>
         {{#users}}
-        <li>{{name}}</li>
+        <li><a href='/user/{{uuid}}'>{{name}}</a> ({{email}})</li>
         {{/users}}
+    </ul>
+    <ul class='pager'>
+        <li {{^prev}}class='disabled'{{/prev}}><a href="{{prev}}" >anterior</a></li>
+        <li {{^next}}class='disabled'{{/next}}><a href="{{next}}">pr&oacute;ximo</a></li>
     </ul>
 </div>
 
