@@ -14,13 +14,15 @@
 (defn remove-role
   ""
   [role]
-  (query! db 
-    (str "START r=node:nodes(role='" role "')"
-         "     ,u=node:nodes(type='user')"
-         " MATCH u-[rel:ASSIGNED]->e"
-         " WHERE rel.role = '" role "'"
-         " DELETE rel"))
-  (delete! db (first (get! db :role role :raw))))
+  (if-not (= "admin" role)
+    (do
+      (query! db 
+        (str "START r=node:nodes(role='" role "')"
+             "     ,u=node:nodes(type='user')"
+             " MATCH u-[rel:ASSIGNED]->e"
+             " WHERE rel.role = '" role "'"
+             " DELETE rel"))
+      (delete! db (first (get! db :role role :raw))))))
 
 (defn list-roles
   ""

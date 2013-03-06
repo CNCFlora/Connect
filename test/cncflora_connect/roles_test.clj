@@ -10,6 +10,8 @@
   (register-role "programer")
   (register-role "wrong")
   (remove-role "wrong") 
+  (list-roles) => (list "admin" "programer" "editor" )
+  (remove-role "admin")
   (list-roles) => (list "admin" "programer" "editor" ))
 
 (fact "Can work with entities"

@@ -68,12 +68,26 @@
 
   (GET "/dashboard" [] 
    (page "dashboard" {:pendding (pendding)}))
+
   (GET "/user/:uuid" [uuid] 
    (page "user" {:profile_user (find-by-uuid uuid)}))
   (POST "/user/:uuid" {user :params }
     (update-user user)
     (page "user" {:profile_user (find-by-uuid (:uuid user))
                   :message {:type "success" :message "Salvo com sucesso" }}))
+
+  (GET "/roles" []
+    (page "roles" {:roles (map #(hash-map :role %1) (list-roles) )}))
+  (GET "/roles/:role/delete" [role]
+    (page "roles-delete" {:role role}))
+  (POST "/roles/:role/delete" {params :params}
+    (remove-role (:role params))
+    (redirect "/roles"))
+  (GET "/roles/:role/users" [role]
+    (page "roles-users" {:role role :users (find-users-of-role role)}))
+  (POST "/roles" {role :params}
+    (register-role (:role role))
+    (redirect "/roles"))
 
 
   (POST "/_ca" {user :params}

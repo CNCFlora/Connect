@@ -1,0 +1,15 @@
+{{> templates/header.html}}
+
+<div class="sixteen columns">
+    <h3>Usu&aacute;rios para papel {{role}}</h3>
+    <ul>
+        {{^users}}
+        <li>Nenhum</li>
+        {{/users}}
+        {{#users}}
+        <li><a href="/user/{{uuid}}">{{name}}</a> ({{email}})</li>
+        {{/users}}
+    </ul>
+</div>
+
+{{> templates/footer.html}}
