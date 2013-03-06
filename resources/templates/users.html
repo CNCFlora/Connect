@@ -1,6 +1,6 @@
 {{> templates/header.html}}
 
-<div class="sixteen columns">
+<div class="eleven columns">
     <h3>Usu&aacute;rios cadastrados</h3>
     <ul>
         {{#users}}
@@ -11,6 +11,18 @@
         <li {{^prev}}class='disabled'{{/prev}}><a href="{{prev}}" >anterior</a></li>
         <li {{^next}}class='disabled'{{/next}}><a href="{{next}}">pr&oacute;ximo</a></li>
     </ul>
+</div>
+
+<div class="four columns offset-by-one">
+    <form action="/users" method="POST">
+        <fieldset>
+            <h3>Cadastrar novo</h3>
+            <input id="name" name="name" type="text" placeholder="Nome"/>
+            <input id="email" name="email" type="text" placeholder="E-mail"/>
+            <input id="password" name="password" type="password" placeholder="Senha"/>
+            <button class='btn btn-success'>Cadastrar</button>
+        </fieldset>
+    </form> 
 </div>
 
 {{> templates/footer.html}}

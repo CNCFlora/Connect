@@ -83,6 +83,12 @@
                    :next  (if (< (inc (Integer. pg) ) (/ (count (get-users)) 20)) (inc (Integer. pg)) )}))
   (GET "/pendding" [pg]
     (page "pendding" {:pendding (get-pendding)}))
+  (POST "/users" {user :params}
+    (create-user user)
+    (approve-user (find-by-email (:email user)))
+    (redirect "/users/0"))
+
+
 
   (GET "/roles" []
     (page "roles" {:roles (map #(hash-map :role %1) (list-roles))}))
