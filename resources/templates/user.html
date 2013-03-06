@@ -1,0 +1,27 @@
+{{> templates/header.html}}
+
+<div class="sixteen columns">
+    {{#profile_user}}
+        <h3>{{name}} <small>({{email}})</small></h3>
+        {{#message}}
+            <p class="alert alert-{{type}}">{{message}}</p>
+        {{/message}}
+        <form action="/user/{{uuid}}" method='POST'>
+            <fieldset>
+                <label for="name">Nome</label>
+                <input id="name" name="name" type="text" value='{{name}}'/>
+                <label for="email">E-mail</label>
+                <input id="email" name="email" type="text" value='{{email}}'/>
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="waiting" {{#is_waiting}} selected {{/is_waiting}}>Pendente</option>
+                    <option value="approved" {{#is_approved}} selected {{/is_approved}}>Aprovado</option>
+                    <option value="blocked" {{#is_blocked}} selected {{/is_blocked}}>Bloqueado</option>
+                </select>
+                <button type="submit" class='btn btn-success'>Salvar</button>
+            </fieldset>
+        </form>
+    {{/profile_user}}
+</div>
+
+{{> templates/footer.html}}

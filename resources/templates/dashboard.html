@@ -4,7 +4,10 @@
     <h3>Cadastros Pendentes</h3>
     <ul>
         {{#pendding}}
-        <li> <a href="/user/{{uuid}}">{{name}}</a> ( {{email}} ) </li>
+        <li><a href="/user/{{uuid}}">{{name}}</a> ( {{email}}  </li>
+        {{/pendding}}
+        {{^pendding}}
+        <li>N&atilde;o h&aacute; nenhum cadastro pendente.</li>
         {{/pendding}}
     </ul>
 </div>

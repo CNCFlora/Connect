@@ -74,11 +74,19 @@
            (:password (:user (first r))))
         (= "approved" (:status (:user (first r))))))))
 
+(defn user
+  ""
+  [user]
+  (assoc user
+    :is_approved (= "approved" (:status user))
+    :is_blocked (= "blocked" (:status user))
+    :is_waiting (= "waiting" (:status user))))
+
 (defn find-by-uuid
   "Find an user by uuid"
   [uuid] 
   (let [r (query! db (str "START user=node:nodes(uuid='" uuid "') RETURN user"))]
-    (:user (first r))))
+    (user (:user (first r)) )))
 
 (defn find-by-email
   "Find an user by email"
@@ -90,6 +98,15 @@
   "Deletes an user. Internal only."
   [user]
   (delete! db (first (get! db :email (:email user) :raw))))
+
+(defn update-user
+  ""
+  [user]
+  (query! db
+   (str "START u=node:nodes(uuid='" (:uuid user ) "')"
+        " SET u.email  = '" (:email user) "'"
+        " SET u.name   = '" (:name user) "'"
+        " SET u.status = '" (:status user) "'")))
 
 (defn have-admin?
   ""

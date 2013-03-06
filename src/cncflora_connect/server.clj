@@ -18,6 +18,7 @@
 (defn page 
   ""
   [html data]
+  (println data)
   (render-file
     (str "templates/" html ".html")
     (assoc data
@@ -51,7 +52,7 @@
           (redirect "/dashboard"))
       (redirect "/login-bad")))
   (GET "/login-bad" [] (page "login-bad" {}))
-  (POST "/logout"[] (session/clear!) (redirect "/"))
+  (POST "/logout" [] (session/clear!) (redirect "/"))
 
 
   (GET "/register" [] (page "register" {}))
@@ -65,9 +66,14 @@
   (GET "/register-bad" [] (page "register-bad" {}))
 
 
-  (GET "/users" [] (page "users" {:users (get-users)}))
   (GET "/dashboard" [] 
    (page "dashboard" {:pendding (pendding)}))
+  (GET "/user/:uuid" [uuid] 
+   (page "user" {:profile_user (find-by-uuid uuid)}))
+  (POST "/user/:uuid" {user :params }
+    (update-user user)
+    (page "user" {:profile_user (find-by-uuid (:uuid user))
+                  :message {:type "success" :message "Salvo com sucesso" }}))
 
 
   (POST "/_ca" {user :params}

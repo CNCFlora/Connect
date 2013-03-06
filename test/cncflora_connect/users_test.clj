@@ -40,3 +40,9 @@
      (valid-user? user) => false
      (delete-user user)))
 
+(fact "Can update user"
+  (create-user {:email "diogo" :password "123"})
+  (update-user (assoc (find-by-email "diogo") :name "didi"))
+  (:name (find-by-email "diogo"))
+      => "didi"
+  (delete-user (find-by-email "diogo")))
