@@ -78,9 +78,10 @@
     (page "user" {:profile_user (find-by-uuid (:uuid user))
                   :message {:type "success" :message "Salvo com sucesso" }}))
   (GET "/users/:pg" [pg]
-    (page "users" {:users (get-users (Integer. pg))
-                   :prev  (if (> 0 (Integer. pg)) (dec (Integer. pg)))
-                   :next  (if (< (inc (Integer. pg) ) (/ (count (get-users)) 20)) (inc (Integer. pg)) )}))
+    (let [pg (Integer. pg)]
+      (page "users" {:users (get-users pg)
+                     :prev  (if (> 0 pg) (dec pg))
+                     :next  (if (< (inc pg ) (/ (count (get-users)) 20)) (inc pg))})))
   (GET "/pendding" [pg]
     (page "pendding" {:pendding (get-pendding)}))
   (POST "/users" {user :params}
