@@ -2,6 +2,8 @@
   (:use midje.sweet 
         cncflora-connect.users))
 
+(connect "testdata")
+
 (fact "Notify admin on creation of users"
   true => false)
 

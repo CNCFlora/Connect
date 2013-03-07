@@ -1,6 +1,6 @@
 {{> templates/header.html}}
 
-<div class="sixteen columns">
+<div class="eleven columns">
     {{#profile_user}}
         <h3>{{name}} <small>({{email}})</small></h3>
         {{#message}}
@@ -21,7 +21,42 @@
                 <button type="submit" class='btn btn-success'>Salvar</button>
             </fieldset>
         </form>
+        <h4>Pap&eacute;is e entidades</h4>
+        <ul>
+            {{#roles}}
+                <li>
+                    <a href="/user/{{uuid}}/unassign/role/{{role}}" class=''><i class="icon-remove"></i></a>
+                    {{role}}
+                    <ul>
+                    {{#entities}}
+                        <li>
+                            <a href="/user/{{uuid}}/unassign/role/{{role}}/entity/{{value}}" class=''><i class="icon-remove"></i></a>
+                            {{name}}
+                        </li>
+                    {{/entities}}
+                    </ul>
+                </li>
+            {{/roles}}
+        </ul>
     {{/profile_user}}
+</div>
+
+<div class="four columns offset-by-one">
+    <form action="/user/{{profile_user.uuid}}/assign/role" method='POST'>
+        <h3>Delegar papel</h3>
+        <fieldset>
+            <input id="role" name="role" type="text" placeholder="Papel" rel='complete' complete='roles' />
+            <button class="btn btn-success">Adicionar</button>
+        </fieldset>
+    </form>
+    <form action="/user/{{profile_user.uuid}}/assign/entity" method='POST'>
+        <h3>Delegar entidade</h3>
+        <fieldset>
+            <input id="role_for_entity" name="role" type="text" placeholder="Papel" rel='complete' complete='roles' />
+            <input id="entity" name="entity" type="text" placeholder="Entidade" rel='complete' complete='entities' />
+            <button class="btn btn-success">Adicionar</button>
+        </fieldset>
+    </form>
 </div>
 
 {{> templates/footer.html}}

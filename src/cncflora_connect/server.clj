@@ -15,6 +15,8 @@
 (stencil.loader/set-cache
   (clojure.core.cache/ttl-cache-factory {}))
 
+(connect "data")
+
 (defn page 
   ""
   [html data]
@@ -72,7 +74,8 @@
    (page "dashboard" {:pendding (get-pendding)}))
 
   (GET "/user/:uuid" [uuid] 
-   (page "user" {:profile_user (find-by-uuid uuid)}))
+   (page "user" {:profile_user (find-by-uuid uuid)
+                 :roles (assign-tree (find-by-uuid uuid))}))
   (POST "/user/:uuid" {user :params }
     (update-user user)
     (page "user" {:profile_user (find-by-uuid (:uuid user))
@@ -88,8 +91,26 @@
     (create-user user)
     (approve-user (find-by-email (:email user)))
     (redirect "/users/0"))
+
+  (POST "/user/:uuid/assign/role" {params :params}
+    (assign-role (find-by-uuid (:uuid params)) (:role params))
+    (redirect (str "/user/" (:uuid params))))
+  (POST "/user/:uuid/assign/entity" {params :params}
+    (assign-entity (find-by-uuid (:uuid params)) (:role params) (:entity params))
+    (redirect (str "/user/" (:uuid params))))
+  (GET "/user/:uuid/unassign/role/:role" {params :params}
+    (unassign-role (find-by-uuid (:uuid params)) (:role params))
+    (redirect (str "/user/" (:uuid params))))
+  (GET "/user/:uuid/unassign/role/:role/entity/:entity" {params :params}
+    (unassign-entity (find-by-uuid (:uuid params)) (:role params) (:entity params))
+    (redirect (str "/user/" (:uuid params))))
+
   (GET "/search" {params :params}
     (page "search" {:users (search-users (:q params)) :q (:q params)}))
+  (GET "/search/roles" {params :params}
+    (write-str (map #(hash-map :label (:role %) :value (:role %)) (find-role (:term params)))))
+  (GET "/search/entities" {params :params}
+    (write-str (map #(hash-map :label (:name %) :value (:value %)) (find-entity (:term params)))))
 
 
 

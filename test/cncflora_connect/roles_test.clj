@@ -3,6 +3,8 @@
         cncflora-connect.users
         cncflora-connect.roles))
 
+(connect "testdata")
+
 (fact "Can work with roles"
   (register-role "admin")
   (register-role "editor")
@@ -28,11 +30,18 @@
     (register-entity {:name "Vicia alba" :value "vicia:alba"})
     (create-user foo)
     (assign-role foo "editor")
+    (assign-role foo "editor")
     (assign-entity foo "editor" "vicia:faba")
+    (assign-entity foo "editor" "vicia:alba")
     (assign-entity foo "editor" "vicia:alba")
     (user-assignments foo)
       => [ {:role "editor" :entity "vicia:faba"}
            {:role "editor" :entity "vicia:alba"}]
+    (assign-tree foo)
+      => [ {:role "editor"
+            :entities (list 
+                        {:name "Vicia faba" :value "vicia:faba"}
+                        {:name "Vicia alba" :value "vicia:alba"})}]
     (unassign-entity foo "editor" "vicia:alba")
     (user-assignments foo)
       => [ {:role "editor" :entity "vicia:faba"}]

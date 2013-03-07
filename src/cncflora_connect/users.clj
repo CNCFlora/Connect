@@ -1,7 +1,11 @@
 (ns cncflora-connect.users
   (:use simple-cypher.core))
 
-(def db (graph "data"))
+(declare db)
+
+(defn connect
+  ""
+  [store] (def db (graph store)))
 
 (defn notify
   "Send an e-mail notification to some user."
