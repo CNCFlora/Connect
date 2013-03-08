@@ -5,4 +5,5 @@ var app = function($) {
             source:"/search/"+input.attr("complete")
         });
     });
+    $(document).pjax('a','.container');
 };
