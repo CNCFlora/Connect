@@ -42,7 +42,7 @@
        (if (and (session/get :logged) 
                 (have-role? (find-by-email (session/get :user)) "admin")) 
         (handler req)
-        {:status 301 :headers
+        {:status 302 :headers
           {"Location" "/login"}})))))
 
 (defroutes main
