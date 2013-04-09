@@ -98,6 +98,7 @@
     (register-entity {:name "Vicia alba" :value "vicia:alba"})
     (assign-role foo "editor")
     (assign-entity foo "editor" "vicia:faba")
+    (have-role? nil "editor") => false
     (have-role? foo "editor") => true
     (have-role? foo "coder") => false
     (have-access? foo "editor" "vicia:faba") => true 

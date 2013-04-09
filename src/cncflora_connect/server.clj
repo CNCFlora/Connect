@@ -10,7 +10,8 @@
         [clojure.data.json :only [read-str write-str]])
   (:require [compojure.route :as route]
             [compojure.handler :as handler]
-            [noir.session :as session]))
+            [noir.session :as session]
+            [clj-http.client :as http]))
 
 (stencil.loader/set-cache
   (clojure.core.cache/ttl-cache-factory {}))
@@ -20,28 +21,23 @@
 (defn page 
   ""
   [html data]
-  (println data)
   (render-file
     (str "templates/" html ".html")
     (assoc data
           :logged (session/get :logged) 
-          :user   (if (session/get :user)
-                    (find-by-email (session/get :user)) ))))
-
+          :user   (session/get :user))))
 
 (defn security
   ""
   [handler]
+  (let [free ["/" "/api" "/_ca"
+              "/login" "/register"
+              "/img" "/css" "/js"]]
   (fn [req]
-   (if (not (nil? (some #{(:uri req)} ["/" "/login" "/register" "/login-bad" "/register-bad" "/_ca"]))) 
+   (if (some true? (map #(.startsWith (:uri req) %) free))
      (handler req)
-     (if (or (.startsWith (:uri req) "/img")
-             (.startsWith (:uri req) "/css")
-             (.startsWith (:uri req) "/js"))
-       (handler req)
-       (if (and (session/get :logged) 
-                (have-role? (find-by-email (session/get :user)) "admin")) 
-        (handler req)
+     (if (have-role? (session/get :user) "admin")
+      (handler req)
         {:status 302 :headers
           {"Location" "/login"}})))))
 
@@ -49,26 +45,35 @@
   (GET "/" [] (page "index" {}))
 
   (GET "/login" [] (page "login" {}))
-  (POST "/login" {user :params}
-    (if (valid-user? user)
-      (do (session/put! :logged true) 
-          (session/put! :user (:email user))
-          (redirect "/dashboard"))
-      (redirect "/login-bad")))
-  (GET "/login-bad" [] (page "login-bad" {}))
   (POST "/logout" [] (session/clear!) (redirect "/"))
 
+  (POST "/api/auth" {params :params}
+    (let [persona (http/post "https://verifier.login.persona.org/verify"
+                    {:form-params params :as :json })
+          resp (:body persona)]
+      (if (= "okay" (:status resp))
+        (let [user (find-by-email (:email resp))]
+          (if (valid-user? user)
+            (do (session/put! :logged true) 
+                (session/put! :user user)
+                (write-str user))
+            (write-str {:status "nok"})))
+        (write-str {:status "nok"}))))
+  (POST "/api/logout" []
+    (session/clear!) (write-str {}))
+  (GET "/api/user" []
+   (let [user (session/get :user)
+         roles (assign-tree user)]
+    (write-str (assoc user :roles roles))))
 
-  (GET "/register" [] (page "register" {}))
+  (GET "/register" [email] (page "register" {}))
   (POST "/register" {user :params} 
     (if-not (valid-new-user? user)
       (redirect "/register-bad")
-      (do
-        (create-user user)
-        (redirect "/register-ok"))))
+      (do (create-user user)
+          (redirect "/register-ok"))))
   (GET "/register-ok" [] (page "register-ok" {}))
   (GET "/register-bad" [] (page "register-bad" {}))
-
 
   (GET "/dashboard" [] 
    (page "dashboard" {:pendding (get-pendding)}))
@@ -79,6 +84,7 @@
   (POST "/user/:uuid" {user :params }
     (update-user user)
     (page "user" {:profile_user (find-by-uuid (:uuid user))
+                  :roles (assign-tree (find-by-uuid (:uuid user)))
                   :message {:type "success" :message "Salvo com sucesso" }}))
   (GET "/users/:pg" [pg]
     (let [pg (Integer. pg)]
@@ -147,7 +153,7 @@
     (if (have-admin?)
       {:status 400 :body "{\"success\":false,\"error\":\"Admin already exists.\"}"}
       (do
-        (create-user user)
+        (create-user {:email (:email user) :name (:name user)})
         (approve-user user)
         (register-role "admin")
         (assign-role user "admin") 

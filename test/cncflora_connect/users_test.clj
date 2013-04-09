@@ -8,19 +8,19 @@
   true => false)
 
 (fact "Can register an user"
-  (create-user {:email "foo@bar.com" :password "123"})
+  (create-user {:email "foo@bar.com"})
   (:email (find-by-email "foo@bar.com")) => "foo@bar.com"
   (delete-user {:email "foo@bar.com"}))
 
 (fact "Can not create repeated users"
-   (let [user {:email "foo@bar.com" :password "123"}]
+   (let [user {:email "foo@bar.com" }]
      (valid-new-user? user) => true
      (create-user user)
      (valid-new-user? user) => false
      (delete-user user)))
 
 (fact "Can approve user"
-   (let [user {:email "foo@bar.com" :password "123"}]
+   (let [user {:email "foo@bar.com" }]
      (create-user user)
      (approve-user user)
      (:status (find-by-email "foo@bar.com")) => "approved"
@@ -32,25 +32,22 @@
     true => false)
 
 (fact "Can validate an user login"
-   (let [user {:email "foo@bar.com" :password "123"}]
+   (let [user {:email "foo@bar.com"}]
      (create-user user)
      (valid-user? user) => false
      (approve-user user)
      (valid-user? user) => true
-     (valid-user? {:email "foo@bar.com" :password "321"}) => false
-     (block-user user)
-     (valid-user? user) => false
      (delete-user user)))
 
 (fact "Can update user"
-  (create-user {:email "diogo" :password "123"})
+  (create-user {:email "diogo"})
   (update-user (assoc (find-by-email "diogo") :name "didi"))
   (:name (find-by-email "diogo"))
       => "didi"
   (delete-user (find-by-email "diogo")))
 
 (fact "Can search user"
-  (create-user {:email "dio@me.com" :name "marco" :password "123"})
+  (create-user {:email "dio@me.com" :name "marco"})
   (map :name (search-users "ma"))
       => (list "marco")
   (map :name (search-users "arc"))

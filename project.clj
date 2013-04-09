@@ -13,5 +13,6 @@
                  [ring/ring-jetty-adapter "1.1.8"]
                  [stencil "0.3.1"]
                  [lib-noir "0.4.6"]
-                 [org.clojure/data.json "0.2.0"]]
+                 [org.clojure/data.json "0.2.0"]
+                 [clj-http "0.7.1"]]
   :profiles {:dev {:dependencies [[midje "1.5-RC1"]]}})

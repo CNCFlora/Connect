@@ -23,10 +23,6 @@
   "Generate some random uuid"
   [] (str (java.util.UUID/randomUUID)))
 
-(defn enc
-  "Encrypts a password"
-  [s] s)
-
 (defn valid-new-user?
   "Validate if an user ok to be created.
    Validates: unique e-mail."
@@ -41,8 +37,7 @@
       (create! db 
           (assoc user :type "user"
                       :uuid (uuid)
-                      :status "waiting"
-                      :password (enc (:password user)))
+                      :status "waiting")
            :index)
          (notify-creation user)))
 
@@ -78,8 +73,6 @@
     (if (empty? r)
       false
       (and
-        (= (enc (:password user))
-           (:password (:user (first r))))
         (= "approved" (:status (:user (first r))))))))
 
 (defn user
