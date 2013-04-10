@@ -12,9 +12,9 @@
   (register-role "programer")
   (register-role "wrong")
   (remove-role "wrong") 
-  (list-roles) => (list "admin" "programer" "editor" )
+  (sort (vec (list-roles) ) )  => (sort (vector "admin" "programer" "editor" ) )
   (remove-role "admin")
-  (list-roles) => (list "admin" "programer" "editor" ))
+  (sort (vec (list-roles) ) ) => (sort (vector "admin" "programer" "editor" ) ))
 
 (fact "Can work with entities"
   (register-entity {:name "Vicia faba" :value "vicia:faba"})
@@ -24,7 +24,7 @@
   (map :value (list-entities) ) => (list "vicia:faba"))
 
 (fact "Can assoc roles with entities to users"
-  (let [foo {:email "foo@bar.com" :password "123"}]
+  (let [foo {:email "foo@bar.com" }]
     (register-role "editor")
     (register-entity {:name "Vicia faba" :value "vicia:faba"})
     (register-entity {:name "Vicia alba" :value "vicia:alba"})
@@ -50,10 +50,11 @@
       => []
     (remove-role "editor")
     (remove-entity "vicia:faba")
+    (remove-entity "vicia:alba")
     (delete-user foo)))
 
 (fact "The removal of a role or an entity cascades to users"
-  (let [foo {:email "foo@bar.com" :password "123"}]
+  (let [foo {:email "foo@bar.com" }]
     (create-user foo)
     (register-role "editor")
     (register-entity {:name "Vicia faba" :value "vicia:faba"})
@@ -77,10 +78,11 @@
     (find-entity "fab")
      => [{:name "Vicia faba" :value "vicia:faba" :type "entity"}]
     (find-entity "alba")
-     => []))
+     => []
+    (remove-entity "vicia:faba")))
 
 (fact "Can find users by role/entity combination"
-  (let [foo {:email "foo@bar.com" :password "123"}]
+  (let [foo {:email "foo@bar.com" }]
     (create-user foo)
     (register-role "editor")
     (assign-role foo "editor")
@@ -90,7 +92,7 @@
     (delete-user foo)))
 
 (fact "Can work as a ACL"
-  (let [foo {:email "foo@bar.com" :password "123"}]
+  (let [foo {:email "foo@bar.com" }]
     (create-user foo)
     (register-role "editor")
     (register-role "coder")
@@ -109,4 +111,5 @@
     (remove-entity "vicia:faba")
     (remove-entity "vicia:alba")
     (delete-user foo)))
+
 

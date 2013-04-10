@@ -46,12 +46,3 @@
       => "didi"
   (delete-user (find-by-email "diogo")))
 
-(fact "Can search user"
-  (create-user {:email "dio@me.com" :name "marco"})
-  (map :name (search-users "ma"))
-      => (list "marco")
-  (map :name (search-users "arc"))
-      => (list "marco")
-  (search-users "ju")
-      => (list )
-  (delete-user (find-by-email "dio@me.com")))

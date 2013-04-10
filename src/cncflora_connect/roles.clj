@@ -9,7 +9,7 @@
        (query! db 
         (str "START role=node:nodes(role='" role "')
               RETURN role")))
-    (create! db {:role role :type "role"} :index)))
+    (create! db {:role role :name role :type "role"} :index)))
 
 (defn remove-role
   ""

@@ -6,6 +6,8 @@
         ring.util.response
         cncflora-connect.users
         cncflora-connect.roles
+        cncflora-connect.search
+        ring.middleware.cors
         [noir.cookies  :only [wrap-noir-cookies]]
         [clojure.data.json :only [read-str write-str]])
   (:require [compojure.route :as route]
@@ -21,6 +23,7 @@
 (defn page 
   ""
   [html data]
+  (println data)
   (render-file
     (str "templates/" html ".html")
     (assoc data
@@ -93,6 +96,7 @@
                      :next  (if (< (inc pg ) (/ (count (get-users)) 20)) (inc pg))})))
   (GET "/pendding" [pg]
     (page "pendding" {:pendding (get-pendding)}))
+
   (POST "/users" {user :params}
     (create-user user)
     (approve-user (find-by-email (:email user)))
@@ -112,7 +116,8 @@
     (redirect (str "/user/" (:uuid params))))
 
   (GET "/search" {params :params}
-    (page "search" {:users (search-users (:q params)) :q (:q params)}))
+    (page "search" {:q (:q params)
+                    :users (search (:q params))}))
   (GET "/search/roles" {params :params}
     (write-str (map #(hash-map :label (:role %) :value (:role %)) (find-role (:term params)))))
   (GET "/search/entities" {params :params}
@@ -163,6 +168,7 @@
 
 (def app
   (-> (handler/site main)
+      (wrap-cors :access-control-allow-origin #".*")
       (security)
       (wrap-noir-cookies)
       (session/wrap-noir-session 
