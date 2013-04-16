@@ -1,13 +1,35 @@
-# cncflora-connect
+# CNCFlora-Connect
 
-A Clojure library designed to ... well, that part is up to you.
+This project is an attempt to provide a unified single sign on, authorization and authentification for the CNCFlora net of systems.
+
+It's built upon Mozilla Persona.
+
+## First run
+
+Deploy the war to tomcat, and run:
+
+    curl http://domain.com/\_ca -d 'email=you@exemple.com&name=Name'
+
+To create the first admin. Them proceed to the user interface.
 
 ## Usage
 
-FIXME
+To auth other systems with Connect, here is an example:
+
+    <script src="https://login.persona.org/include.js"></script>
+    <script src="http://domain.com/js/connect.js"></script>
+    <script>
+        Connect.watch({
+            onlogin: function(user) {
+                // your after login code here
+            },
+            onlogout: function(){
+                // your after logout code here
+            }
+        });
+    </script>
 
 ## License
 
-Copyright © 2013 FIXME
+Distributed under the Eclipse Public License.
 
-Distributed under the Eclipse Public License, the same as Clojure.
