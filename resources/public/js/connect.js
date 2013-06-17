@@ -23,12 +23,12 @@ var Connect = function(opts) {
             onlogin: function(assertion) {
                 microAjax(api+"/api/auth",function(r,b){
                     opts.onlogin(JSON.parse(r));
-                },JSON.stringify({assertion: assertion, audience: audience}));
+                },'assertion='+encodeURIComponent(assertion)+'&audience='+encodeURIComponent(audience));
             },
             onlogout: function() {
                 microAjax(api+"/api/logout",function(r,b){
                     opts.onlogout(JSON.parse(r));
-                },"{}");
+                },'foo=bar');
             }
         });
     });
