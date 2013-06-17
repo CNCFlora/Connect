@@ -50,9 +50,20 @@
   (GET "/login" [] (page "login" {}))
   (POST "/logout" [] (session/clear!) (redirect "/"))
 
+  (OPTIONS "/api/auth" []
+     {:headers {"Allow" "POST,OPTIONS" 
+                "Access-Control-Allow-Methods" "POST,OPTIONS" 
+                "Access-Control-Allow-Headers" "x-requested-with"}
+      :status 200})
+  (OPTIONS "/api/logout" []
+     {:headers {"Allow" "POST,OPTIONS" 
+                "Access-Control-Allow-Methods" "POST,OPTIONS" 
+                "Access-Control-Allow-Headers" "x-requested-with"}
+      :status 200})
   (POST "/api/auth" {params :params}
+    (println params)
     (let [persona (http/post "https://verifier.login.persona.org/verify"
-                    {:form-params params :as :json })
+                    {:form-params params :as :json})
           resp (:body persona)]
       (if (= "okay" (:status resp))
         (let [user (find-by-email (:email resp))]
