@@ -19,7 +19,7 @@ To auth other systems with Connect, here is an example:
     <script src="https://login.persona.org/include.js"></script>
     <script src="http://domain.com/js/connect.js"></script>
     <script>
-        Connect.watch({
+        Connect({
             onlogin: function(user) {
                 // your after login code here
             },
@@ -27,6 +27,8 @@ To auth other systems with Connect, here is an example:
                 // your after logout code here
             }
         });
+        $("#login-bt").click(Connect.login);
+        $("#logout-bt").click(Connect.logout);
     </script>
 
 ## License
