@@ -73,8 +73,14 @@
   (POST "/register" {user :params} 
     (if-not (valid-new-user? user)
       (redirect "/register-bad")
-      (do (create-user user)
-          (redirect "/register-ok"))))
+      (do 
+        (create-user user)
+        (if-not (have-admin?)
+          (do
+            (approve-user user)
+            (register-role "admin")
+            (assign-role user "admin")))
+        (redirect "/register-ok"))))
   (GET "/register-ok" [] (page "register-ok" {}))
   (GET "/register-bad" [] (page "register-bad" {}))
 

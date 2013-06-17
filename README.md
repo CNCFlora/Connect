@@ -1,6 +1,6 @@
 # CNCFlora-Connect
 
-This project is an attempt to provide a unified single sign on, authorization and authentification for the CNCFlora net of systems.
+This project is an attempt to provide a simple, unified, single sign on, authorization and authentification for the CNCFlora net of systems.
 
 It's built upon Mozilla Persona.
 
@@ -10,7 +10,7 @@ Deploy the war to tomcat, and run:
 
     curl http://domain.com/\_ca -d 'email=you@exemple.com&name=Name'
 
-To create the first admin. Them proceed to the user interface.
+Or access the app and register to create the first admin.
 
 ## Usage
 
