@@ -3,9 +3,11 @@
  * http://cncflora.jbrj.gov.br
  */
 
-var Connect = function(opts) {
-    var audience = location.protocol+"//"+location.host;
+var Connect = (function() {
     var scripts = document.getElementsByTagName('script');
+    var audience = location.protocol+"//"+location.host;
+    var opts = {};
+    var win=null;
     var api = "";
     for(var s =0;s<scripts.length;s++) {
         var script = scripts[s].getAttribute("src");
@@ -16,31 +18,43 @@ var Connect = function(opts) {
         }
     }
 
-    microAjax(api+"/api/user",function(r) {
-        var u = JSON.parse(r);
-        navigator.id.watch({
-            loggedInUser: u.email,
-            onlogin: function(assertion) {
-                microAjax(api+"/api/auth",function(r,b){
-                    opts.onlogin(JSON.parse(r));
-                },'assertion='+encodeURIComponent(assertion)+'&audience='+encodeURIComponent(audience));
-            },
-            onlogout: function() {
-                microAjax(api+"/api/logout",function(r,b){
-                    opts.onlogout(JSON.parse(r));
-                },'foo=bar');
+    var Connect = function(config) {
+        opts = config;
+        microAjax(api+"/api/user",function(r) {
+            var u = JSON.parse(r);
+            if(u.status == "approved") {
+                opts.onlogin(u);
+            } else {
+                opts.onlogout(u);
             }
         });
-    });
-};
+    };
 
-Connect.login = function() {
-    navigator.id.request();
-};
+    window.addEventListener("message",function(msg){
+        microAjax(api+"/api/auth",function(r) {
+            var u = JSON.parse(r);
+            if(u.status == "approved") {
+                opts.onlogin(u);
+                win.close();
+            } else {
+                win.postMessage('bad',api);
+            }
+        },msg.data);
+    },false);
+    Connect.login = function() {
+        if(win != null) win.close();
+        win = window.open(api+'/connect?'+location.origin,'connect','width=350,height=220,location=0,menubar=0,toolbar=0',true);
+    };
 
-Connect.logout = function() {
-    navigator.id.logout();
-};
+    Connect.logout = function() {
+        microAjax(api+"/api/logout",function(r,b){
+            opts.onlogout(JSON.parse(r));
+        },'foo=bar');
+    };
+
+    return Connect;
+
+})();
 
 
 /*

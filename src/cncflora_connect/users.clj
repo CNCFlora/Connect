@@ -7,6 +7,14 @@
   ""
   [store] (def db (graph store)))
 
+(defn sha1
+  ""
+  [obj]
+  (.toString 
+    (new java.math.BigInteger 1
+     (.digest (java.security.MessageDigest/getInstance "SHA1")
+              (.getBytes (with-out-str (pr obj))))) 16))
+
 (defn notify
   "Send an e-mail notification to some user."
   [who what] nil)
@@ -37,6 +45,7 @@
       (create! db 
           (assoc user :type "user"
                       :uuid (uuid)
+                      :password (sha1 (:password user))
                       :status "waiting")
            :index)
          (notify-creation user)))
@@ -73,6 +82,7 @@
     (if (empty? r)
       false
       (and
+        (= (sha1 (:password user)) (:password (:user (first r) )))
         (= "approved" (:status (:user (first r))))))))
 
 (defn user

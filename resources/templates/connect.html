@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CNCFloraConnect - Sistema de usuários e controle de acesso do CNCFlora.</title>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/skeleton.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/head.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        head.js('js/jquery.min.js')
+            .js('js/bootstrap.min.js')
+            .ready(function(){
+                $(".alert").hide();
+                window.addEventListener('message',function(e){
+                    $(".alert").show();
+                },false);
+                $("form").submit(function(){
+                    window.opener.postMessage( "email="+encodeURIComponent( $("#email").val() )
+                                              +"&password="+encodeURIComponent( $("#password").val() ),location.search.substr(1));
+                    return false;
+                });
+            });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="sixteen columns">
+            <form action="/login" method='POST' class='form-horizontal'>
+                <fieldset>
+                    <legend>Entrar no sistema</legend>
+                    <p class='alert hidden'>Login inv&aacute;lido.</p>
+                    <input id="email" name="email" placeholder='E-mail' type="text" />
+                    <input id="password" name="password" type="password" />
+                    <button class="btn btn-success" type="submit">Entrar</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

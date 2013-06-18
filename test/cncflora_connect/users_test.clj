@@ -32,11 +32,12 @@
     true => false)
 
 (fact "Can validate an user login"
-   (let [user {:email "foo@bar.com"}]
+   (let [user {:email "foo@bar.com" :password "123"}]
      (create-user user)
      (valid-user? user) => false
      (approve-user user)
      (valid-user? user) => true
+     (valid-user? (assoc user :password "321")) => false
      (delete-user user)))
 
 (fact "Can update user"

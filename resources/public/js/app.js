@@ -9,38 +9,24 @@ var app = function($) {
     //$(document).pjax('a','.container');
 
     $(".container").delegate('form#login','submit',function(){
-        navigator.id.request();
+        Connect.login();
         return false;
     });
 
     $(".container").delegate('form#logout','submit',function(){
-        navigator.id.logout();
+        Connect.logout();
+        setTimeout(function(){
+            location.href='/';
+        },2000);
         return false;
     });
 
-    $.get("/api/user",function(u,b){
-        var audience = location.protocol+"//"+location.host;
-        var mail = null;
-        if(typeof u == 'object') mail = u.email;
-        navigator.id.watch({
-            loggedInUser: mail,
-            onlogin: function(assertion) {
-                $.post("/api/auth",{assertion: assertion, audience: audience },function(r){
-                    var u= JSON.parse(r);
-                    console.log(u);
-                    if(u.status == 'approved') {
-                        $("form#login .alert").hide();
-                        if(location.pathname == "/login") location.href="/dashboard";
-                    } else {
-                        $("form#login .alert").show();
-                    }
-                });
+    if(typeof noconnect == 'undefined') {
+        Connect({
+            onlogin: function(u) {
+                if(location.pathname == "/login") location.href="/dashboard";
             },
-            onlogout: function(a){
-                $.post("/api/logout",function(){
-                   location.href="/";
-                });
-            }
+            onlogout: function() { }
         });
-    });
+    }
 };

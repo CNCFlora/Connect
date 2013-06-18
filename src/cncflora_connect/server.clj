@@ -23,7 +23,6 @@
 (defn page 
   ""
   [html data]
-  (println data)
   (render-file
     (str "templates/" html ".html")
     (assoc data
@@ -45,9 +44,14 @@
           {"Location" "/login"}})))))
 
 (defroutes main
-  (GET "/" [] (page "index" {}))
+  (GET "/" [] 
+    (if (have-admin?)
+     (page "index" {})
+     (redirect "/register")))
 
+  (GET "/connect" [] (page "connect" {}))
   (GET "/login" [] (page "login" {}))
+  (POST "/login" [])
   (POST "/logout" [] (session/clear!) (redirect "/"))
 
   (OPTIONS "/api/auth" []
@@ -60,19 +64,14 @@
                 "Access-Control-Allow-Methods" "POST,OPTIONS" 
                 "Access-Control-Allow-Headers" "x-requested-with"}
       :status 200})
-  (POST "/api/auth" {params :params}
-    (println params)
-    (let [persona (http/post "https://verifier.login.persona.org/verify"
-                    {:form-params params :as :json})
-          resp (:body persona)]
-      (if (= "okay" (:status resp))
-        (let [user (find-by-email (:email resp))]
-          (if (valid-user? user)
-            (do (session/put! :logged true) 
-                (session/put! :user user)
-                (write-str user))
-            (write-str {:status "nok"})))
-        (write-str {:status "nok"}))))
+  (POST "/api/auth" {user :params}
+    (if (valid-user? user)
+      (let [user (find-by-email (:email user))
+            roles (assign-tree user)]
+        (session/put! :logged true) 
+          (session/put! :user user)
+          (write-str (assoc user :roles roles)))
+      (write-str {:status "nok"})))
   (POST "/api/logout" []
     (session/clear!) (write-str {}))
   (GET "/api/user" []
