@@ -16,7 +16,7 @@ Or access the app and register to create the first admin.
 
 To auth other systems with Connect, here is an example:
 
-    <script src="https://login.persona.org/include.js"></script>
+    <script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
     <script src="http://domain.com/js/connect.js"></script>
     <script>
         Connect({

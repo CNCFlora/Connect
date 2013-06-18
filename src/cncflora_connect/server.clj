@@ -68,16 +68,19 @@
     (if (valid-user? user)
       (let [user (find-by-email (:email user))
             roles (assign-tree user)]
-        (session/put! :logged true) 
+          (session/put! :logged true) 
           (session/put! :user user)
           (write-str (assoc user :roles roles)))
       (write-str {:status "nok"})))
   (POST "/api/logout" []
     (session/clear!) (write-str {}))
-  (GET "/api/user" []
+  (GET "/api/user" [callback]
    (let [user (session/get :user)
          roles (assign-tree user)]
-    (write-str (assoc user :roles roles))))
+     (if (nil? callback)
+      (write-str (assoc user :roles roles))
+      (str callback "(" (write-str (assoc user :roles roles)) ");"))
+     ))
 
   (GET "/register" [email] (page "register" {}))
   (POST "/register" {user :params} 
