@@ -3,6 +3,18 @@
  * http://cncflora.jbrj.gov.br
  */
 
+if(typeof String.prototype.endsWith !== 'function') {
+    String.prototype.endsWith = function(suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+}
+
+if(typeof String.prototype.startsWith !== 'function') {
+    String.prototype.startsWith = function(prefix) {
+        return this.indexOf(prefix) == 0;
+    };
+}
+
 var Connect = (function() {
     var scripts = document.getElementsByTagName('script');
     var audience = location.protocol+"//"+location.host;
@@ -20,25 +32,41 @@ var Connect = (function() {
 
     var Connect = function(config) {
         opts = config;
-        $.getJSON(api+'/api/user?callback=?',function(u) {
-            if(u.status == "approved") {
-                opts.onlogin(u);
-            } else {
-                opts.onlogout(u);
-            }
-        });
+        $.ajax({
+                url: api+'/api/user?callback=?',
+                type: "GET",
+                dataType: 'json',
+                success: function(u) {
+                    if(u.status == "approved") {
+                        opts.onlogin(u);
+                    } else {
+                        opts.onlogout(u);
+                    }
+                },
+                beforeSend: function(x) {
+                    x.withCredentials=true;
+                }
+            });
     };
 
     window.addEventListener("message",function(msg){
-        $.post(api+'/api/auth',msg.data,function(r) {
-            var u = JSON.parse(r);
-            if(u.status == "approved") {
-                opts.onlogin(u);
-                win.close();
-            } else {
-                win.postMessage('bad',api);
-            }
-        });
+        $.ajax({
+                url: api+'/api/auth?callback=?',
+                type: "GET",
+                dataType: 'json',
+                data: msg.data,
+                success: function(u) {
+                    if(u.status == "approved") {
+                        opts.onlogin(u);
+                        win.close();
+                    } else {
+                        win.postMessage('bad',api);
+                    }
+                },
+                beforeSend: function(x) {
+                    x.withCredentials=true;
+                }
+            });
     },false);
     Connect.login = function() {
         if(win != null) win.close();
@@ -46,9 +74,17 @@ var Connect = (function() {
     };
 
     Connect.logout = function() {
-        $.post(api+"/api/logout",'',function(r,b){
-            opts.onlogout(JSON.parse(r));
-        });
+        $.ajax({
+                url: api+'/api/logout?callback=?',
+                type: "GET",
+                dataType: 'json',
+                success: function(u) {
+                    opts.onlogout(u);
+                },
+                beforeSend: function(x) {
+                    x.withCredentials=true;
+                }
+            });
     };
 
     return Connect;

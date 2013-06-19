@@ -43,6 +43,20 @@
         {:status 302 :headers
           {"Location" "/login"}})))))
 
+(defn jsonp
+  ""
+  [handler] 
+   (fn [req] 
+     (let [q (:query-string req)
+           response (handler req)]
+       (if (nil? q) response
+         (if-not (.contains q "callback=") response
+           (let [callback (second
+                           (re-find #"callback=([a-zA-Z0-9-_]+)" 
+                            (:query-string req)))]
+               (assoc response :body (str callback "(" (:body response) ");")))
+           )))))
+
 (defroutes main
   (GET "/" [] 
     (if (have-admin?)
@@ -54,32 +68,37 @@
   (POST "/login" [])
   (POST "/logout" [] (session/clear!) (redirect "/"))
 
+  (OPTIONS "/api/user" []
+     {:headers {"Allow" "GET,POST,OPTIONS" 
+                "Access-Control-Allow-Methods" "GET,POST,OPTIONS" 
+                "Access-Control-Allow-Headers" "x-requested-with"}
+      :status 200})
   (OPTIONS "/api/auth" []
-     {:headers {"Allow" "POST,OPTIONS" 
-                "Access-Control-Allow-Methods" "POST,OPTIONS" 
+     {:headers {"Allow" "GET,POST,OPTIONS" 
+                "Access-Control-Allow-Methods" "GET,POST,OPTIONS" 
                 "Access-Control-Allow-Headers" "x-requested-with"}
       :status 200})
   (OPTIONS "/api/logout" []
-     {:headers {"Allow" "POST,OPTIONS" 
-                "Access-Control-Allow-Methods" "POST,OPTIONS" 
+     {:headers {"Allow" "GET,POST,OPTIONS" 
+                "Access-Control-Allow-Methods" "GET,POST,OPTIONS" 
                 "Access-Control-Allow-Headers" "x-requested-with"}
       :status 200})
-  (POST "/api/auth" {user :params}
+  (ANY "/api/auth" {user :params}
     (if (valid-user? user)
       (let [user (find-by-email (:email user))
             roles (assign-tree user)]
           (session/put! :logged true) 
           (session/put! :user user)
           (write-str (assoc user :roles roles)))
-      (write-str {:status "nok"})))
-  (POST "/api/logout" []
+      (write-str {:status "nok"})
+      ))
+  (ANY "/api/logout" []
     (session/clear!) (write-str {}))
-  (GET "/api/user" [callback]
+  (GET "/api/user" []
    (let [user (session/get :user)
          roles (assign-tree user)]
-     (if (nil? callback)
-      (write-str (assoc user :roles roles))
-      (str callback "(" (write-str (assoc user :roles roles)) ");"))
+     (session/put! :foo "bar")
+     (write-str (assoc user :roles roles))
      ))
 
   (GET "/register" [email] (page "register" {}))
@@ -189,6 +208,7 @@
   (-> (handler/site main)
       (wrap-cors :access-control-allow-origin #".*")
       (security)
+      (jsonp)
       (wrap-noir-cookies)
       (session/wrap-noir-session 
         {:store (memory-store session/mem)})))
