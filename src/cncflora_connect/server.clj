@@ -57,6 +57,17 @@
                (assoc response :body (str callback "(" (:body response) ");")))
            )))))
 
+(defn options
+  ""
+  [handler]
+   (fn [req]
+     (if (= "OPTIONS" (:method req))
+       {:headers {"Allow" "GET,POST,OPTIONS" 
+                  "Access-Control-Allow-Methods" "GET,POST,OPTIONS" 
+                  "Access-Control-Allow-Headers" "x-requested-with"}
+        :status 200}
+       (handler req))))
+
 (defroutes main
   (GET "/" [] 
     (if (have-admin?)
@@ -68,21 +79,6 @@
   (POST "/login" [])
   (POST "/logout" [] (session/clear!) (redirect "/"))
 
-  (OPTIONS "/api/user" []
-     {:headers {"Allow" "GET,POST,OPTIONS" 
-                "Access-Control-Allow-Methods" "GET,POST,OPTIONS" 
-                "Access-Control-Allow-Headers" "x-requested-with"}
-      :status 200})
-  (OPTIONS "/api/auth" []
-     {:headers {"Allow" "GET,POST,OPTIONS" 
-                "Access-Control-Allow-Methods" "GET,POST,OPTIONS" 
-                "Access-Control-Allow-Headers" "x-requested-with"}
-      :status 200})
-  (OPTIONS "/api/logout" []
-     {:headers {"Allow" "GET,POST,OPTIONS" 
-                "Access-Control-Allow-Methods" "GET,POST,OPTIONS" 
-                "Access-Control-Allow-Headers" "x-requested-with"}
-      :status 200})
   (ANY "/api/auth" {user :params}
     (if (valid-user? user)
       (let [user (find-by-email (:email user))
@@ -209,6 +205,7 @@
       (wrap-cors :access-control-allow-origin #".*")
       (security)
       (jsonp)
+      (options)
       (wrap-noir-cookies)
       (session/wrap-noir-session 
         {:store (memory-store session/mem)})))
