@@ -4,17 +4,17 @@
     <h3>Usu&aacute;rios cadastrados</h3>
     <ul>
         {{#users}}
-        <li><a href='/user/{{uuid}}'>{{name}}</a> ({{email}})</li>
+        <li><a href='{{base}}/user/{{uuid}}'>{{name}}</a> ({{email}})</li>
         {{/users}}
     </ul>
     <ul class='pager'>
-        <li {{^prev}}class='disabled'{{/prev}}><a href="{{prev}}" >anterior</a></li>
-        <li {{^next}}class='disabled'{{/next}}><a href="{{next}}">pr&oacute;ximo</a></li>
+        <li {{^prev}}class='disabled'{{/prev}}><a href="{{base}}{{prev}}" >anterior</a></li>
+        <li {{^next}}class='disabled'{{/next}}><a href="{{base}}{{next}}">pr&oacute;ximo</a></li>
     </ul>
 </div>
 
 <div class="four columns offset-by-one">
-    <form action="/users" method="POST">
+    <form action="{{base}}/users" method="POST">
         <fieldset>
             <h3>Cadastrar novo</h3>
             <input id="name" name="name" type="text" placeholder="Nome"/>

@@ -32,6 +32,7 @@ var Connect = (function() {
 
     var Connect = function(config) {
         opts = config;
+        if(opts.api) api = opts.api;
         $.ajax({
                 url: api+'/api/user?callback=?',
                 type: "GET",
@@ -69,6 +70,7 @@ var Connect = (function() {
             });
     },false);
 
+    
     Connect.login = function() {
         if(win != null) win.close();
         win = window.open(api+'/connect?'+location.origin,'connect','width=350,height=220,location=0,menubar=0,toolbar=0',true);

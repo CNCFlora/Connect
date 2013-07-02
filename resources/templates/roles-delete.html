@@ -1,13 +1,13 @@
 {{> templates/header.html}}
 
 <div class="sixteen columns">
-    <form action="/roles/{{role}}/delete" method='POST'>
+    <form action="{{base}}/roles/{{role}}/delete" method='POST'>
         <fieldset>
             <legend>Confirma excluir papel {{role}}?</legend>
             <button class='btn btn-danger btn-mini'>Excluir</button>
         </fieldset>
     </form>
-    <p><a href="/roles">Voltar</a></p>
+    <p><a href="{{base}}/roles">Voltar</a></p>
 </div>
 
 {{> templates/footer.html}}

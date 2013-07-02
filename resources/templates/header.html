@@ -3,28 +3,28 @@
 <head>
 	<meta charset="UTF-8">
 	<title>CNCFloraConnect - Sistema de usuários e controle de acesso do CNCFlora.</title>
-    <link rel="stylesheet" href="/css/base.css" />
-    <link rel="stylesheet" href="/css/layout.css" />
-    <link rel="stylesheet" href="/css/skeleton.css" />
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/css/styles.css" />
-    <link rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.10.1.custom.min.css" />
+    <link rel="stylesheet" href="{{base}}/css/base.css" />
+    <link rel="stylesheet" href="{{base}}/css/layout.css" />
+    <link rel="stylesheet" href="{{base}}/css/skeleton.css" />
+    <link rel="stylesheet" href="{{base}}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{base}}/css/styles.css" />
+    <link rel="stylesheet" href="{{base}}/css/ui-lightness/jquery-ui-1.10.1.custom.min.css" />
 </head>
 <body>
     <div class="container">
         <div class="sixteen columns">
             <h1>CNCFLora Connect</h1>
         </div>
-        {{#logged}}
+        {{#user}}
         <nav class="sixteen columns navbar">
             <div class="navbar-inner">
                 <ul class="nav">
-                    <li><a href="/dashboard">P&aacute;gina Inicial</a></li>
-                    <li><a href="/users/0">Usu&aacute;rios</a></li>
-                    <li><a href="/pendding">Pend&ecirc;ncias</a></li>
-                    <li><a href="/roles">Pap&eacute;is</a></li>
-                    <li><a href="/entities/0">Entidades (taxons)</a></li>
+                    <li><a href="{{base}}/dashboard">P&aacute;gina Inicial</a></li>
+                    <li><a href="{{base}}/users/0">Usu&aacute;rios</a></li>
+                    <li><a href="{{base}}/pendding">Pend&ecirc;ncias</a></li>
+                    <li><a href="{{base}}/roles">Pap&eacute;is</a></li>
+                    <li><a href="{{base}}/entities/0">Entidades (taxons)</a></li>
                 </ul>
             </div>
         </nav>
-        {{/logged}}
+        {{/user}}

@@ -2,7 +2,11 @@
   :description ""
   :url ""
   :main cncflora-connect.server
-  :ring {:handler cncflora-connect.server/app}
+  :ring {
+         :handler cncflora-connect.server/app
+         :init cncflora-connect.server/start
+         :destroy cncflora-connect.server/stop
+         }
   :resources-path "resources"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}

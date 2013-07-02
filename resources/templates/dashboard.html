@@ -4,7 +4,7 @@
     <h3>Cadastros Pendentes</h3>
     <ul>
         {{#pendding}}
-        <li><a href="/user/{{uuid}}">{{name}}</a> ( {{email}}  </li>
+        <li><a href="{{base}}/user/{{uuid}}">{{name}}</a> ( {{email}}  </li>
         {{/pendding}}
         {{^pendding}}
         <li>N&atilde;o h&aacute; nenhum cadastro pendente.</li>
@@ -13,15 +13,15 @@
 </div>
 
 <div class="four columns offset-by-one">
-    <form action="/logout" method="POST" id='logout'>
+    <form action="{{base}}/logout" method="POST" id="logout">
         <p>
             Bem vindo, {{user.name}}. 
             <button class="btn btn-mini">Sair</button>
         </p>
     </form>
-    <form action="/search">
+    <form action="{{base}}/search">
         <label for="q">Buscar usu&aacute;rio</label>
-        <input id="q" name="q" type="text" placeholder='termo para busca' />
+        <input id="q" name="q" type="text" placeholder="termo para busca" />
         <button>Buscar</button>
     </form>
 </div>

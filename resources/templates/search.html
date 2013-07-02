@@ -4,13 +4,13 @@
     <h3>Usu&aacute;rios encontrados para <strong>{{q}}</strong>:</h3>
     <ul>
         {{#users}}
-        <li><a href='/user/{{uuid}}'>{{name}}</a> ({{email}})</li>
+        <li><a href='{{base}}/user/{{uuid}}'>{{name}}</a> ({{email}})</li>
         {{/users}}
     </ul>
 </div>
 
 <div class="four columns offset-by-one">
-    <form action="/search">
+    <form action="{{base}}/search">
         <label for="q">Buscar usu&aacute;rio</label>
         <input id="q" name="q" type="text" placeholder='termo para busca' value='{{q}}'/>
         <button>Buscar</button>

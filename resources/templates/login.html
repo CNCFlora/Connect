@@ -1,7 +1,7 @@
 {{> templates/header.html}}
 
 <div class="sixteen columns login">
-    <form action="/login" method='POST' id='login'>
+    <form action="{{base}}/login" method='POST' id='login'>
         <fieldset>
             <legend>Entrar no sistema</legend>
             <!--
@@ -10,7 +10,7 @@
             <button class="btn btn-block btn-success" type="submit">Entrar</button>
         </fieldset>
         <p>
-        	<a href="/register">Requisitar cadastro</a>
+            <a href="{{base}}/register">Requisitar cadastro</a>
         </p>
     </form>
 </div>

@@ -1,14 +1,15 @@
 </div>
-<script src="/js/head.min.js" type="text/javascript"></script>
+<script src="{{base}}/js/head.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-    head.js('/js/jquery.min.js')
-        .js('/js/jquery.ui.min.js')
-        .js('/js/jquery.pjax.js')
-        .js('/js/bootstrap.min.js')
-        .js('/js/connect.js')
-        .js('/js/app.js')
+    head.js('{{base}}/js/jquery.min.js')
+        .js('{{base}}/js/jquery.ui.min.js')
+        .js('{{base}}/js/jquery.pjax.js')
+        .js('{{base}}/js/bootstrap.min.js')
+        .js('{{base}}/js/connect.js')
+        .js('{{base}}/js/app.js')
         .ready(function(){
-            app(jQuery);
+            var base = '{{base}}';
+            app(base,jQuery);
         });
 </script>
 </body></html>

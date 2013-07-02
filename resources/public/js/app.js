@@ -1,8 +1,8 @@
-var app = function($) {
+var app = function(base,$) {
     $("input[rel=complete]").each(function(i,e){
         var input = $(e);
         input.autocomplete({
-            source:"/search/"+input.attr("complete")
+            source:base+"/search/"+input.attr("complete")
         });
     });
 
@@ -16,15 +16,16 @@ var app = function($) {
     $(".container").delegate('form#logout','submit',function(){
         Connect.logout();
         setTimeout(function(){
-            location.href='/';
+            location.href=base+'/';
         },2000);
         return false;
     });
 
     if(typeof noconnect == 'undefined') {
         Connect({
+            api: base,
             onlogin: function(u) {
-                if(location.pathname == "/login") location.href="/dashboard";
+                if(location.pathname == base+"/login") location.href=base+"/dashboard";
             },
             onlogout: function() { }
         });

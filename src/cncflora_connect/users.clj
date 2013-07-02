@@ -7,6 +7,10 @@
   ""
   [store] (def db (graph store)))
 
+(defn disconnect
+  ""
+  [] (.shutdown db))
+
 (defn sha1
   ""
   [obj]

@@ -9,20 +9,20 @@
         {{/entities}}
         {{#entities}}
         <li>
-            <a href="/entities/{{value}}/delete" class=''><i class="icon-remove"></i></a>
+            <a href="{{base}}/entities/{{value}}/delete" class=''><i class="icon-remove"></i></a>
             {{name}}
         </li>
         {{/entities}}
     </ul>
     <ul class='pager'>
-        <li {{^prev}}class='disabled'{{/prev}}><a href="{{prev}}" >anterior</a></li>
-        <li {{^next}}class='disabled'{{/next}}><a href="{{next}}">pr&oacute;ximo</a></li>
+        <li {{^prev}}class='disabled'{{/prev}}><a href="{{base}}{{prev}}" >anterior</a></li>
+        <li {{^next}}class='disabled'{{/next}}><a href="{{base}}{{next}}">pr&oacute;ximo</a></li>
     </ul>
 
 </div>
 
 <div class="four columns offset-by-one">
-    <form action="/entities" method="POST">
+    <form action="{{base}}/entities" method="POST">
         <fieldset>
             <h3>Cadastrar novo</h3>
             <input id="name" name="name" type="text" placeholder="Nome da entidade"/>

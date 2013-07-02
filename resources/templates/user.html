@@ -6,7 +6,7 @@
         {{#message}}
             <p class="alert alert-{{type}}">{{message}}</p>
         {{/message}}
-        <form action="/user/{{uuid}}" method='POST'>
+        <form action="{{base}}/user/{{uuid}}" method='POST'>
             <fieldset>
                 <label for="name">Nome</label>
                 <input id="name" name="name" type="text" value='{{name}}'/>
@@ -25,12 +25,12 @@
         <ul>
             {{#roles}}
                 <li>
-                    <a href="/user/{{uuid}}/unassign/role/{{role}}" class=''><i class="icon-remove"></i></a>
+                    <a href="{{base}}/user/{{uuid}}/unassign/role/{{role}}" class=''><i class="icon-remove"></i></a>
                     {{role}}
                     <ul>
                     {{#entities}}
                         <li>
-                            <a href="/user/{{uuid}}/unassign/role/{{role}}/entity/{{value}}" class=''><i class="icon-remove"></i></a>
+                            <a href="{{base}}/user/{{uuid}}/unassign/role/{{role}}/entity/{{value}}" class=''><i class="icon-remove"></i></a>
                             {{name}}
                         </li>
                     {{/entities}}
@@ -42,14 +42,14 @@
 </div>
 
 <div class="four columns offset-by-one">
-    <form action="/user/{{profile_user.uuid}}/assign/role" method='POST'>
+    <form action="{{base}}/user/{{profile_user.uuid}}/assign/role" method='POST'>
         <h3>Delegar papel</h3>
         <fieldset>
             <input id="role" name="role" type="text" placeholder="Papel" rel='complete' complete='roles' />
             <button class="btn btn-success">Adicionar</button>
         </fieldset>
     </form>
-    <form action="/user/{{profile_user.uuid}}/assign/entity" method='POST'>
+    <form action="{{base}}/user/{{profile_user.uuid}}/assign/entity" method='POST'>
         <h3>Delegar entidade</h3>
         <fieldset>
             <input id="role_for_entity" name="role" type="text" placeholder="Papel" rel='complete' complete='roles' />

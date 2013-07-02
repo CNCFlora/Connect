@@ -18,7 +18,15 @@
 (stencil.loader/set-cache
   (clojure.core.cache/ttl-cache-factory {}))
 
-(connect "data")
+(defn start
+  []
+  (connect "/var/lib/floraconnect"))
+
+(defn stop
+  []
+  (disconnect))
+
+(def context-path (atom nil))
 
 (defn page 
   ""
@@ -26,8 +34,39 @@
   (render-file
     (str "templates/" html ".html")
     (assoc data
+          :base   @context-path
           :logged (session/get :logged) 
           :user   (session/get :user))))
+
+(defn- get-context-path
+    "Returns the context path when running as a servlet"
+    ([] @context-path)
+    ([servlet-req]
+          (if (nil? @context-path)
+             (reset! context-path
+               (.getContextPath servlet-req)))
+          @context-path))
+
+(defn wrap-context
+  ""
+  [handler]
+  (fn [req] 
+    (if-let [servlet-req (:servlet-request req)]
+      (let [context (get-context-path servlet-req)
+            uri (:uri req)]
+        (if (.startsWith uri context)
+          (handler (assoc req :uri (.substring uri (.length context))))
+          (handler req)))
+      (handler req))))
+
+(defn wrap-context-redir
+  ""
+  [handler] 
+  (fn [req]
+    (let [res (handler req)]
+      (if (= 302 (:status res))
+        (assoc-in res [:headers "Location"] (str @context-path (get-in res [:headers "Location"])))
+        res))))
 
 (defn security
   ""
@@ -202,6 +241,8 @@
 
 (def app
   (-> (handler/site main)
+      (wrap-context)
+      (wrap-context-redir)
       (wrap-cors :access-control-allow-origin #".*")
       (security)
       (jsonp)
@@ -213,4 +254,6 @@
 (defn -main
   ""
   [& args]
-  (run-jetty app {:port 8081 :join? false}))
+  (start)
+  (run-jetty app {:port 8081 :join? true})
+  (stop))
