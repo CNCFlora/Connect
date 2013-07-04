@@ -21,15 +21,15 @@
 
 (defn notify
   "Send an e-mail notification to some user."
-  [who what] nil)
+  [who what] what)
 
 (defn notify-creation
   "Notify responsable users the creation of another user."
-  [user] nil)
+  [user] user)
 
 (defn notify-approval
   "Notify responsable users the approval of another user."
-  [user] nil)
+  [user] user)
 
 (defn uuid 
   "Generate some random uuid"
@@ -122,6 +122,13 @@
         " SET u.email  = '" (:email user) "'"
         " SET u.name   = '" (:name user) "'"
         " SET u.status = '" (:status user) "'")))
+
+(defn update-pass
+  ""
+  [user]
+  (query! db
+   (str "START u=node:nodes(uuid='" (:uuid user) "')"
+        " SET u.password = '" (sha1 (:password user)) "'")))
 
 (defn have-admin?
   ""

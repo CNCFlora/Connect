@@ -20,7 +20,7 @@
 
 (defn start
   []
-  (connect "/var/lib/floraconnect"))
+  (connect "/var/lib/floraconnect2"))
 
 (defn stop
   []
@@ -157,11 +157,14 @@
   (GET "/user/:uuid" [uuid] 
    (page "user" {:profile_user (find-by-uuid uuid)
                  :roles (assign-tree (find-by-uuid uuid))}))
-  (POST "/user/:uuid" {user :params }
+  (POST "/user/:uuid" {user :params}
     (update-user user)
     (page "user" {:profile_user (find-by-uuid (:uuid user))
                   :roles (assign-tree (find-by-uuid (:uuid user)))
                   :message {:type "success" :message "Salvo com sucesso" }}))
+  (POST "/user/:uuid/pass" {form :params}
+        (update-pass form)
+        (redirect (str "/user/" (:uuid form))))
   (GET "/users/:pg" [pg]
     (let [pg (Integer. pg)]
       (page "users" {:users (get-users pg)

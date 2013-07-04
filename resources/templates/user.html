@@ -21,6 +21,14 @@
                 <button type="submit" class='btn btn-success'>Salvar</button>
             </fieldset>
         </form>
+        <h4>Change password</h4>
+        <form action="{{base}}/user/{{uuid}}/pass" method='POST'>
+            <fieldset>
+                <label for="password">Password</label>
+                <input name="password" type="password" />
+                <button type="submit" class='btn btn-success'>Change</button>
+            </fieldset>
+        </form>
         <h4>Pap&eacute;is e entidades</h4>
         <ul>
             {{#roles}}
