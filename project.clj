@@ -6,6 +6,7 @@
          :handler cncflora-connect.server/app
          :init cncflora-connect.server/start
          :destroy cncflora-connect.server/stop
+         :reload-paths ["src"]
          }
   :resources-path "resources"
   :license {:name "Eclipse Public License"
