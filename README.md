@@ -31,5 +31,5 @@ To authenticate other systems with Connect, here is an example:
 
 ## License
 
-Distributed under the Eclipse Public License.
+Distribuited under the Apache License 2.0.
 
