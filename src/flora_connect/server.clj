@@ -1,12 +1,12 @@
-(ns cncflora-connect.server
+(ns flora-connect.server
   (:use ring.adapter.jetty
         ring.middleware.session.memory
         compojure.core
         stencil.core
         ring.util.response
-        cncflora-connect.users
-        cncflora-connect.roles
-        cncflora-connect.search
+        flora-connect.users
+        flora-connect.roles
+        flora-connect.search
         ring.middleware.cors
         [noir.cookies  :only [wrap-noir-cookies]]
         [clojure.data.json :only [read-str write-str]])
@@ -20,7 +20,7 @@
 
 (defn start
   []
-  (connect "/var/lib/floraconnect2"))
+  (connect "/var/lib/floraconnect"))
 
 (defn stop
   []

@@ -1,7 +1,7 @@
-(ns cncflora-connect.roles-test
+(ns flora-connect.roles-test
   (:use midje.sweet 
-        cncflora-connect.users
-        cncflora-connect.roles))
+        flora-connect.users
+        flora-connect.roles))
 
 (connect "testdata")
 

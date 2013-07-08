@@ -1,10 +1,10 @@
-(ns cncflora-connect.users-test
+(ns flora-connect.users-test
   (:use midje.sweet 
-        cncflora-connect.users))
+        flora-connect.users))
 
 (connect "testdata")
 
-(fact "Notify admin on creation of users"
+(future-fact "Notify admin on creation of users"
   true => false)
 
 (fact "Can register an user"
@@ -28,7 +28,7 @@
      (:status (find-by-email "foo@bar.com")) => "blocked"
      (delete-user user)))
 
-(fact "Notify user and admin on aproval"
+(future-fact "Notify user and admin on aproval"
     true => false)
 
 (fact "Can validate an user login"

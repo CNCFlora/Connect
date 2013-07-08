@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>CNCFloraConnect - Sistema de usuários e controle de acesso do CNCFlora.</title>
+	<title>Flora Connect</title>
     <link rel="stylesheet" href="{{base}}/css/base.css" />
     <link rel="stylesheet" href="{{base}}/css/layout.css" />
     <link rel="stylesheet" href="{{base}}/css/skeleton.css" />
@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <div class="sixteen columns">
-            <h1>CNCFLora Connect</h1>
+            <a href="{{base}}/"><h1>Flora Connect</h1></a>
         </div>
         {{#user}}
         <nav class="sixteen columns navbar">
@@ -23,7 +23,9 @@
                     <li><a href="{{base}}/users/0">Usu&aacute;rios</a></li>
                     <li><a href="{{base}}/pendding">Pend&ecirc;ncias</a></li>
                     <li><a href="{{base}}/roles">Pap&eacute;is</a></li>
+                    <!--
                     <li><a href="{{base}}/entities/0">Entidades (taxons)</a></li>
+                    -->
                 </ul>
             </div>
         </nav>

@@ -1,8 +1,8 @@
-(ns cncflora-connect.search-test
+(ns flora-connect.search-test
   (:use midje.sweet 
-        cncflora-connect.users
-        cncflora-connect.roles
-        cncflora-connect.search))
+        flora-connect.users
+        flora-connect.roles
+        flora-connect.search))
 
 (connect "testdata")
 

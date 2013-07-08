@@ -1,6 +1,6 @@
-(ns cncflora-connect.roles
+(ns flora-connect.roles
   (:use simple-cypher.core)
-  (:use cncflora-connect.users))
+  (:use flora-connect.users))
 
 (defn register-role
   ""

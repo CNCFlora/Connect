@@ -1,11 +1,11 @@
-(defproject cncflora-connect "0.0.1"
-  :description ""
-  :url ""
-  :main cncflora-connect.server
+(defproject flora-connect "0.0.1"
+  :description "Single Sign On for the CNCFlora systems"
+  :url "http://github.com/CNCFlora/connect"
+  :main flora-connect.server
   :ring {
-         :handler cncflora-connect.server/app
-         :init cncflora-connect.server/start
-         :destroy cncflora-connect.server/stop
+         :handler flora-connect.server/app
+         :init flora-connect.server/start
+         :destroy flora-connect.server/stop
          :reload-paths ["src"]
          }
   :resources-path "resources"

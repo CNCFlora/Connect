@@ -1,4 +1,4 @@
-(ns cncflora-connect.users
+(ns flora-connect.users
   (:use simple-cypher.core))
 
 (declare db)

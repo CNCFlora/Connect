@@ -1,7 +1,7 @@
-(ns cncflora-connect.search
+(ns flora-connect.search
   (:use simple-cypher.core)
-  (:use cncflora-connect.users)
-  (:use cncflora-connect.roles))
+  (:use flora-connect.users)
+  (:use flora-connect.roles))
 
 (defn search [n]
   (filter #(= "user" (:type %))
