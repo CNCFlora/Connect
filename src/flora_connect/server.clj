@@ -110,8 +110,13 @@
 (defroutes main
   (GET "/" [] 
     (if (have-admin?)
-     (page "index" {})
+     (redirect "/index")
      (redirect "/register")))
+
+  (GET "/index.html" []
+     (page "index" {}))
+  (GET "/index" []
+     (page "index" {}))
 
   (GET "/connect" [] (page "connect" {}))
   (GET "/login" [] (page "login" {}))
