@@ -118,7 +118,7 @@
        (page "index" {})
        (redirect "/register") ))
   (GET "/index" []
-     (redirect "index.html"))
+     (redirect "/index.html"))
 
   (GET "/connect" [] (page "connect" {}))
   (GET "/login" [] (page "login" {}))
