@@ -5,7 +5,8 @@
 
 (defn connect
   ""
-  [store] (def db (graph store)))
+  [store] (def db (graph store))
+    (delete! db (create! db {:foo "bar"} :index)))
 
 (defn disconnect
   ""
