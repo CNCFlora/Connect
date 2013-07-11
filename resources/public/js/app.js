@@ -25,7 +25,8 @@ var app = function(base,$) {
         Connect({
             api: base,
             onlogin: function(u) {
-                if(location.pathname == base+"/login") location.href=base+"/dashboard";
+                if($("html").attr("id") == "index-page")
+                    location.href=base+"/dashboard";
             },
             onlogout: function() { }
         });

@@ -72,7 +72,7 @@
   ""
   [handler]
   (let [free ["/" "/api" "/_ca"
-              "/login" "/register"
+              "/register" "/connect"
               "/img" "/css" "/js"]]
   (fn [req]
    (if (some true? (map #(.startsWith (:uri req) %) free))
@@ -121,8 +121,6 @@
      (redirect "/index.html"))
 
   (GET "/connect" [] (page "connect" {}))
-  (GET "/login" [] (page "login" {}))
-  (POST "/login" [])
   (POST "/logout" [] (session/clear!) (redirect "/"))
 
   (ANY "/api/auth" {user :params}
@@ -157,6 +155,14 @@
         (redirect "/register-ok"))))
   (GET "/register-ok" [] (page "register-ok" {}))
   (GET "/register-bad" [] (page "register-bad" {}))
+
+  (GET "/recover" [] (page "recover" {}))
+  (POST "/recover" {user :params} 
+        (let [new-pass (apply str "cnc-" (for [n (range 4)] (rand-int 9)))
+              user     (find-by-email (:email user))]
+          (comment (update-pass (assoc user :password new-pass)))
+          (redirect "/recover-ok")))
+  (GET "/recover-ok" [] (page "recover-ok" {}))
 
   (GET "/dashboard" [] 
    (page "dashboard" {:pendding (get-pendding)}))
