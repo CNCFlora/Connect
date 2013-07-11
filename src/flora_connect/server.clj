@@ -114,9 +114,11 @@
      (redirect "/register")))
 
   (GET "/index.html" []
-     (page "index" {}))
+     (if (have-admin?)
+       (page "index" {})
+       (redirect "/register") ))
   (GET "/index" []
-     (page "index" {}))
+     (redirect "index.html"))
 
   (GET "/connect" [] (page "connect" {}))
   (GET "/login" [] (page "login" {}))
