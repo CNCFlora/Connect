@@ -18,8 +18,8 @@
                     $(".alert").show();
                 },false);
                 $("form").submit(function(){
-                    window.opener.postMessage( "email="+encodeURIComponent( $("#email").val() )
-                                              +"&password="+encodeURIComponent( $("#password").val() ),location.search.substr(1));
+                    window.opener.postMessage( "email="+encodeURIComponent( $("#email").val())
+                                              +"&password="+encodeURIComponent( $("#password").val()),location.search.substr(1));
                     return false;
                 });
             });

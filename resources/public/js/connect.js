@@ -61,7 +61,7 @@ var Connect = (function() {
                         opts.onlogin(u);
                         win.close();
                     } else {
-                        win.postMessage('bad',api);
+                        win.postMessage('bad',window.location.protocol+"//"+window.location.host);
                     }
                 },
                 beforeSend: function(x) {
