@@ -181,8 +181,8 @@
   (GET "/users/:pg" [pg]
     (let [pg (Integer. pg)]
       (page "users" {:users (get-users pg)
-                     :prev  (if (> 0 pg) (dec pg))
-                     :next  (if (< (inc pg ) (/ (count (get-users)) 20)) (inc pg))})))
+                     :prev  (if (> pg 0) (dec pg) false)
+                     :next  (if (< (inc pg) (/ (count (get-users)) 20)) (inc pg) false)})))
   (GET "/pendding" [pg]
     (page "pendding" {:pendding (get-pendding)}))
 
