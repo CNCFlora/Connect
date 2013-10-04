@@ -271,5 +271,5 @@
   ""
   [& args]
   (start)
-  (run-jetty app {:port 8081 :join? true})
+  (run-jetty app {:port 3000 :join? true})
   (stop))
