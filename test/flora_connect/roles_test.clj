@@ -26,11 +26,13 @@
 (fact "Can assoc roles with entities to users"
   (let [foo {:email "foo@bar.com" }]
     (register-role "editor")
+    (register-role "tester")
     (register-entity {:name "Vicia faba" :value "vicia:faba"})
     (register-entity {:name "Vicia alba" :value "vicia:alba"})
     (create-user foo)
     (assign-role foo "editor")
     (assign-role foo "editor")
+    (assign-role foo "tester")
     (assign-entity foo "editor" "vicia:faba")
     (assign-entity foo "editor" "vicia:alba")
     (assign-entity foo "editor" "vicia:alba")
@@ -41,14 +43,18 @@
       => [ {:role "editor"
             :entities (list 
                         {:name "Vicia faba" :value "vicia:faba"}
-                        {:name "Vicia alba" :value "vicia:alba"})}]
+                        {:name "Vicia alba" :value "vicia:alba"})}
+           {:role "tester" :entities (list)}
+          ]
     (unassign-entity foo "editor" "vicia:alba")
     (user-assignments foo)
       => [ {:role "editor" :entity "vicia:faba"}]
     (unassign-role foo "editor")
+    (unassign-role foo "tester")
     (user-assignments foo)
       => []
     (remove-role "editor")
+    (remove-role "tester")
     (remove-entity "vicia:faba")
     (remove-entity "vicia:alba")
     (delete-user foo)))

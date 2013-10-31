@@ -48,7 +48,7 @@
   [user role] 
   (not (empty?
    (query! db
-    (str "START u=node:nodes(email='" (:email user) "')"
+    (str "START u=node:nodes(uuid='" (:uuid user) "')"
          " ,r=node:nodes(role='" role "')"
          " MATCH u-[rel:IS]->r"
          " RETURN rel")))))
@@ -58,7 +58,7 @@
   [user role ent] 
     (not (empty?
      (query! db
-      (str "START u=node:nodes(email='" (:email user) "')"
+      (str "START u=node:nodes(uuid='" (:uuid user) "')"
            " ,e=node:nodes(value='" ent "')"
            " MATCH u-[rel:ASSIGNED]->e"
            " WHERE rel.role = '" role "'"
@@ -77,16 +77,17 @@
  [user role]
  (if-not (have-role? user role) 
   (query! db 
-    (str "START u=node:nodes(email='" (:email user) "')"
-              " ,r=node:nodes(role='" role "')"
-         " CREATE u-[:IS]->r"))))
+    (str "START u=node:nodes(uuid='" (:uuid user) "')"
+              " , r=node:nodes(role='" role "')"
+         " CREATE u-[:IS]->r"
+         " RETURN u , r"))))
 
 (defn assign-entity
  ""
  [user role entity]
  (if-not (have-access? user role entity)
   (query! db 
-    (str "START u=node:nodes(email='" (:email user) "')"
+    (str "START u=node:nodes(uuid='" (:uuid user) "')"
               " ,e=node:nodes(value='" entity "')"
          " CREATE u-[:ASSIGNED{role:'" role "'}]->e"))))
 
@@ -94,7 +95,7 @@
   ""
   [user role entity]
   (query! db 
-    (str "START u=node:nodes(email='" (:email user) "')"
+    (str "START u=node:nodes(uuid='" (:uuid user) "')"
               " ,e=node:nodes(value='" entity "')"
          " MATCH u-[rel:ASSIGNED]->e"
          " WHERE rel.role = '" role "'"
@@ -104,12 +105,12 @@
  ""
  [user role]
   (query! db 
-    (str "START u=node:nodes(email='" (:email user) "')"
+    (str "START u=node:nodes(uuid='" (:uuid user) "')"
               " ,r=node:nodes(role='" role "')"
          " MATCH u-[rel:IS]->r"
          " DELETE rel"))
   (query! db 
-    (str "START u=node:nodes(email='" (:email user) "')"
+    (str "START u=node:nodes(uuid='" (:uuid user) "')"
          " MATCH u-[rel:ASSIGNED]->e"
          " WHERE rel.role = '" role "'"
          " DELETE rel")))
@@ -118,11 +119,11 @@
   ""
   [user] 
   (let [roles  (query! db
-                (str "START u=node:nodes(email='" (:email user) "')"
+                (str "START u=node:nodes(uuid='" (:uuid user) "')"
                      " MATCH u-[:IS]->r"
                      " return r.role as role"))
         entities (query! db
-                  (str "START u=node:nodes(email='" (:email user) "')"
+                  (str "START u=node:nodes(uuid='" (:uuid user) "')"
                        " MATCH u-[rel:ASSIGNED]->e"
                        " RETURN rel.role as role,
                           e.name as name,
@@ -137,7 +138,7 @@
   ""
   [user]
   (query! db
-    (str "START u=node:nodes(email='" (:email user) "')"
+    (str "START u=node:nodes(uuid='" (:uuid user) "')"
          " MATCH assigns=u-[rel:ASSIGNED]->e"
          " RETURN rel.role as role, e.value as entity"
          )))

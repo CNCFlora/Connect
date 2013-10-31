@@ -4,11 +4,16 @@
   (:use flora-connect.roles))
 
 (defn search [n]
-  (filter #(= "user" (:type %))
-   (flatten
-    (map #(vector (:n %) (:m %))
+ (filter #(= "user" (:type %))
+  (flatten
+   (map #(vector (:n %) (:m %))
+    (concat
      (query! db
-       (str "START n=node:nodes(\"name:*" n "*\")"
-            " MATCH n<-[r?]-m"
-            " RETURN n,m"))))))
+      (str "START n=node:nodes(\"email:*" n "*\")"
+           " MATCH n<-[r?]-m"
+           " RETURN n,m"))
+     (query! db
+      (str "START n=node:nodes(\"name:*" n "*\")"
+           " MATCH n<-[r?]-m"
+           " RETURN n,m")))))))
 
