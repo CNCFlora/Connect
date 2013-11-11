@@ -12,7 +12,8 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.0"]
-                 [simple-cypher "0.0.1"]
+                 [org.neo4j/neo4j "1.9.2"]
+				 [org.neo4j/neo4j-kernel "1.9.2"]
                  [compojure "1.1.5"]
                  [ring "1.1.8"]
                  [ring/ring-jetty-adapter "1.1.8"]
