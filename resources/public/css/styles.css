@@ -11,6 +11,10 @@ h2 {
     font-size: 20px;
 }
 
+.header a{
+    text-decoration: none;
+}
+
 #connect-page input, #connect-page button {
     width: 100%;
 }
