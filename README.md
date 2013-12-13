@@ -6,7 +6,13 @@ It's based on the ideas of Mozilla Persona.
 
 ## Deploy
 
-Create a folder "/var/floraconnect" on your deployment server, give it permissons to the container used user (like tomcat7 or tomcat6) and them deploy the war normally (copying to /var/lib/tomcat7/webapps or using the web manager).
+### Docker
+
+Use the (uber)jar, see Dockerfile or cncflora/connect at docker index.
+
+### Manual
+
+Use the (uber)war, Create a folder "/var/floraconnect" on your deployment server, give it permissons to the container used user (like tomcat7 or tomcat6) and them deploy the war normally (copying to /var/lib/tomcat7/webapps or using the web manager).
 
 Access the app and register to create the first admin.
 
@@ -28,6 +34,21 @@ To authenticate other systems with Connect, here is an example:
         $("#login-bt").click(Connect.login);
         $("#logout-bt").click(Connect.logout);
     </script>
+
+## Development
+
+You can use Vagrant, or Leiningen by yourself.
+
+To run the tests:
+    lein midje :autotest
+
+To run the server (need permissions on /var/lib/floraconnect):
+    lein ring server-headless
+
+To Generate deploy artifacts:
+    lein ring uberwar
+    lein uberjar
+
 
 ## License
 
