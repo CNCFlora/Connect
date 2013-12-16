@@ -36,6 +36,7 @@
     (assoc data
           :base   @context-path
           :logged (session/get :logged) 
+          :admin  (session/get :admin)
           :user   (session/get :user))))
 
 (defn- get-context-path
@@ -78,10 +79,10 @@
    (if (or (some true? (map #(.startsWith (:uri req) %) (rest free ))) 
            (= "/" (:uri req)))
      (handler req)
-     (if (have-role? (session/get :user) "admin")
+     (if (session/get :logged)
       (handler req)
-        {:status 302 :headers
-          {"Location" "/"}})))))
+      {:status 302 :headers
+       {"Location" "/"}})))))
 
 (defn jsonp
   ""
@@ -126,8 +127,9 @@
 
   (ANY "/api/auth" {user :params}
     (if (valid-user? user)
-      (let [user (find-by-email (:email user))
-            roles (assign-tree user)]
+      (let [user0 (find-by-email (:email user))
+            roles (assign-tree user)
+            user  (assoc user0 :roles roles)]
           (session/put! :logged true) 
           (session/put! :user user)
           (session/put! :admin (have-role? user "admin"))
@@ -153,7 +155,7 @@
           (do
             (approve-user user)
             (register-role "admin")
-            (assign-role user "admin")))
+            (assign-role (find-by-email (:email user)) "admin")))
         (redirect "/register-ok"))))
   (GET "/register-ok" [] (page "register-ok" {}))
   (GET "/register-bad" [] (page "register-bad" {}))

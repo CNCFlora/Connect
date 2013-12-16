@@ -12,6 +12,12 @@
                 <input id="name" name="name" type="text" value='{{name}}'/>
                 <label for="email">E-mail</label>
                 <input id="email" name="email" type="text" value='{{email}}'/>
+                <label for="phone">Telefone</label>
+                <input id="phone" name="phone" type="text" value='{{phone}}'/>
+                <label for="institute">Instituição</label>
+                <input id="institute" name="institute" type="text" value='{{institute}}'/>
+                <label for="address">Endereço</label>
+                <textarea id="address" name="address" >{{address}}</textarea>
                 <label for="status">Status</label>
                 <select id="status" name="status">
                     <option value="waiting" {{#is_waiting}} selected {{/is_waiting}}>Pendente</option>

@@ -1,23 +1,32 @@
 {{> templates/header.html}}
 
 <div class="eleven columns">
+    <h2>Bem vindo, {{user.name}}.</h2>
     <form action="{{base}}/logout" method="POST" id="logout">
-        <p>
-            Bem vindo, {{user.name}}. 
-            <button class="btn btn-mini">Sair</button>
-        </p>
+        <button class="btn btn-mini">Sair</button>
     </form>
+    {{#user}}
+    <h4>Dados</h4>
+    <p><Strong>E-mail</strong>: {{email}}</p>
+    <p><Strong>Instituição</strong>: {{institute}}</p>
+    <p><Strong>Telefone</strong>: {{phone}}</p>
+    <p><Strong>Endereço</strong>: {{address}}</p>
+    <h4>Pap&eacute;is e entidades</h4>
+    <ul>
+        {{#roles}}
+            <li>
+                {{role}}
+                <ul>
+                {{#entities}}
+                    <li>
+                        {{name}}
+                    </li>
+                {{/entities}}
+                </ul>
+            </li>
+        {{/roles}}
+    </ul>
+    {{/user}}
 </div>
-
-<div class="four columns offset-by-one">
-    {{#admin}}
-    <form action="{{base}}/search">
-        <label for="q">Buscar usu&aacute;rio</label>
-        <input id="q" name="q" type="text" placeholder="termo para busca" />
-        <button>Buscar</button>
-    </form>
-    {{/admin}}
-</div>
-
 
 {{> templates/footer.html}}

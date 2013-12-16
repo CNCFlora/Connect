@@ -17,7 +17,7 @@
                  [compojure "1.1.5"]
                  [ring "1.1.8"]
                  [ring/ring-jetty-adapter "1.1.8"]
-                 [stencil "0.3.1"]
+                 [stencil "0.3.2"]
                  [lib-noir "0.4.6"]
                  [org.clojure/data.json "0.2.0"]
                  [ring-cors "0.1.0"]

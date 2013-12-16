@@ -26,9 +26,14 @@
 
 (defn list-roles
   ""
-  [] (map :role (map :role 
+  ([] (map :role (map :role 
        (query! db "START role=node:nodes(type='role')
                    RETURN role"))))
+  ([user] 
+             
+               (query! db
+                (str "START u=node:nodes(uuid='" (:uuid user) "')"
+                 " MATCH u-[:IS]->r return r.role as role"))))
 
 (defn register-entity
   ""

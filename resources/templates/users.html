@@ -14,6 +14,11 @@
 </div>
 
 <div class="four columns offset-by-one">
+    <form action="{{base}}/search">
+        <label for="q">Buscar usu&aacute;rio</label>
+        <input id="q" name="q" type="text" placeholder="termo para busca" />
+        <button>Buscar</button>
+    </form>
     <form action="{{base}}/users" method="POST">
         <fieldset>
             <h3>Cadastrar novo</h3>

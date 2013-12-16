@@ -73,11 +73,12 @@
   "Return all users or paginated" 
   ([] (map :users
        (query! db 
-        "START users=node:nodes(type='user') return users")))
+        "START users=node:nodes(type='user') RETURN users ORDER BY users.name")))
   ([page] (map :users
        (query! db 
         (str "START users=node:nodes(type='user')"
              " RETURN users"
+             " ORDER BY users.name"
              " SKIP " (* page 20) " LIMIT 20")))))
 
 (defn valid-user?
@@ -139,5 +140,5 @@
 (defn get-pendding
   ""
   [] (map :u (query! db 
-      (str "START u=node:nodes(status='waiting') WHERE u.status = 'waiting' RETURN u"))))
+      (str "START u=node:nodes(status='waiting') WHERE u.status = 'waiting' RETURN u ORDER BY u.name"))))
 
