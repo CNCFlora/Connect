@@ -71,16 +71,17 @@
 (defn security
   ""
   [handler]
-  (let [free ["/" "/api" "/_ca"
+  (let [free ["/" "/index" "/api" "/_ca"
               "/register" "/connect"
               "/img" "/css" "/js"]]
   (fn [req]
-   (if (some true? (map #(.startsWith (:uri req) %) free))
+   (if (or (some true? (map #(.startsWith (:uri req) %) (rest free ))) 
+           (= "/" (:uri req)))
      (handler req)
      (if (have-role? (session/get :user) "admin")
       (handler req)
         {:status 302 :headers
-          {"Location" "/login"}})))))
+          {"Location" "/"}})))))
 
 (defn jsonp
   ""
@@ -116,7 +117,7 @@
   (GET "/index.html" []
      (if (have-admin?)
        (page "index" {})
-       (redirect "/register") ))
+       (redirect "/register")))
   (GET "/index" []
      (redirect "/index.html"))
 
@@ -129,6 +130,7 @@
             roles (assign-tree user)]
           (session/put! :logged true) 
           (session/put! :user user)
+          (session/put! :admin (have-role? user "admin"))
           (write-str (assoc user :roles roles)))
       (write-str {:status "nok"})
       ))
@@ -165,7 +167,7 @@
   (GET "/recover-ok" [] (page "recover-ok" {}))
 
   (GET "/dashboard" [] 
-   (page "dashboard" {:pendding (get-pendding)}))
+   (page "dashboard" {:user (session/get :user)}))
 
   (GET "/user/:uuid" [uuid] 
    (page "user" {:profile_user (find-by-uuid uuid)

@@ -1,29 +1,22 @@
 {{> templates/header.html}}
 
 <div class="eleven columns">
-    <h3>Cadastros Pendentes</h3>
-    <ul>
-        {{#pendding}}
-        <li><a href="{{base}}/user/{{uuid}}">{{name}}</a> ( {{email}}  </li>
-        {{/pendding}}
-        {{^pendding}}
-        <li>N&atilde;o h&aacute; nenhum cadastro pendente.</li>
-        {{/pendding}}
-    </ul>
-</div>
-
-<div class="four columns offset-by-one">
     <form action="{{base}}/logout" method="POST" id="logout">
         <p>
             Bem vindo, {{user.name}}. 
             <button class="btn btn-mini">Sair</button>
         </p>
     </form>
+</div>
+
+<div class="four columns offset-by-one">
+    {{#admin}}
     <form action="{{base}}/search">
         <label for="q">Buscar usu&aacute;rio</label>
         <input id="q" name="q" type="text" placeholder="termo para busca" />
         <button>Buscar</button>
     </form>
+    {{/admin}}
 </div>
 
 
