@@ -128,12 +128,12 @@
   (ANY "/api/auth" {user :params}
     (if (valid-user? user)
       (let [user0 (find-by-email (:email user))
-            roles (assign-tree user)
+            roles (assign-tree user0)
             user  (assoc user0 :roles roles)]
           (session/put! :logged true) 
           (session/put! :user user)
           (session/put! :admin (have-role? user "admin"))
-          (write-str (assoc user :roles roles)))
+          (write-str user))
       (write-str {:status "nok"})
       ))
   (ANY "/api/logout" []
