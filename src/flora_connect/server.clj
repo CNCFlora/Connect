@@ -269,7 +269,8 @@
       (options)
       (wrap-noir-cookies)
       (session/wrap-noir-session 
-        {:store (memory-store session/mem)})))
+        {:store (memory-store session/mem)
+         :cookie-name "ring-connect-session"})))
 
 (defn -main
   ""

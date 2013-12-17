@@ -24,7 +24,7 @@ var Connect = (function() {
     for(var s =0;s<scripts.length;s++) {
         var script = scripts[s].getAttribute("src");
         if(script != null) {
-            if(script.endsWith("js/connect.js") && !script.startsWith(audience + '/') && script.startsWith('http')) {
+            if(script.endsWith("js/connect.js") && script.startsWith('http')) {
                 api = script.replace("/js/connect.js",'');
             }
         }
