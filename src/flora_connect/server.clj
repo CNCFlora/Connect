@@ -73,8 +73,8 @@
   ""
   [handler]
   (let [free ["/" "/index" "/api" "/_ca"
-              "/register" "/connect"
-              "/img" "/css" "/js"]]
+              "/register" "/connect" "/login-test"
+              "/recover" "/img" "/css" "/js"]]
   (fn [req]
    (if (or (some true? (map #(.startsWith (:uri req) %) (rest free ))) 
            (= "/" (:uri req)))
@@ -160,6 +160,10 @@
   (GET "/register-ok" [] (page "register-ok" {}))
   (GET "/register-bad" [] (page "register-bad" {}))
 
+  (GET "/login-test" [] (page "login-test" {:got false}))
+  (POST "/login-test" {params :params} 
+    (page "login-test" {:got true :found (find-by-email (:email params))}))
+
   (GET "/recover" [] (page "recover" {}))
   (POST "/recover" {user :params} 
         (let [new-pass (apply str "cnc-" (for [n (range 4)] (rand-int 9)))
@@ -170,6 +174,17 @@
 
   (GET "/dashboard" [] 
    (page "dashboard" {:user (session/get :user)}))
+
+  (GET "/edit" []
+    (page "user-edit" {}))
+  (POST "/edit" {user :params}
+    (update-user user)
+    (session/put! :user user)
+    (redirect "/dashboard"))
+  (POST "/edit/pass" {form :params}
+        (update-pass form)
+        (redirect (str "/dashboard")))
+
 
   (GET "/user/:uuid" [uuid] 
    (page "user" {:profile_user (find-by-uuid uuid)

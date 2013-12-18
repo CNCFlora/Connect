@@ -25,11 +25,12 @@ var app = function(base,$) {
         Connect({
             api: base,
             onlogin: function(u) {
-                if($("html").attr("id") == "index-page") {
+                if($("html").attr("id") == "index-page" || $("html").attr("id") == "login-test-page") {
                     location.href=base+"/dashboard";
                 }
             },
             onlogout: function() { }
         });
     }
+
 };

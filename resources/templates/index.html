@@ -2,12 +2,28 @@
 
 <div class="eight columns">
     <p>CNCFlora Connect &eacute; o sistema unificado de acesso e permiss&otilde;es para os sitemas
-        da plataforma de dados sobre Biodiversidade, conservação e planejamento de a&ccedil;&otilde;es 
+        da plataforma de dados sobre biodiversidade, conservação e planejamento de a&ccedil;&otilde;es 
         do CNCFlora.</p>
-    <form id="login" action="">
-        <button class="btn btn-link">Acessar ferramenta</button>
-    </form>
-    <a href="{{base}}/register" class="btn btn-link">Requisitar cadastro</a>
+    <p></p>
 </div>
+
+<br clear="all" />
+
+<form id="login" action="" class='eight columns main-form'>
+    <fieldset>
+        <legend>Já possuo cadastro</legend>
+        <button class="btn btn-success">Acessar conta</button>
+    </fieldset>
+</form>
+
+<form action="{{base}}/register" class='eight columns main-form'>
+    <fieldset>
+        <legend>Não possuo cadastro</legend>
+        <button class="btn btn-primary">Requisitar cadastro</button>
+    </fieldset>
+</form>
+
+<p><a href="{{base}}/login-test">Não sei se possuo cadastro, clique aqui para descobri.</a></p>
+
 
 {{> templates/footer.html}}

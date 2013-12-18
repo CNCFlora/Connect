@@ -40,8 +40,10 @@
   "Validate if an user ok to be created.
    Validates: unique e-mail."
   [user]
-  (let [r (get! db :email (:email user))]
-    (empty? r)))
+  (or
+    (nil? (:email user))
+    (let [r (get! db :email (:email user))]
+      (empty? r))))
 
 (defn create-user 
   "Create a new user with default stuff."
@@ -119,11 +121,16 @@
 (defn update-user
   ""
   [user]
+  (println user)
   (query! db
    (str "START u=node:nodes(uuid='" (:uuid user ) "')"
         " SET u.email  = '" (:email user) "'"
         " SET u.name   = '" (:name user) "'"
-        " SET u.status = '" (:status user) "'")))
+        " SET u.institute   = '" (:institute user) "'"
+        " SET u.phone   = '" (:phone user) "'"
+        " SET u.address   = '" (:address user) "'"
+        " SET u.status = '" (:status user) "'"
+        " RETURN u")))
 
 (defn update-pass
   ""

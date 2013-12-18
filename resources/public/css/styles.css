@@ -52,3 +52,17 @@ nav li {
     margin-bottom: 0;
 }
 
+
+#index-page form.main-form {
+    text-align: center;
+}
+
+#index-page form.main-form legend {
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+#index-page form.main-form button {
+    margin-top: 20px;
+}

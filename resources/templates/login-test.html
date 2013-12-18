@@ -1,0 +1,34 @@
+{{> templates/header.html}}
+
+{{^found}}
+<form method="POST" class='sixteen columns' id='login_test' action='{{base}}/login-test'>
+    <fieldset>
+        <h2>Não sei se possuo cadastro:</h2>
+        <input id="email" name="email" type="text" placeholder='Digite seu e-mail' />
+        <button class="btn btn-primary">Pesquisar</button>
+    </fieldset>
+</form>
+{{/found}}
+
+{{#got}}
+{{#found}}
+<form id="login" action="" class='sixteen columns main-form'>
+    <fieldset>
+        <h2>Encontrado: {{name}} &lt;{{email}}&gt;</h2>
+        <button class="btn btn-success">Acessar conta</button>
+        <br />
+        <br />
+        <p>
+            <a href="{{base}}/recover">Recuperar senha</a> 
+        </p>
+    </fieldset>
+</form>
+{{/found}}
+{{^found}}
+<p class='sixteen columns'><strong>Não encontrado.</strong></p>
+{{/found}}
+{{/got}}
+
+<p><a href='{{base}}/'>Voltar</a></p>
+
+{{> templates/footer.html}}

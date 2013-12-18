@@ -1,12 +1,13 @@
 {{> templates/header.html}}
 
 <div class="eleven columns">
-    <h2>Bem vindo, {{user.name}}.</h2>
-    <form action="{{base}}/logout" method="POST" id="logout">
-        <button class="btn btn-mini">Sair</button>
-    </form>
     {{#user}}
-    <h4>Dados</h4>
+    <h4>Dados
+        <small>
+            (<a href="{{base}}/edit" class=''>editar</a>)
+        </small>
+    </h4>
+    <p><Strong>Nome</strong>: {{name}}</p>
     <p><Strong>E-mail</strong>: {{email}}</p>
     <p><Strong>Instituição</strong>: {{institute}}</p>
     <p><Strong>Telefone</strong>: {{phone}}</p>
@@ -15,11 +16,11 @@
     <ul>
         {{#roles}}
             <li>
-                {{role}}
+                <i class='icon-chevron-right'></i> {{role}}
                 <ul>
                 {{#entities}}
                     <li>
-                        {{name}}
+                        <i class='icon-chevron-right'></i> {{name}}
                     </li>
                 {{/entities}}
                 </ul>
@@ -27,6 +28,13 @@
         {{/roles}}
     </ul>
     {{/user}}
+</div>
+
+<div class="four columns">
+    <h2>Bem vindo, {{user.name}}.</h2>
+    <form action="{{base}}/logout" method="POST" id="logout">
+        <button class="btn btn-mini btn-danger">Sair</button>
+    </form>
 </div>
 
 {{> templates/footer.html}}
