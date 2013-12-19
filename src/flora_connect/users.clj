@@ -129,6 +129,10 @@
         " SET u.institute   = '" (:institute user) "'"
         " SET u.phone   = '" (:phone user) "'"
         " SET u.address   = '" (:address user) "'"
+        " SET u.postal   = '" (:postal user) "'"
+        " SET u.state   = '" (:state user) "'"
+        " SET u.city   = '" (:city user) "'"
+        " SET u.complement   = '" (:complement user) "'"
         " SET u.status = '" (:status user) "'"
         " RETURN u")))
 

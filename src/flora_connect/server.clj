@@ -162,7 +162,7 @@
 
   (GET "/login-test" [] (page "login-test" {:got false}))
   (POST "/login-test" {params :params} 
-    (page "login-test" {:got true :found (find-by-email (:email params))}))
+    (page "login-test" {:got true :found (search (:email params))}))
 
   (GET "/recover" [] (page "recover" {}))
   (POST "/recover" {user :params} 

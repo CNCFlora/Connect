@@ -5,13 +5,18 @@
         no sistema CNCFlora, usarmos seu e-mail como forma de identifica&ccedil;o e de contato.</p>
     <form action="{{base}}/register" method='POST'>
         <fieldset>
-            <legend>Requisitar cadastro</legend>
+            <legend>Requisitar cadastro:</legend>
             <input id="name" name="name" placeholder='Nome' type="text" />
             <input id="email" name="email" placeholder='E-mail' type="text" />
             <input id="password" name="password" placeholder="password" type="password" />
             <input id="institute" name="institute" placeholder='Instituição' type="text" />
             <input id="phone" name="phone" placeholder='Telefone profissional' type="text" />
-            <textarea id="address" name="address" placeholder='Endereço profissional'></textarea>
+            <label for="postal">Endereço profissional:</label>
+            <input id="state" name="state" placeholder='Estado' type="text" />
+            <input id="city" name="city" placeholder='Cidade' type="text" />
+            <input id="address" name="address" placeholder='Rua, número e bairro' type="text" />
+            <input id="complement" name="complement" placeholder='Complemento' type="text" />
+            <input id="postal" name="postal" placeholder='CEP' type="text" />
             <button class="btn btn-success" type="submit">Enviar</button>
         </fieldset>
         <p>
