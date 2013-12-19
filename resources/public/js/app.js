@@ -33,4 +33,22 @@ var app = function(base,$) {
         });
     }
 
+    $("#register-page form").submit(function(){
+         var missing = []
+         $("#register-page form input").each(function(i,e){
+            var el = $(e);
+            if(el.parent().text().trim() == "*") {
+                if(el.val().trim().length < 1) {
+                    missing.push(el.attr("placeholder"));
+                }
+            }
+         });
+         if(missing.length >= 1) {
+             alert("É necessário preencher os sequintes: "+ missing.join(";"));
+             return false;
+         } else {
+             return true;
+         }
+    });
+
 };

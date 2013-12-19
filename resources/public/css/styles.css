@@ -11,7 +11,7 @@ h2 {
     font-size: 20px;
 }
 
-.header a{
+.header a {
     text-decoration: none;
 }
 
@@ -65,4 +65,22 @@ nav li {
 
 #index-page form.main-form button {
     margin-top: 20px;
+}
+
+#index-page p {
+    text-align:center;
+}
+
+#index-page .eight {
+    margin-left: 25%;
+}
+
+#register-page form p input {
+    display: inline-block;
+}
+#register-page form p input label {
+}
+
+#register-page form p {
+    color: red;
 }
