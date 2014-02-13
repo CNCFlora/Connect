@@ -145,6 +145,9 @@
      (write-str (assoc user :roles roles))
      ))
 
+  (GET "/api/csv" []
+    (page "csv" {:users (get-users)}))
+
   (GET "/register" [email] (page "register" {}))
   (POST "/register" {user :params} 
     (if-not (valid-new-user? user)
