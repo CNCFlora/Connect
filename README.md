@@ -12,7 +12,7 @@ Use the (uber)jar, see Dockerfile or cncflora/connect at docker index.
 
 ### Manual
 
-Use the (uber)war, Create a folder "/var/floraconnect" on your deployment server, give it permissons to the container used user (like tomcat7 or tomcat6) and them deploy the war normally (copying to /var/lib/tomcat7/webapps or using the web manager).
+Use the (uber)war, Create a folder "/var/lib/floraconnect" on your deployment server, give it permissons to the container used user (like tomcat7 or tomcat6) and them deploy the war normally (copying to /var/lib/tomcat7/webapps or using the web manager).
 
 Access the app and register to create the first admin.
 
@@ -48,7 +48,6 @@ To run the server (need permissions on /var/lib/floraconnect):
 To Generate deploy artifacts:
     lein ring uberwar
     lein uberjar
-
 
 ## License
 
