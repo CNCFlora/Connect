@@ -16,9 +16,8 @@ chown vagrant /var/lib/floraconnect -Rf
 # prepare startup
 echo 'echo $(date) > /var/log/rc.log' > /etc/rc.local
 echo 'su vagrant -c "cd /vagrant && nohup lein ring server-headless &" >> /var/log/rc.log 2>&1' >> /etc/rc.local
-echo 'SUBSYSTEM=="bdi",ACTION=="add",RUN+="/vagrant/register.sh >> /var/log/rc.log 2>&1"' > /etc/udev/rules.d/50-vagrant.rules
+echo 'SUBSYSTEM=="bdi",ACTION=="add",RUN+="/etc/rc.local"' > /etc/udev/rules.d/50-vagrant.rules
 
-# start the service and register it
+# start the service 
 su vagrant -c 'cd /vagrant && nohup lein ring server-headless &'
-cd /vagrant && chmod +x register.sh && ./register.sh
 
