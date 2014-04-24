@@ -13,11 +13,9 @@ su vagrant -c 'lein self-install'
 [[ ! -e /var/lib/floraconnect ]] && mkdir -p /var/lib/floraconnect
 chown vagrant /var/lib/floraconnect -Rf
 
-# prepare startup
-echo 'echo $(date) > /var/log/rc.log' > /etc/rc.local
-echo 'su vagrant -c "cd /vagrant && nohup lein ring server-headless &" >> /var/log/rc.log 2>&1' >> /etc/rc.local
-echo 'SUBSYSTEM=="bdi",ACTION=="add",RUN+="/etc/rc.local"' > /etc/udev/rules.d/50-vagrant.rules
-
-# start the service 
-su vagrant -c 'cd /vagrant && nohup lein ring server-headless &'
+# docker, to build the image
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+echo 'deb http://get.docker.io/ubuntu docker main' > /etc/apt/sources.list.d/docker.list
+apt-get update
+apt-get install lxc-docker
 

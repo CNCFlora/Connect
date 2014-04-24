@@ -8,7 +8,9 @@ It's based on the ideas of Mozilla Persona.
 
 ### Docker
 
-Use the (uber)jar, see Dockerfile or cncflora/connect at docker index.
+Docker uses the uberwar and jetty:
+
+docker run -d -v /var/lib/floraconnect:/var/lib/floraconnect:rw -p 8080:8080 -p 2828:22 -t cncflora/connect 
 
 ### Manual
 
@@ -37,7 +39,7 @@ To authenticate other systems with Connect, here is an example:
 
 ## Development
 
-You can use Vagrant, or Leiningen by yourself.
+You can use Vagrant, or just Leiningen.
 
 To run the tests:
     lein midje :autotest
@@ -47,7 +49,7 @@ To run the server (need permissions on /var/lib/floraconnect):
 
 To Generate deploy artifacts:
     lein ring uberwar
-    lein uberjar
+    lein ring uberjar
 
 ## License
 

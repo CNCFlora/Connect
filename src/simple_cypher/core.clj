@@ -32,7 +32,7 @@
   (let [tx (.beginTx graph)]
     (let [node  (.createNode graph) 
           index (.forNodes (.index graph) "nodes" 
-                           (hash-map  "type" "exact" "provider" "lucene"))]
+                           (hash-map  "type" "fulltext" "provider" "lucene"))]
       (dorun (for [kv data] (.setProperty node (name (key kv)) (val kv))))
       (if (= (first idx) :index)
         (dorun (for [kv data] 
