@@ -2,14 +2,13 @@
   (:use midje.sweet 
         flora-connect.users))
 
-(connect "testdata")
-
 (future-fact "Notify admin on creation of users"
   true => false)
 
 (fact "Can register an user"
-  (create-user {:email "foo@bar.com"})
+  (create-user {:email "foo@bar.com" :name "Diogo"})
   (:email (find-by-email "foo@bar.com")) => "foo@bar.com"
+  (:name (find-by-email "foo@bar.com")) => "Diogo"
   (delete-user {:email "foo@bar.com"}))
 
 (fact "Can not create repeated users"

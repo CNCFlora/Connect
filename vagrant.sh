@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # install java and utils
-apt-get update
+apt-get update && apt-get upgrade
 apt-get install openjdk-7-jdk curl git tmux vim htop -y
 
 # install leiningen

@@ -2,18 +2,14 @@
   :description "Single Sign On for the CNCFlora systems"
   :url "http://github.com/CNCFlora/connect"
   :main flora-connect.server
-  :ring {
-         :handler flora-connect.server/app
-         :init flora-connect.server/start
-         :destroy flora-connect.server/stop
-         :reload-paths ["src"]
-         }
+  :ring { :handler flora-connect.server/app
+          :reload-paths ["src"] }
   :resources-path "resources"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.0"]
-                 [org.neo4j/neo4j "1.9.2"]
-				 [org.neo4j/neo4j-kernel "1.9.2"]
+                 [org.clojure/java.jdbc "0.3.3"]
+                 [org.apache.derby/derby "10.10.2.0"]
                  [compojure "1.1.5"]
                  [ring "1.1.8"]
                  [ring/ring-jetty-adapter "1.1.8"]

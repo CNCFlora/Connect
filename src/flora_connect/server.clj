@@ -18,14 +18,6 @@
 (stencil.loader/set-cache
   (clojure.core.cache/ttl-cache-factory {}))
 
-(defn start
-  []
-  (connect "/var/lib/floraconnect"))
-
-(defn stop
-  []
-  (disconnect))
-
 (def context-path (atom nil))
 
 (defn page 
@@ -293,6 +285,5 @@
 (defn -main
   ""
   [& args]
-  (start)
-  (run-jetty app {:port 3000 :join? true})
-  (stop))
+  (run-jetty app {:port 3000 :join? true}))
+

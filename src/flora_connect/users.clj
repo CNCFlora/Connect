@@ -1,16 +1,5 @@
 (ns flora-connect.users
-  (:use simple-cypher.core))
-
-(declare db)
-
-(defn connect
-  ""
-  [store] (def db (graph store))
-    (delete! db (create! db {:foo "bar"} :index)))
-
-(defn disconnect
-  ""
-  [] (.shutdown db))
+  (:use flora-connect.db))
 
 (defn sha1
   ""
@@ -42,114 +31,115 @@
   [user]
   (or
     (nil? (:email user))
-    (let [r (get! db :email (:email user))]
+    (let [r (get! db :users :email (:email user))]
       (empty? r))))
 
 (defn create-user 
   "Create a new user with default stuff."
   [user] 
     (if (valid-new-user? user)
-      (create! db 
-          (assoc user :type "user"
-                      :uuid (uuid)
-                      :password (sha1 (:password user))
-                      :status "waiting")
-           :index)
-         (notify-creation user)))
+      (let [main {:uuid (uuid) :email (:email user) :password (sha1 (:password user)) :status "waiting"}
+            data (assoc (dissoc user :email :password) :uuid (:uuid main))]
+        (create! db :users main)
+        (create! db :users_data data)
+        (notify-creation user))))
 
 (defn approve-user
   "Aprove an user registral"
   [user]
-   (query! db
-     (str "START user=node:nodes(email='" (:email user) "')"
-          " SET user.status = 'approved'")))
+   (execute! db
+     "UPDATE users SET status=? WHERE email=?"
+      ["approved" (:email user)]))
 
 (defn block-user
   "Block an user account"
   [user]
-   (query! db
-     (str "START user=node:nodes(email='" (:email user) "')"
-          " SET user.status = 'blocked'")))
+   (execute! db
+     "UPDATE users SET status=? WHERE email=?"
+      ["blocked" (:email user)]))
 
 (defn get-users
   "Return all users or paginated" 
-  ([] (map :users
-       (query! db 
-        "START users=node:nodes(type='user') RETURN users ORDER BY users.name")))
-  ([page] (map :users
-       (query! db 
-        (str "START users=node:nodes(type='user')"
-             " RETURN users"
-             " ORDER BY users.name"
-             " SKIP " (* page 20) " LIMIT 20")))))
+  ([] (query! db "select * from users inner join users_data on users_data.uuid = users.uuid"))
+  ([page] 
+    (query! db ("select * from users inner join users_data on users_data.uuid = users.uuid START  " (* page 20) "  LIMIT 20"))))
 
 (defn valid-user?
   "Check a login validity, including approval status"
   [user]
-  (let [r (query! db (str "START user=node:nodes(email='" (:email user) "') RETURN user"))]
+  (let [r (get! db :users :email (:email user))]
     (if (empty? r)
       false
       (and
-        (= (sha1 (:password user)) (:password (:user (first r) )))
-        (= "approved" (:status (:user (first r))))))))
+        (= (sha1 (:password user)) (:password (first r)))
+        (= "approved" (:status (first r)))))))
 
 (defn user
   ""
   [user]
-  (assoc user
-    :is_approved (= "approved" (:status user))
-    :is_blocked (= "blocked" (:status user))
-    :is_waiting (= "waiting" (:status user))))
+ (if-not (nil? user)
+   (let [data (first (get! db :users_data :uuid (:uuid user)))]
+     (println data)
+    (merge user data
+       {
+        :is_approved (= "approved" (:status user))
+        :is_blocked (= "blocked" (:status user))
+        :is_waiting (= "waiting" (:status user))
+       }))))
 
 (defn find-by-uuid
   "Find an user by uuid"
   [uuid] 
-  (let [r (query! db (str "START user=node:nodes(uuid='" uuid "') RETURN user"))]
-    (user (:user (first r)) )))
+   (user (first (get! db :users :uuid uuid))))
 
 (defn find-by-email
   "Find an user by email"
   [email] 
-  (let [r (query! db (str "START user=node:nodes(email='" email "') RETURN user"))]
-    (:user (first r))))
+   (user (first (get! db :users :email email))) )
 
 (defn delete-user
   "Deletes an user. Internal only."
   [user]
-  (delete! db (first (get! db :email (:email user) :raw))))
+  (delete! db :users (first (get! db :users :email (:email user)))))
 
 (defn update-user
   ""
   [user]
-  (println user)
-  (query! db
-   (str "START u=node:nodes(uuid='" (:uuid user ) "')"
-        " SET u.email  = '" (:email user) "'"
-        " SET u.name   = '" (:name user) "'"
-        " SET u.institute   = '" (:institute user) "'"
-        " SET u.phone   = '" (:phone user) "'"
-        " SET u.address   = '" (:address user) "'"
-        " SET u.postal   = '" (:postal user) "'"
-        " SET u.state   = '" (:state user) "'"
-        " SET u.city   = '" (:city user) "'"
-        " SET u.complement   = '" (:complement user) "'"
-        " SET u.status = '" (:status user) "'"
-        " RETURN u")))
+  (execute! db
+   (str "UPDATE users SET"
+        " email=?,"
+        " status=?"
+        " WHERE uuid=? ")
+    [(:email user) (:status user) (:uuid user)])
+  (execute! db
+   (str "UPDATE users_data SET"
+        " name=?,"
+        " institute=?,"
+        " phone=?,"
+        " address=?,"
+        " postal=?,"
+        " state=?,"
+        " city=?,"
+        " complement=?"
+        " WHERE uuid=? ")
+    [(:name user) (:institude user) (:phone user) 
+     (:address user) (:postal user) (:state user) 
+     (:city user) (:complement user) (:uuid user)]))
 
 (defn update-pass
   ""
   [user]
-  (query! db
-   (str "START u=node:nodes(uuid='" (:uuid user) "')"
-        " SET u.password = '" (sha1 (:password user)) "'")))
+  (execute! db
+    "UPDATE users SET passoword=? where uuid=?"
+          [(sha1 (:password user)) (:uuid user)]))
 
 (defn have-admin?
   ""
-  [] 
-  (not (empty? (get! db :role "admin"))))
+  [] true)
 
 (defn get-pendding
   ""
-  [] (map :u (query! db 
-      (str "START u=node:nodes(status='waiting') WHERE u.status = 'waiting' RETURN u ORDER BY u.name"))))
+  [] 
+   (query! db
+     "SELECT * FROM users WHERE status = ? inner join users_data on users_data.uuid = users.uuid ORDER BY name"))
 
