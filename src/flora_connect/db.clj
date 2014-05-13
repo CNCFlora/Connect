@@ -1,7 +1,6 @@
 (ns flora-connect.db
   (:require [clojure.java.jdbc :as j]))
 
-
 (def db-file (java.io.File. "/var/floraconnect/users"))
 
 (def db
@@ -35,22 +34,27 @@
       [:entity "VARCHAR(255)"])
     ))
 
+(defn log
+  [ what ]
+  #_(println what)
+  what)
+
 (defn execute!
   ([db q] 
-   (println q) 
+   (log q) 
    (j/execute! db q))
   ([db q params] 
    (let [params (vec (flatten [q params]))]
-     (println params)
-     (println (j/execute! db params)))) )
+     (log params)
+     (log (j/execute! db params)))) )
 
 (defn query!
   ([db q] 
-   (println q) 
+   (log q) 
    (j/query db q))
   ([db q params] 
    (let [params (vec (flatten [q params]))]
-     (println params)
+     (log params)
      (j/query db params))))
 
 (defn get!

@@ -1,178 +1,109 @@
 (ns flora-connect.roles
-  (:use simple-cypher.core)
+  (:use flora-connect.db)
   (:use flora-connect.users))
-
-(defn register-role
-  ""
-  [role] 
-  (if (empty?
-       (query! db 
-        (str "START role=node:nodes(role='" role "')
-              RETURN role")))
-    (create! db {:role role :name role :type "role"} :index)))
-
-(defn remove-role
-  ""
-  [role]
-  (if-not (= "admin" role)
-    (do
-      (query! db 
-        (str "START r=node:nodes(role='" role "')"
-             "     ,u=node:nodes(type='user')"
-             " MATCH u-[rel:ASSIGNED]->e"
-             " WHERE rel.role = '" role "'"
-             " DELETE rel"))
-      (delete! db (first (get! db :role role :raw))))))
 
 (defn list-roles
   ""
-  ([] (map :role (map :role 
-       (query! db "START role=node:nodes(type='role')
-                   RETURN role"))))
-  ([user] 
-             
-               (query! db
-                (str "START u=node:nodes(uuid='" (:uuid user) "')"
-                 " MATCH u-[:IS]->r return r.role as role"))))
-
-(defn register-entity
-  ""
-  [entity]
-  (if (empty?
-       (query! db 
-        (str "START ent=node:nodes(value='" (:value entity) "')
-              RETURN ent")))
-    (create! db (assoc entity :type "entity") :index)))
-
-(defn remove-entity
-  ""
-  [entity] (delete! db (first (get! db :value entity :raw))))
+  ([] (query! db
+        "select distinct(role) from user_role_entity;"))
+  ([user] (query! db
+        "select distinct(role) from user_role_entity where uuid = ?" [(:uuid user)])))
 
 (defn have-role?
   ""
   [user role] 
-  (not (empty?
-   (query! db
-    (str "START u=node:nodes(uuid='" (:uuid user) "')"
-         " ,r=node:nodes(role='" role "')"
-         " MATCH u-[rel:IS]->r"
-         " RETURN rel")))))
+  (not
+    (empty?
+     (query! db
+       "select * from user_role_entity where uuid = ? and role = ?"
+         [(:uuid user) role]))))
 
 (defn have-access?
   ""
   [user role ent] 
-    (not (empty?
+  (not
+    (empty?
      (query! db
-      (str "START u=node:nodes(uuid='" (:uuid user) "')"
-           " ,e=node:nodes(value='" ent "')"
-           " MATCH u-[rel:ASSIGNED]->e"
-           " WHERE rel.role = '" role "'"
-           " RETURN rel")))))
+       "select * from user_role_entity where uuid = ? and role = ? and entity = ?"
+         [(:uuid user) role ent]))))
 
 (defn list-entities
   ""
-  [] 
-  (distinct 
-   (map :ent
-    (query! db "START ent=node:nodes(type='entity')
-                RETURN ent"))))
+  [] (query! db
+        "select distinct(entity) from user_role_entity;"))
 
 (defn assign-role
  ""
  [user role]
  (if-not (have-role? user role) 
-  (query! db 
-    (str "START u=node:nodes(uuid='" (:uuid user) "')"
-              " , r=node:nodes(role='" role "')"
-         " CREATE u-[:IS]->r"
-         " RETURN u , r"))))
+   (execute! db
+    "insert into user_role_entity (uuid,role) values (?,?)"
+    [(:uuid user) role])))
 
 (defn assign-entity
  ""
  [user role entity]
  (if-not (have-access? user role entity)
-  (query! db 
-    (str "START u=node:nodes(uuid='" (:uuid user) "')"
-              " ,e=node:nodes(value='" entity "')"
-         " CREATE u-[:ASSIGNED{role:'" role "'}]->e"))))
+   (execute! db
+    "insert into user_role_entity (uuid,role,entity) values (?,?,?)"
+    [(:uuid user) role entity])))
 
 (defn unassign-entity
   ""
   [user role entity]
-  (query! db 
-    (str "START u=node:nodes(uuid='" (:uuid user) "')"
-              " ,e=node:nodes(value='" entity "')"
-         " MATCH u-[rel:ASSIGNED]->e"
-         " WHERE rel.role = '" role "'"
-         " DELETE rel")))
+  (execute! db
+   "delete from user_role_entity where uuid=? and role=? and entity=?"
+    [(:uuid user) role entity]))
+
 
 (defn unassign-role
  ""
  [user role]
-  (query! db 
-    (str "START u=node:nodes(uuid='" (:uuid user) "')"
-              " ,r=node:nodes(role='" role "')"
-         " MATCH u-[rel:IS]->r"
-         " DELETE rel"))
-  (query! db 
-    (str "START u=node:nodes(uuid='" (:uuid user) "')"
-         " MATCH u-[rel:ASSIGNED]->e"
-         " WHERE rel.role = '" role "'"
-         " DELETE rel")))
+  (execute! db
+   "delete from user_role_entity where uuid=? and role=?"
+    [(:uuid user) role]))
 
 (defn assign-tree
   ""
   [user] 
-  (let [roles  (query! db
-                (str "START u=node:nodes(uuid='" (:uuid user) "')"
-                     " MATCH u-[:IS]->r"
-                     " return r.role as role"))
-        entities (query! db
-                  (str "START u=node:nodes(uuid='" (:uuid user) "')"
-                       " MATCH u-[rel:ASSIGNED]->e"
-                       " RETURN rel.role as role,
-                          e.name as name,
-                          e.value as value"))]
-    (map (fn [r] {:role r 
-                  :entities (map #(dissoc % :role)
-                             (filter #(= (:role %) r) entities)) })
-         (map :role roles))))
+   (let [assigns (query! db "select role, entity from user_role_entity where uuid=?" [(:uuid user)])]
+     (for [role (distinct (map :role assigns))]
+       (hash-map :role role
+                 :entities 
+                  (map :entity
+                    (filter #(= role (:role %))
+                      (filter #(not (nil? (:entity %))) assigns)))))))
 
 
 (defn user-assignments
   ""
   [user]
   (query! db
-    (str "START u=node:nodes(uuid='" (:uuid user) "')"
-         " MATCH assigns=u-[rel:ASSIGNED]->e"
-         " RETURN rel.role as role, e.value as entity"
-         )))
+    "select role,entity from user_role_entity where uuid =? and entity is not null"
+    [(:uuid user)]))
 
 (defn find-role
   ""
   [part] 
-  (map :r (query! db
-    (str "START r=node:nodes(\"role:*" part "*\")"
-         " RETURN r") )))
+   (map :role
+     (query! db
+      "select distinct( role ) from user_role_entity where role like ?"
+      [(str "%" part "%")])))
 
 (defn find-entity
   ""
   [part] 
-  (map :e (query! db
-    (str "START e=node:nodes(\"name:*" part "*\")"
-         " RETURN e") )))
+   (map :entity
+     (query! db
+      "select distinct( entity ) from user_role_entity where entity like ?"
+      [(str "%" part "%")])))
 
 (defn find-users-of-role
   ""
   [role]
-   (map :u (query! db
-    (str "START u=node:nodes(type='user')"
-         " , r=node:nodes(role='" role "')"
-         " MATCH u-[:IS]->r"
-         " RETURN u"))))
+   (query! db
+    "select * from users where uuid in
+      (select uuid from user_role_entity where role=?)"
+    [role]))
 
-(defn -clear
-  ""
-  [] (for [n (get! db :type "entity" :raw)]
-       (delete! db n)))
 

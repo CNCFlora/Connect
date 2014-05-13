@@ -79,7 +79,6 @@
   [user]
  (if-not (nil? user)
    (let [data (first (get! db :users_data :uuid (:uuid user)))]
-     (println data)
     (merge user data
        {
         :is_approved (= "approved" (:status user))
