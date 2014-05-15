@@ -10,11 +10,11 @@ It's based on the ideas of Mozilla Persona.
 
 Docker uses the uberwar and jetty:
 
-docker run -d -v /var/lib/floraconnect:/var/lib/floraconnect:rw -p 8080:8080 -p 2828:22 -t cncflora/connect 
+docker run -d -v /var/floraconnect:/var/floraconnect:rw -p 8080:8080 -p 2828:22 -t cncflora/connect 
 
 ### Manual
 
-Use the (uber)war, create a folder "/var/lib/floraconnect" on your deployment server, give it permissons to the container used user (like tomcat7 or tomcat6) and them deploy the war normally (copying to /var/lib/tomcat7/webapps or using the web manager).
+Use the (uber)war, create a folder "/var/floraconnect" on your deployment server, give it permissons to the container used user (like tomcat7 or tomcat6) and them deploy the war normally (copying to /var/lib/tomcat7/webapps or using the web manager).
 
 Access the app and register to create the first admin.
 
@@ -44,7 +44,7 @@ You can use Vagrant, or just Leiningen.
 To run the tests:
     lein midje :autotest
 
-To run the server (need permissions on /var/lib/floraconnect):
+To run the server (need permissions on /var/floraconnect):
     lein ring server-headless
 
 To Generate deploy artifacts:

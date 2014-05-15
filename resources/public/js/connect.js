@@ -38,7 +38,7 @@ var Connect = (function() {
                 type: "GET",
                 dataType: 'json',
                 success: function(u) {
-                    if(u.status == "approved") {
+                    if(typeof u == 'object' && u.status == "approved") {
                         opts.onlogin(u);
                     } else {
                         opts.onlogout(u);
@@ -57,7 +57,7 @@ var Connect = (function() {
                 dataType: 'json',
                 data: msg.data,
                 success: function(u) {
-                    if(u.status == "approved") {
+                    if(typeof u == 'object' && u.status == "approved") {
                         opts.onlogin(u);
                         win.close();
                     } else {

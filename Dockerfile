@@ -1,4 +1,4 @@
-FROM dockerfile/java
+FROM nickstenning/java7 
 
 RUN apt-get update -y && apt-get upgrade -y
 
@@ -11,5 +11,6 @@ RUN chmod +x /root/start.sh
 
 EXPOSE 8080
 
+VOLUME ["/var/floraconnect"]
 CMD ["/root/start.sh"]
 

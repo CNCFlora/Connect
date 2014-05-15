@@ -1,8 +1,10 @@
-(defproject flora-connect "0.0.1"
+(defproject flora-connect "0.1.0"
   :description "Single Sign On for the CNCFlora systems"
   :url "http://github.com/CNCFlora/connect"
   :main flora-connect.server
   :ring { :handler flora-connect.server/app
+          :init flora-connect.server/start
+          :destroy flora-connect.server/start
           :reload-paths ["src"] }
   :resources-path "resources"
   :license {:name "Eclipse Public License"

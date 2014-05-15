@@ -61,7 +61,7 @@
   "Return all users or paginated" 
   ([] (query! db "select * from users"))
   ([page] 
-    (query! db ("select * from users START  " (* page 20) "  LIMIT 20"))))
+    (query! db (str "SELECT * FROM users ORDER BY name OFFSET " (* page 20) " ROWS FETCH NEXT 20 ROWS ONLY "))))
 
 (defn valid-user?
   "Check a login validity, including approval status"
@@ -117,16 +117,16 @@
   [user]
   (execute! db
     "UPDATE users SET passoword=? where uuid=?"
-          [(sha1 (:password user)) (:uuid user)]))
+      [(sha1 (:password user)) (:uuid user)]))
 
 (defn have-admin?
   ""
   [] 
-   (not (empty? (query! db "select * from user_roles_entity where role='admin'"))))
+   (not (empty? (query! db "select * from user_role_entity where role='admin'"))))
 
 (defn get-pendding
   ""
   [] 
    (query! db
-     "SELECT * FROM users WHERE status = ? ORDER BY name"))
+     "SELECT * FROM users WHERE status = ? ORDER BY name" ["waiting"]))
 

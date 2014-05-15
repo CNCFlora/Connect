@@ -16,6 +16,7 @@
 (defn page 
   ""
   [html data]
+  #_(println data)
   (render-file
     (str "templates/" html ".html")
     (assoc data
@@ -94,11 +95,13 @@
   (POST "/user/:uuid/pass" {form :params}
         (update-pass form)
         (redirect (str "/user/" (:uuid form))))
+
   (GET "/users/:pg" [pg]
     (let [pg (Integer. pg)]
       (page "users" {:users (get-users pg)
                      :prev  (if (> pg 0) (dec pg) false)
                      :next  (if (< (inc pg) (/ (count (get-users)) 20)) (inc pg) false)})))
+
   (GET "/pendding" [pg]
     (page "pendding" {:pendding (get-pendding)}))
 
@@ -127,4 +130,6 @@
     (write-str (map #(hash-map :label (:role %) :value (:role %)) (find-role (:term params)))))
   (GET "/search/entities" {params :params}
     (write-str (map #(hash-map :label (:name %) :value (:value %)) (find-entity (:term params)))))
+
   )
+

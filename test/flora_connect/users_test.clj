@@ -1,6 +1,9 @@
 (ns flora-connect.users-test
   (:use midje.sweet 
+        flora-connect.db
         flora-connect.users))
+
+(connect)
 
 (future-fact "Notify admin on creation of users"
   true => false)

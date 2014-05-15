@@ -1,8 +1,11 @@
 (ns flora-connect.search-test
   (:use midje.sweet 
+        flora-connect.db
         flora-connect.users
         flora-connect.roles
         flora-connect.search))
+
+(connect)
 
 (fact "Can search"
   (let [john {:email "jbar@foo.com" :name "John Doe"}

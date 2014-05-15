@@ -12,20 +12,6 @@
                 <input id="name" name="name" type="text" value='{{name}}'/>
                 <label for="email">E-mail</label>
                 <input id="email" name="email" type="text" value='{{email}}'/>
-                <label for="institute">Instituição</label>
-                <input id="institute" name="institute" type="text" value='{{institute}}'/>
-                <label for="phone">Telefone</label>
-                <input id="phone" name="phone" type="text" value='{{phone}}'/>
-                <label for="address">Estado</label>
-                <input id="state" name="state" type="text" value='{{state}}'/>
-                <label for="city">Cidade</label>
-                <input id="city" name="city" type="text" value='{{city}}'/>
-                <label for="address">Endereço</label>
-                <input id="address" name="address" type="text" value='{{address}}'/>
-                <label for="complement">Complemento</label>
-                <input id="complement" name="complement" type="text" value='{{complement}}'/>
-                <label for="postal">CEP</label>
-                <input id="postal" name="postal" type="text" value='{{postal}}'/>
                 <label for="status">Status</label>
                 <select id="status" name="status">
                     <option value="waiting" {{#is_waiting}} selected {{/is_waiting}}>Pendente</option>
@@ -52,8 +38,8 @@
                     <ul>
                     {{#entities}}
                         <li>
-                            <a href="{{base}}/user/{{uuid}}/unassign/role/{{role}}/entity/{{value}}" class=''><i class="icon-remove"></i></a>
-                            {{name}}
+                            <a href="{{base}}/user/{{uuid}}/unassign/role/{{role}}/entity/{{.}}" class=''><i class="icon-remove"></i></a>
+                            {{.}}
                         </li>
                     {{/entities}}
                     </ul>

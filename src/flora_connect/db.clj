@@ -1,29 +1,32 @@
 (ns flora-connect.db
   (:require [clojure.java.jdbc :as j]))
 
-(def db-file (java.io.File. "/var/floraconnect/users"))
+(declare db)
 
-(def db
-    {
-     :classname   "org.apache.derby.jdbc.EmbeddedDriver"
-     :subprotocol "derby"
-     :subname     (str (.getAbsolutePath db-file) )
-    }
-  )
-
-(if-not (.exists db-file)
-  (j/db-do-commands (assoc db :create true)
-    (j/create-table-ddl :users
-      [:uuid "VARCHAR(255)"]
-      [:name "VARCHAR(255)"]
-      [:email "VARCHAR(255)"]
-      [:status "VARCHAR(255)"]
-      [:password "VARCHAR(255)"])
-    (j/create-table-ddl :user_role_entity
-      [:uuid "VARCHAR(255)"]
-      [:role "VARCHAR(255)"]
-      [:entity "VARCHAR(255)"])
-    ))
+(defn connect
+  ([] (connect "/var/floraconnect/users"))
+  ([path] 
+    (let [db-file (java.io.File. path)]
+          (defonce db
+              {
+               :classname   "org.apache.derby.jdbc.EmbeddedDriver"
+               :subprotocol "derby"
+               :subname     (str (.getAbsolutePath db-file) )
+              }
+            )
+          (if-not (.exists db-file)
+            (j/db-do-commands (assoc db :create true)
+              (j/create-table-ddl :users
+                [:uuid "VARCHAR(255)"]
+                [:name "VARCHAR(255)"]
+                [:email "VARCHAR(255)"]
+                [:status "VARCHAR(255)"]
+                [:password "VARCHAR(255)"])
+              (j/create-table-ddl :user_role_entity
+                [:uuid "VARCHAR(255)"]
+                [:role "VARCHAR(255)"]
+                [:entity "VARCHAR(255)"])
+              )))))
 
 (defn log
   [ what ]

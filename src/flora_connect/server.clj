@@ -3,6 +3,7 @@
         ring.util.response
         ring.middleware.session.memory
         compojure.core
+        flora-connect.db
         flora-connect.web-wrap
         [noir.cookies  :only [wrap-noir-cookies]])
   (:require [compojure.route :as route]
@@ -12,13 +13,19 @@
             [noir.session :as session]
             [ring.middleware.cors :refer [wrap-cors]]))
 
+(defn start
+  "" 
+  [] (connect "/var/floraconnect/users"))
+
+(defn stop
+  ""
+  [] nil)
+
 (defroutes main
 
-  (GET "/" [] 
-   (redirect "/ui"))
+  ui/app
 
-  (context "/ui" [] ui/app)
-  (context "/api/v1" [] api/app)
+  (context "/api" [] api/app)
 
   (route/resources "/"))
 
@@ -37,5 +44,7 @@
 (defn -main
   ""
   [& args]
-  (run-jetty app {:port 3000 :join? true}))
+  (start)
+  (run-jetty app {:port 3000 :join? true})
+  (stop))
 

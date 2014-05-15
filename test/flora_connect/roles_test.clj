@@ -1,7 +1,10 @@
 (ns flora-connect.roles-test
   (:use midje.sweet 
+        flora-connect.db
         flora-connect.users
         flora-connect.roles))
+
+(connect)
 
 (defn to-user 
   [u] (find-by-email (:email u)))
