@@ -134,7 +134,8 @@
 
 (defn have-admin?
   ""
-  [] true)
+  [] 
+   (not (empty? (query! db "select * from user_roles_entity where role='admin'"))))
 
 (defn get-pendding
   ""
