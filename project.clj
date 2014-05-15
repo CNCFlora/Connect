@@ -16,7 +16,7 @@
                  [stencil "0.3.2"]
                  [lib-noir "0.4.6"]
                  [org.clojure/data.json "0.2.0"]
-                 [ring-cors "0.1.0"]
+                 [ring-cors "0.1.1"]
                  [clj-http "0.7.1"]]
   :profiles {:dev {:dependencies [[midje "1.5.1"]]
                    :plugins [[lein-ring "0.8.6"]

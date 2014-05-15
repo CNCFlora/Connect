@@ -38,10 +38,9 @@
   "Create a new user with default stuff."
   [user] 
     (if (valid-new-user? user)
-      (let [main {:uuid (uuid) :email (:email user) :password (sha1 (:password user)) :status "waiting"}
-            data (assoc (dissoc user :email :password) :uuid (:uuid main))]
+      (let [main {:uuid (uuid) :name (:name user) :email (:email user) :password (sha1 (:password user)) :status "waiting"}
+            data (assoc (dissoc user :email :password) :uuid (:uuid main)) ]
         (create! db :users main)
-        (create! db :users_data data)
         (notify-creation user))))
 
 (defn approve-user
@@ -60,9 +59,9 @@
 
 (defn get-users
   "Return all users or paginated" 
-  ([] (query! db "select * from users inner join users_data on users_data.uuid = users.uuid"))
+  ([] (query! db "select * from users"))
   ([page] 
-    (query! db ("select * from users inner join users_data on users_data.uuid = users.uuid START  " (* page 20) "  LIMIT 20"))))
+    (query! db ("select * from users START  " (* page 20) "  LIMIT 20"))))
 
 (defn valid-user?
   "Check a login validity, including approval status"
@@ -78,13 +77,12 @@
   ""
   [user]
  (if-not (nil? user)
-   (let [data (first (get! db :users_data :uuid (:uuid user)))]
-    (merge user data
+    (merge user 
        {
         :is_approved (= "approved" (:status user))
         :is_blocked (= "blocked" (:status user))
         :is_waiting (= "waiting" (:status user))
-       }))))
+       })))
 
 (defn find-by-uuid
   "Find an user by uuid"
@@ -94,36 +92,25 @@
 (defn find-by-email
   "Find an user by email"
   [email] 
-   (user (first (get! db :users :email email))) )
+   (user (first (get! db :users :email email))))
 
 (defn delete-user
   "Deletes an user. Internal only."
   [user]
-  (delete! db :users (first (get! db :users :email (:email user)))))
+  (let [user (first (get! db :users :email (:email user)))]
+    (execute! db "DELETE FROM user_role_entity WHERE uuid = ?" [(:uuid user)])
+    (execute! db "DELETE FROM users WHERE uuid = ?" [(:uuid user)])))
 
 (defn update-user
   ""
   [user]
   (execute! db
    (str "UPDATE users SET"
+        " name=?,"
         " email=?,"
         " status=?"
         " WHERE uuid=? ")
-    [(:email user) (:status user) (:uuid user)])
-  (execute! db
-   (str "UPDATE users_data SET"
-        " name=?,"
-        " institute=?,"
-        " phone=?,"
-        " address=?,"
-        " postal=?,"
-        " state=?,"
-        " city=?,"
-        " complement=?"
-        " WHERE uuid=? ")
-    [(:name user) (:institude user) (:phone user) 
-     (:address user) (:postal user) (:state user) 
-     (:city user) (:complement user) (:uuid user)]))
+    [(:name user) (:email user) (:status user) (:uuid user)]))
 
 (defn update-pass
   ""
@@ -141,5 +128,5 @@
   ""
   [] 
    (query! db
-     "SELECT * FROM users WHERE status = ? inner join users_data on users_data.uuid = users.uuid ORDER BY name"))
+     "SELECT * FROM users WHERE status = ? ORDER BY name"))
 

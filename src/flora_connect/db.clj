@@ -15,19 +15,10 @@
   (j/db-do-commands (assoc db :create true)
     (j/create-table-ddl :users
       [:uuid "VARCHAR(255)"]
+      [:name "VARCHAR(255)"]
       [:email "VARCHAR(255)"]
       [:status "VARCHAR(255)"]
       [:password "VARCHAR(255)"])
-    (j/create-table-ddl :users_data
-      [:uuid "VARCHAR(255)"]
-      [:name "VARCHAR(255)"]
-      [:institute "VARCHAR(255)"]
-      [:phone "VARCHAR(255)"]
-      [:address "VARCHAR(1500)"]
-      [:postal "VARCHAR(255)"]
-      [:state "VARCHAR(255)"]
-      [:city "VARCHAR(255)"]
-      [:complement "VARCHAR(255)"])
     (j/create-table-ddl :user_role_entity
       [:uuid "VARCHAR(255)"]
       [:role "VARCHAR(255)"]

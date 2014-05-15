@@ -39,9 +39,9 @@
       (assign-role foo "editor")
       (assign-entity foo "editor" "vicia:alba")
       (find-entity "vic")
-       => ["vicia:alba" "vicia:faba"]
+       => ["vicia:alba"]
       (find-entity "faba")
-       => ["vicia:faba"]
+       => []
       (delete-user foo))))
 
 (fact "Can find users by role/entity combination"

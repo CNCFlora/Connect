@@ -26,7 +26,7 @@
       (map :email (search "alba"))
        => (list "earl@foo.com")
       (map :email (search "vicia"))
-       => (list "jbar@foo.com" "earl@foo.com")
+       => (list "earl@foo.com" "jbar@foo.com")
       (delete-user john)
       (delete-user earl))))
 
