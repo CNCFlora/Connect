@@ -1,6 +1,6 @@
 {{> templates/header.html}}
 
-<div class="eleven columns">
+<div class="col-md-8">
     <h3>Usu&aacute;rios encontrados para <strong>{{q}}</strong>:</h3>
     <ul>
         {{#users}}
@@ -9,11 +9,13 @@
     </ul>
 </div>
 
-<div class="four columns offset-by-one">
+<div class="col-md-4">
     <form action="{{base}}/search">
-        <label for="q">Buscar usu&aacute;rio</label>
-        <input id="q" name="q" type="text" placeholder='termo para busca' value='{{q}}'/>
-        <button>Buscar</button>
+        <div class='form-group'>
+            <label for="q">Buscar usu&aacute;rio</label>
+            <input id="q" name="q" type="text" placeholder='termo para busca' value='{{q}}' class='form-control'/>
+        </div>
+        <button class='btn btn-default'>Buscar</button>
     </form>
 </div>
 

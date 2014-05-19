@@ -3,22 +3,20 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Flora Connect</title>
-    <link rel="stylesheet" href="{{base}}/css/base.css" />
-    <link rel="stylesheet" href="{{base}}/css/layout.css" />
-    <link rel="stylesheet" href="{{base}}/css/skeleton.css" />
     <link rel="stylesheet" href="{{base}}/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="{{base}}/css/styles.css" />
+    <link rel="stylesheet" href="{{base}}/css/bootstrap.theme.min.css" />
     <link rel="stylesheet" href="{{base}}/css/ui-lightness/jquery-ui-1.10.1.custom.min.css" />
+    <link rel="stylesheet" href="{{base}}/css/styles.css" />
 </head>
 <body>
     <div class="container">
-        <div class="sixteen columns header">
+        <div class="col-md-12 header">
             <a href="{{base}}/"><h1>Flora Connect</h1></a>
         </div>
         {{#admin}}
-        <nav class="sixteen columns navbar">
+        <nav class="col-md-12 navbar navbar-default">
             <div class="navbar-inner">
-                <ul class="nav">
+                <ul class="nav navbar-nav">
                     <li><a href="{{base}}/dashboard">P&aacute;gina Inicial</a></li>
                     <li><a href="{{base}}/users/0">Usu&aacute;rios</a></li>
                     <li><a href="{{base}}/pendding">Pend&ecirc;ncias</a></li>

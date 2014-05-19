@@ -6,8 +6,6 @@ var app = function(base,$) {
         });
     });
 
-    //$(document).pjax('a','.container');
-
     $(".container").delegate('form#login','submit',function(){
         Connect.login();
         return false;

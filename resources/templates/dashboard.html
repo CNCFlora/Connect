@@ -1,6 +1,6 @@
 {{> templates/header.html}}
 
-<div class="eleven columns">
+<div class="col-md-8">
     {{#user}}
     <h4>Dados
         <small>
@@ -27,7 +27,7 @@
     {{/user}}
 </div>
 
-<div class="four columns">
+<div class="col-md-4">
     <h2>Bem vindo, {{user.name}}.</h2>
     <form action="{{base}}/logout" method="POST" id="logout">
         <button class="btn btn-mini btn-danger">Sair</button>

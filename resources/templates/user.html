@@ -1,6 +1,6 @@
 {{> templates/header.html}}
 
-<div class="eleven columns">
+<div class="col-md-8">
     {{#profile_user}}
         <h3>{{name}} <small>({{email}})</small></h3>
         {{#message}}
@@ -8,16 +8,22 @@
         {{/message}}
         <form action="{{base}}/user/{{uuid}}" method='POST'>
             <fieldset>
-                <label for="name">Nome</label>
-                <input id="name" name="name" type="text" value='{{name}}'/>
-                <label for="email">E-mail</label>
-                <input id="email" name="email" type="text" value='{{email}}'/>
-                <label for="status">Status</label>
-                <select id="status" name="status">
-                    <option value="waiting" {{#is_waiting}} selected {{/is_waiting}}>Pendente</option>
-                    <option value="approved" {{#is_approved}} selected {{/is_approved}}>Aprovado</option>
-                    <option value="blocked" {{#is_blocked}} selected {{/is_blocked}}>Bloqueado</option>
-                </select>
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input id="name" name="name" type="text" value='{{name}}' class='form-control'/>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input id="email" name="email" type="text" value='{{email}}'class='form-control'/>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" class='form-control'>
+                        <option value="waiting" {{#is_waiting}} selected {{/is_waiting}}>Pendente</option>
+                        <option value="approved" {{#is_approved}} selected {{/is_approved}}>Aprovado</option>
+                        <option value="blocked" {{#is_blocked}} selected {{/is_blocked}}>Bloqueado</option>
+                    </select>
+                </div>
                 <button type="submit" class='btn btn-success'>Salvar</button>
             </fieldset>
         </form>
@@ -49,19 +55,25 @@
     {{/profile_user}}
 </div>
 
-<div class="four columns offset-by-one">
+<div class="col-md-4">
     <form action="{{base}}/user/{{profile_user.uuid}}/assign/role" method='POST'>
         <h3>Delegar papel</h3>
         <fieldset>
-            <input id="role" name="role" type="text" placeholder="Papel" rel='complete' complete='roles' />
+            <div class='form-group'>
+                <input id="role" name="role" type="text" placeholder="Papel" rel='complete' complete='roles' class='form-control'/>
+            </div>
             <button class="btn btn-success">Adicionar</button>
         </fieldset>
     </form>
     <form action="{{base}}/user/{{profile_user.uuid}}/assign/entity" method='POST'>
         <h3>Delegar entidade</h3>
         <fieldset>
-            <input id="role_for_entity" name="role" type="text" placeholder="Papel" rel='complete' complete='roles' />
-            <input id="entity" name="entity" type="text" placeholder="Entidade" rel='complete' complete='entities' />
+            <div class='form-group'>
+                <input id="role_for_entity" name="role" type="text" placeholder="Papel" rel='complete' complete='roles'  class='form-control'/>
+            </div>
+            <div class='form-group'>
+                <input id="entity" name="entity" type="text" placeholder="Entidade" rel='complete' complete='entities'  class='form-control'/>
+            </div>
             <button class="btn btn-success">Adicionar</button>
         </fieldset>
     </form>

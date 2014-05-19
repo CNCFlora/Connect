@@ -1,29 +1,32 @@
 {{> templates/header.html}}
 
-<div class="eight columns">
+<div class='row'>
+<div class="col-md-6">
     <p>CNCFlora Connect &eacute; o sistema unificado de acesso e permiss&otilde;es para os sitemas
         da plataforma de dados sobre biodiversidade, conservação e planejamento de a&ccedil;&otilde;es 
         do CNCFlora.</p>
-    <p></p>
+</div>
 </div>
 
-<br clear="all" />
+<div class='row'>
+    <form id="login" action="" class='col-md-6 main-form'>
+        <fieldset>
+            <legend>Já possuo cadastro</legend>
+            <button class="btn btn-success">Acessar conta</button>
+        </fieldset>
+    </form>
+</div>
 
-<form id="login" action="" class='eight columns main-form'>
-    <fieldset>
-        <legend>Já possuo cadastro</legend>
-        <button class="btn btn-success">Acessar conta</button>
-    </fieldset>
-</form>
+<div class='row'>
+    <form action="{{base}}/register" class='col-md-6 main-form'>
+        <fieldset>
+            <legend>Não possuo cadastro</legend>
+            <button class="btn btn-primary">Requisitar cadastro</button>
+        </fieldset>
+    </form>
+</div>
 
-<form action="{{base}}/register" class='eight columns main-form'>
-    <fieldset>
-        <legend>Não possuo cadastro</legend>
-        <button class="btn btn-primary">Requisitar cadastro</button>
-    </fieldset>
-</form>
-
-<div class='eight columns'>
+<div class='col-md-12 columns row'>
     <p><a href="{{base}}/login-test">Não sei se possuo cadastro, clique aqui para descobrir.</a></p>
 </div>
 
