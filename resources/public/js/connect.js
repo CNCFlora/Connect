@@ -73,7 +73,7 @@ var Connect = (function() {
     
     Connect.login = function() {
         if(win != null) win.close();
-        win = window.open(api+'/connect?'+(window.location.protocol + "//" + window.location.host ),'connect','width=350,height=220,location=0,menubar=0,toolbar=0',true);
+        win = window.open(api+'/connect?'+(window.location.protocol + "//" + window.location.host ),'connect','width=350,height=300,location=0,menubar=0,toolbar=0',true);
     };
 
     Connect.logout = function() {
@@ -92,5 +92,26 @@ var Connect = (function() {
 
     return Connect;
 
+})();
+
+(function(){
+    var allow = {
+        "Firefox": 29,
+        "Chromium": 34
+    };
+    var ok = false;
+    var matches = navigator.userAgent.match(/([\w]+)\/([\d]+)/g);
+    for(var i =0;i<matches.length;i++) {
+        var parts = matches[i].split('/');
+        if(typeof allow[parts[0]] == "number") {
+            if(parts[1] >= allow[parts[0]] ) {
+                ok=true;
+            }
+        }
+    }
+    if(!ok) {
+        $(".container").prepend("<br /><div class='alert alert-danger'>Seu navegador por estar desatualizado, "+
+                "<a href='http://whatbrowser.org/' target='_blank'>veja como resolver</a>.</div>");
+    }
 })();
 
