@@ -11,11 +11,11 @@
         head.js('js/jquery.min.js')
             .js('js/bootstrap.min.js')
             .ready(function(){
-                $(".alert").hide();
                 window.addEventListener('message',function(e){
-                    $(".alert").show();
+                    $("#in-alert").html("<p class='alert alert-danger'>Login inválido.</p>");
                 },false);
                 $("form").submit(function(){
+                    $("#in-alert").html("<p class='alert alert-info'>Efetuando login...</p>");
                     window.opener.postMessage( "email="+encodeURIComponent( $("#email").val())
                                               +"&password="+encodeURIComponent( $("#password").val()),location.search.substr(1));
                     return false;
@@ -29,7 +29,9 @@
             <form action="login" method='POST'>
                 <fieldset class='col-md-12'>
                     <legend>Entrar no sistema</legend>
-                    <p class='alert hidden'>Login inv&aacute;lido.</p>
+                    <div id='in-alert'>
+                        <p class="alert alert-warning">Entre com suas credenciais:</p>
+                    </div>
                     <div class='form-group'>
                         <input class='form-control' id="email" name="email" placeholder='E-mail' type="text" />
                     </div>
