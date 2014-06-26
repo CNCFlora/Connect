@@ -127,9 +127,9 @@
     (page "search" {:q (:q params)
                     :users (search (:q params))}))
   (GET "/search/roles" {params :params}
-    (write-str (map #(hash-map :label (:role %) :value (:role %)) (find-role (:term params)))))
+    (write-str (map #(hash-map :label % :value %) (find-role (:term params)))))
   (GET "/search/entities" {params :params}
-    (write-str (map #(hash-map :label (:name %) :value (:value %)) (find-entity (:term params)))))
+    (write-str (map #(hash-map :label % :value %) (find-entity (:term params)))))
 
   )
 
