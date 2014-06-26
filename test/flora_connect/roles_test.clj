@@ -78,5 +78,6 @@
       (assign-entity foo "editor" "vicia")
       (find-role "ed") => ["editor"]
       (find-entity "ici") => ["vicia"]
+      (delete-user foo)
       )))
 
