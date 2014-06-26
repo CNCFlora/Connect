@@ -70,3 +70,13 @@
       (have-access? foo "coder" "vicia:alba") => false
       (delete-user foo))))
 
+(fact "Find role && entity"
+  (let [foo {:email "foo@bar.com" }]
+    (create-user foo)
+    (let [foo (to-user foo)]
+      (assign-role foo "editor")
+      (assign-entity foo "editor" "vicia")
+      (find-role "ed") => ["editor"]
+      (find-entity "ici") => ["vicia"]
+      )))
+
