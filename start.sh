@@ -1,6 +1,7 @@
 #!/bin/bash
 
 [[ ! $CONTEXT ]] && CONTEXT="/"
+[[ ! $PROXY ]] && PROXY="/"
 cd /root 
-java -jar jetty.jar --path $CONTEXT connect.war
+PROXY=$PROXY CONTEXT=$CONTEXT java -jar jetty.jar --path $CONTEXT connect.war
 

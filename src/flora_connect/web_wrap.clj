@@ -58,3 +58,13 @@
         (assoc-in res [:headers "Location"] (str @context-path (get-in res [:headers "Location"])))
         res))))
 
+(defn wrap-proxy-redir
+  ""
+  [handler] 
+  (fn [req]
+    (let [res (handler req)]
+      (if (= 302 (:status res))
+        (assoc-in res [:headers "Location"]
+           (str (or (System/getenv "PROXY") "") (get-in res [:headers "Location"])))
+        res))))
+

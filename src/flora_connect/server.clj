@@ -33,6 +33,7 @@
   (-> (handler/site main)
       (wrap-context)
       (wrap-context-redir)
+      (wrap-proxy-redir)
       (wrap-jsonp)
       (wrap-options)
       (wrap-noir-cookies)
