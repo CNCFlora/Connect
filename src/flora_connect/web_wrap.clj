@@ -64,7 +64,10 @@
   (fn [req]
     (let [res (handler req)]
       (if (= 302 (:status res))
-        (assoc-in res [:headers "Location"]
-           (str (or (System/getenv "PROXY") "") (get-in res [:headers "Location"])))
+        (let [location (get-in res [:headers "Location"])]
+          (println location)
+          (assoc-in res [:headers "Location"]
+           (str (or (System/getenv "PROXY") "/")
+            (.substring location 1))))
         res))))
 
