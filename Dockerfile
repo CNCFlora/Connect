@@ -1,6 +1,4 @@
-FROM nickstenning/java7 
-
-RUN apt-get update -y && apt-get upgrade -y
+FROM dockerfile/java
 
 RUN wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-runner/9.2.0.M0/jetty-runner-9.2.0.M0.jar -O /root/jetty.jar
 RUN mkdir /var/lib/floraconnect
