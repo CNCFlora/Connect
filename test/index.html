@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test external connect</title>
+    <script src="http://192.168.50.3:3000/js/jquery.min.js" type="text/javascript"></script>
+    <script src="http://192.168.50.3:3000/js/connect.js" type="text/javascript"></script>
+</head>
+<body>
+    <h1>Test login</h1>
+    <div id="login">
+        <button id="login_btn">Login</button>
+    </div>
+    <div id="in">
+        <p id="in_name"></p>
+        <button id="logout_btn">Logout</button>
+    </div>
+    
+    <script type="text/javascript">
+        var login_div = document.getElementById("login"),
+            login_btn = document.getElementById("login_btn"),
+            in_div = document.getElementById("in"),
+            in_name = document.getElementById("in_name"),
+            logout_btn = document.getElementById("logout_btn");
+
+        Connect({
+            onlogin: function(user) {
+              in_div.style.display='block';
+              login_div.style.display='none';
+            },
+            onlogout: function(nothing){
+              in_div.style.display='none';
+              login_div.style.display='block';
+            }
+        });
+
+        login_btn.onclick = Connect.login;
+        logout_btn.onclick = Connect.logout;
+
+    </script>
+</body>
+</html>
