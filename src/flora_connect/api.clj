@@ -19,7 +19,7 @@
           (session/put! :logged true) 
           (session/put! :user user)
           (session/put! :admin (have-role? user "connect" "admin"))
-          (write-str user))
+          (write-str (assoc user :token (create-token user (:context user)))))
       (write-str {:status "nok"})))
 
   (ANY "/logout" []
@@ -31,5 +31,11 @@
      (session/put! :foo "bar")
      (write-str (assoc user :roles roles))))
 
-  )
+  (GET "/token" {params :params}
+    (if-let [user0 (find-by-token (:email user))]
+      (let [roles (assign-tree user0 (:context user0))
+            user  (assoc user0 :roles roles)]
+          (write-str (assoc user :token (create-token user))))
+      (write-str {:status "nok"})))
 
+  )

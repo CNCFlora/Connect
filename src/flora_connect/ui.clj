@@ -25,7 +25,7 @@
           :admin  (session/get :admin)
           :user   (session/get :user))))
 
-(defroutes app 
+(defroutes app
 
   (GET "/" [] 
     (if (have-admin?)
@@ -51,7 +51,7 @@
         (if-not (have-admin?)
           (do
             (approve-user user)
-            (add-app  "connect")
+            (add-context  "connect")
             (add-role "admin")
             (assign-role (find-by-email (:email user)) "connect" "admin")))
         (redirect "/register-ok"))))
@@ -88,7 +88,7 @@
 
   (GET "/user/:uuid" [uuid] 
    (page "user" {:profile_user (find-by-uuid uuid)
-                 :apps (assign-tree (find-by-uuid uuid))}))
+                 :contexts (assign-tree (find-by-uuid uuid))}))
   (POST "/user/:uuid" {user :params}
     (update-user user)
     (page "user" {:profile_user (find-by-uuid (:uuid user))
@@ -113,19 +113,19 @@
     (redirect "/users/0"))
 
   (POST "/user/:uuid/assign/role" {params :params}
-    (assign-role (find-by-uuid (:uuid params)) (:app params) (:role params))
+    (assign-role (find-by-uuid (:uuid params)) (:context params) (:role params))
     (redirect (str "/user/" (:uuid params))))
   (POST "/user/:uuid/assign/entity" {params :params}
-    (assign-entity (find-by-uuid (:uuid params)) (:app params) (:role params) (:entity params))
+    (assign-entity (find-by-uuid (:uuid params)) (:context params) (:role params) (:entity params))
     (redirect (str "/user/" (:uuid params))))
-  (GET "/user/:uuid/unassign/app/:app" {params :params}
-    (unassign-app (find-by-uuid (:uuid params)) (:app params))
+  (GET "/user/:uuid/unassign/context/:context" {params :params}
+    (unassign-context (find-by-uuid (:uuid params)) (:context params))
     (redirect (str "/user/" (:uuid params))))
-  (GET "/user/:uuid/unassign/app/:app/role/:role" {params :params}
-    (unassign-role (find-by-uuid (:uuid params)) (:app params) (:role params))
+  (GET "/user/:uuid/unassign/context/:context/role/:role" {params :params}
+    (unassign-role (find-by-uuid (:uuid params)) (:context params) (:role params))
     (redirect (str "/user/" (:uuid params))))
-  (GET "/user/:uuid/unassign/app/:app/role/:role/entity/:entity" {params :params}
-    (unassign-entity (find-by-uuid (:uuid params)) (:app params) (:role params) (:entity params))
+  (GET "/user/:uuid/unassign/context/:context/role/:role/entity/:entity" {params :params}
+    (unassign-entity (find-by-uuid (:uuid params)) (:context params) (:role params) (:entity params))
     (redirect (str "/user/" (:uuid params))))
 
   (GET "/roles" []
@@ -139,22 +139,22 @@
   (GET "/roles/:role" [role]
      (page "/role-in" {:users (find-users-of-role role)}))
 
-  (GET "/apps" []
-    (page "apps" {:apps (list-apps)}))
-  (POST "/apps" {params :params}
-    (add-app (:app params))
-    (redirect "/apps"))
-  (GET "/apps/:app/del" [app]
-    (del-app app)
-    (redirect "/apps"))
-  (GET "/apps/:app" [app]
-     (page "/app-in" {:users (find-users-of-app app)}))
+  (GET "/contexts" []
+    (page "contexts" {:contexts (list-contexts)}))
+  (POST "/contexts" {params :params}
+    (add-context (:context params))
+    (redirect "/contexts"))
+  (GET "/contexts/:context/del" [context]
+    (del-context context)
+    (redirect "/contexts"))
+  (GET "/contexts/:context" [context]
+     (page "/context-in" {:users (find-users-of-context context)}))
 
   (GET "/search" {params :params}
     (page "search" {:q (:q params)
                     :users (search (:q params))}))
-  (GET "/search/apps" {params :params}
-    (write-str (map #(hash-map :label % :value %) (find-app (:term params)))))
+  (GET "/search/contexts" {params :params}
+    (write-str (map #(hash-map :label % :value %) (find-context (:term params)))))
   (GET "/search/roles" {params :params}
     (write-str (map #(hash-map :label % :value %) (find-role (:term params)))))
   (GET "/search/entities" {params :params}

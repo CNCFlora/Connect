@@ -22,6 +22,7 @@ var app = function(base,$) {
     if(typeof noconnect == 'undefined') {
         Connect({
             api: base,
+            context: "connect",
             onlogin: function(u) {
                 if($("html").attr("id") == "index-page" || $("html").attr("id") == "login-test-page") {
                     location.href=base+"/dashboard";
@@ -35,11 +36,11 @@ var app = function(base,$) {
          var missing = []
          $("#register-page form input").each(function(i,e){
             var el = $(e);
-            if(el.parent().text().trim() == "*") {
+            //if(el.parent().text().trim() == "*") {
                 if(el.val().trim().length < 1) {
                     missing.push(el.attr("placeholder"));
                 }
-            }
+            //}
          });
          if(missing.length >= 1) {
              alert("É necessário preencher os sequintes: "+ missing.join(";"));

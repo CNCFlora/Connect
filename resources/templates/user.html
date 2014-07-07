@@ -37,19 +37,19 @@
         </form>
         <h4>Pap&eacute;is e entidades</h4>
         <ul>
-            {{#apps}}
+            {{#contexts}}
                 <li>
-                    <a href="{{base}}/user/{{uuid}}/unassign/app/{{app}}"><i class="glyphicon glyphicon-remove"></i></a>
-                    {{app}}
+                    <a href="{{base}}/user/{{uuid}}/unassign/context/{{context}}"><i class="glyphicon glyphicon-remove"></i></a>
+                    {{context}}
                     <ul>
                     {{#roles}}
                     <li>
-                        <a href="{{base}}/user/{{uuid}}/unassign/app/{{app}}/role/{{role}}" ><i class="glyphicon glyphicon-remove"></i></a>
+                        <a href="{{base}}/user/{{uuid}}/unassign/context/{{context}}/role/{{role}}" ><i class="glyphicon glyphicon-remove"></i></a>
                         {{role}}
                         <ul>
                         {{#entities}}
                             <li>
-                                <a href="{{base}}/user/{{uuid}}/unassign/app/{{app}}/role/{{role}}/entity/{{.}}" ><i class="glyphicon glyphicon-remove"></i></a>
+                                <a href="{{base}}/user/{{uuid}}/unassign/context/{{context}}/role/{{role}}/entity/{{.}}" ><i class="glyphicon glyphicon-remove"></i></a>
                                 {{.}}
                             </li>
                         {{/entities}}
@@ -58,7 +58,7 @@
                 {{/roles}}
                 </ul>
             </li>
-            {{/apps}}
+            {{/contexts}}
         </ul>
     {{/profile_user}}
 </div>
@@ -68,7 +68,7 @@
         <h3>Delegar papel</h3>
         <fieldset>
             <div class='form-group'>
-                <input id="app_for_entity" name="app" type="text" placeholder="App" rel='complete' complete='apps'  class='form-control'/>
+                <input id="context_for_entity" name="context" type="text" placeholder="context" rel='complete' complete='contexts'  class='form-control'/>
             </div>
             <div class='form-group'>
                 <input id="role_for_entity" name="role" type="text" placeholder="Papel" rel='complete' complete='roles'  class='form-control'/>
@@ -80,7 +80,7 @@
         <h3>Delegar entidade</h3>
         <fieldset>
             <div class='form-group'>
-                <input id="app_for_entity" name="app" type="text" placeholder="App" rel='complete' complete='apps' class='form-control'/>
+                <input id="context_for_entity" name="context" type="text" placeholder="context" rel='complete' complete='contexts' class='form-control'/>
             </div>
             <div class='form-group'>
                 <input id="role_for_entity" name="role" type="text" placeholder="Papel" rel='complete' complete='roles'  class='form-control'/>

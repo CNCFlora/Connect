@@ -55,7 +55,7 @@ var Connect = (function() {
                 url: api+'/api/auth?callback=?',
                 type: "GET",
                 dataType: 'json',
-                data: msg.data,
+                data: msg.data+"&context="+opts.context,
                 success: function(u) {
                     if(typeof u == 'object' && u.status == "approved") {
                         opts.onlogin(u);

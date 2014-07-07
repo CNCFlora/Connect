@@ -64,7 +64,7 @@
     (query! db (str "SELECT * FROM users ORDER BY name OFFSET " (* page 20) " ROWS FETCH NEXT 20 ROWS ONLY "))))
 
 (defn valid-user?
-  "Check a login validity, including approval status"
+  "Check a login validity, including contextroval status"
   [user]
   (let [r (get! db :users :email (:email user))]
     (if (empty? r)
@@ -98,7 +98,7 @@
   "Deletes an user. Internal only."
   [user]
   (let [user (first (get! db :users :email (:email user)))]
-    (execute! db "DELETE FROM user_app_role_entity WHERE uuid = ?" [(:uuid user)])
+    (execute! db "DELETE FROM user_context_role_entity WHERE uuid = ?" [(:uuid user)])
     (execute! db "DELETE FROM users WHERE uuid = ?" [(:uuid user)])))
 
 (defn update-user
@@ -122,11 +122,31 @@
 (defn have-admin?
   ""
   [] 
-   (not (empty? (query! db "select * from user_app_role_entity where role='admin' and app='connect'"))))
+   (not (empty? (query! db "select * from user_context_role_entity where role='admin' and context='connect'"))))
 
 (defn get-pendding
   ""
   [] 
    (query! db
      "SELECT * FROM users WHERE status = ? ORDER BY name" ["waiting"]))
+
+(defn create-token
+  ""
+  [user ctx] 
+   (let [token (uuid)]
+     (execute! db "insert into tokens (uuid,token,context) values (?,?,?)"
+      [(:uuid user) token ctx])
+     token))
+
+(defn find-by-token 
+  ""
+  [token]
+   (let [t (first (query! db "select uuid,context from tokens where token=?" [token]))]
+     (assoc (find-by-uuid (:uuid t))
+        :context (:context t))))
+
+(defn del-token
+  ""
+  [token]
+  (execute! db "delete from tokens where token=?" [token]))
 
