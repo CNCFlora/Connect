@@ -18,7 +18,7 @@
             user  (assoc user0 :roles roles)]
           (session/put! :logged true) 
           (session/put! :user user)
-          (session/put! :admin (have-role? user "admin"))
+          (session/put! :admin (have-role? user "connect" "admin"))
           (write-str user))
       (write-str {:status "nok"})))
 

@@ -37,20 +37,28 @@
         </form>
         <h4>Pap&eacute;is e entidades</h4>
         <ul>
-            {{#roles}}
+            {{#apps}}
                 <li>
-                    <a href="{{base}}/user/{{uuid}}/unassign/role/{{role}}" class=''><i class="icon-remove"></i></a>
-                    {{role}}
+                    <a href="{{base}}/user/{{uuid}}/unassign/app/{{app}}"><i class="glyphicon glyphicon-remove"></i></a>
+                    {{app}}
                     <ul>
-                    {{#entities}}
-                        <li>
-                            <a href="{{base}}/user/{{uuid}}/unassign/role/{{role}}/entity/{{.}}" class=''><i class="icon-remove"></i></a>
-                            {{.}}
-                        </li>
-                    {{/entities}}
-                    </ul>
-                </li>
-            {{/roles}}
+                    {{#roles}}
+                    <li>
+                        <a href="{{base}}/user/{{uuid}}/unassign/app/{{app}}/role/{{role}}" ><i class="glyphicon glyphicon-remove"></i></a>
+                        {{role}}
+                        <ul>
+                        {{#entities}}
+                            <li>
+                                <a href="{{base}}/user/{{uuid}}/unassign/app/{{app}}/role/{{role}}/entity/{{.}}" ><i class="glyphicon glyphicon-remove"></i></a>
+                                {{.}}
+                            </li>
+                        {{/entities}}
+                        </ul>
+                    </li>
+                {{/roles}}
+                </ul>
+            </li>
+            {{/apps}}
         </ul>
     {{/profile_user}}
 </div>
@@ -60,7 +68,10 @@
         <h3>Delegar papel</h3>
         <fieldset>
             <div class='form-group'>
-                <input id="role" name="role" type="text" placeholder="Papel" rel='complete' complete='roles' class='form-control'/>
+                <input id="app_for_entity" name="app" type="text" placeholder="App" rel='complete' complete='apps'  class='form-control'/>
+            </div>
+            <div class='form-group'>
+                <input id="role_for_entity" name="role" type="text" placeholder="Papel" rel='complete' complete='roles'  class='form-control'/>
             </div>
             <button class="btn btn-success">Adicionar</button>
         </fieldset>
@@ -68,6 +79,9 @@
     <form action="{{base}}/user/{{profile_user.uuid}}/assign/entity" method='POST'>
         <h3>Delegar entidade</h3>
         <fieldset>
+            <div class='form-group'>
+                <input id="app_for_entity" name="app" type="text" placeholder="App" rel='complete' complete='apps' class='form-control'/>
+            </div>
             <div class='form-group'>
                 <input id="role_for_entity" name="role" type="text" placeholder="Papel" rel='complete' complete='roles'  class='form-control'/>
             </div>

@@ -1,0 +1,31 @@
+{{> templates/header.html}}
+
+<div class="col-md-8">
+    <h3>Papéis</h3>
+    <ul>
+        {{#roles}}
+        <li>
+            <a href="{{base}}/roles/{{.}}/del"><span class="glyphicon glyphicon-remove"></span></a>
+            <a href="{{base}}/roles/{{.}}">{{.}}</a>
+        </li>
+        {{/roles}}
+        {{^roles}}
+        <li>N&atilde;o h&aacute; nenhum papel.</li>
+        {{/roles}}
+    </ul>
+</div>
+
+<div class="col-md-4">
+    <form action="{{base}}/roles" method="POST">
+        <fieldset>
+            <h3>Cadastrar novo</h3>
+            <div class='form-group'>
+                <input id="role" name="role" type="text" placeholder="Papel" class='form-control'/>
+            </div>
+            <button class='btn btn-success'>Cadastrar</button>
+        </fieldset>
+    </form> 
+</div>
+
+{{> templates/footer.html}}
+

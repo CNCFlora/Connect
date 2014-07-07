@@ -17,6 +17,6 @@
             "select distinct( uuid ) from users where name like ?"
              [(str "%" n "%")])
            (query! db
-            "select distinct( uuid ) from user_role_entity where role like ? or entity like ?"
+            "select distinct( uuid ) from user_app_role_entity where role like ? or entity like ?"
              [(str "%" n "%") (str "%" n "%")]))))))))
 

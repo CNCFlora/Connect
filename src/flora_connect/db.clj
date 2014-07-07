@@ -22,10 +22,15 @@
                 [:email "VARCHAR(255)"]
                 [:status "VARCHAR(255)"]
                 [:password "VARCHAR(255)"])
-              (j/create-table-ddl :user_role_entity
+              (j/create-table-ddl :roles
+                [:role "VARCHAR(255)"])
+              (j/create-table-ddl :apps
+                [:app "VARCHAR(500)"])
+              (j/create-table-ddl :user_app_role_entity
                 [:uuid "VARCHAR(255)"]
+                [:app "VARCHAR(500)"]
                 [:role "VARCHAR(255)"]
-                [:entity "VARCHAR(255)"])
+                [:entity "VARCHAR(500)"])
               )))))
 
 (defn log

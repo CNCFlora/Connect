@@ -98,7 +98,7 @@
   "Deletes an user. Internal only."
   [user]
   (let [user (first (get! db :users :email (:email user)))]
-    (execute! db "DELETE FROM user_role_entity WHERE uuid = ?" [(:uuid user)])
+    (execute! db "DELETE FROM user_app_role_entity WHERE uuid = ?" [(:uuid user)])
     (execute! db "DELETE FROM users WHERE uuid = ?" [(:uuid user)])))
 
 (defn update-user
@@ -122,7 +122,7 @@
 (defn have-admin?
   ""
   [] 
-   (not (empty? (query! db "select * from user_role_entity where role='admin'"))))
+   (not (empty? (query! db "select * from user_app_role_entity where role='admin' and app='connect'"))))
 
 (defn get-pendding
   ""

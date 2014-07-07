@@ -1,0 +1,31 @@
+{{> templates/header.html}}
+
+<div class="col-md-8">
+    <h3>Aplicativos</h3>
+    <ul>
+        {{#apps}}
+        <li>
+            <a href="{{base}}/apps/{{.}}/del"><span class="glyphicon glyphicon-remove"></span></a>
+            <a href="{{base}}/apps/{{.}}">{{.}}</a>
+        </li>
+        {{/apps}}
+        {{^apps}}
+        <li>N&atilde;o h&aacute; nenhum aplicativo.</li>
+        {{/apps}}
+    </ul>
+</div>
+
+<div class="col-md-4">
+    <form action="{{base}}/apps" method="POST">
+        <fieldset>
+            <h3>Cadastrar novo</h3>
+            <div class='form-group'>
+                <input id="app" name="app" type="text" placeholder="App" class='form-control'/>
+            </div>
+            <button class='btn btn-success'>Cadastrar</button>
+        </fieldset>
+    </form> 
+</div>
+
+{{> templates/footer.html}}
+

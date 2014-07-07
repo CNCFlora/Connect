@@ -1,0 +1,13 @@
+{{> templates/header.html}}
+
+<div class="col-md-8">
+    <h3>Usuários</h3>
+    <ul>
+        {{#users}}
+        <li><a href='{{base}}/user/{{uuid}}'>{{name}}</a> &lt;{{email}}&gt;</li>
+        {{/users}}
+    </ul>
+</div>
+
+{{> templates/footer.html}}
+
