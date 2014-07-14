@@ -11,18 +11,28 @@
     <p><Strong>E-mail</strong>: {{email}}</p>
     <h4>Pap&eacute;is e entidades</h4>
     <ul>
-        {{#roles}}
+        {{#contexts}}
             <li>
-                <i class='icon-chevron-right'></i> {{role}}
+                <i class="glyphicon glyphicon-chevron-right"></i>
+                {{context}}
                 <ul>
-                {{#entities}}
-                    <li>
-                        <i class='icon-chevron-right'></i> {{name}}
-                    </li>
-                {{/entities}}
-                </ul>
-            </li>
-        {{/roles}}
+                {{#roles}}
+                <li>
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                    {{role}}
+                    <ul>
+                    {{#entities}}
+                        <li>
+                            <i class="glyphicon glyphicon-chevron-right"></i>
+                            {{.}}
+                        </li>
+                    {{/entities}}
+                    </ul>
+                </li>
+            {{/roles}}
+            </ul>
+        </li>
+        {{/contexts}}
     </ul>
     {{/user}}
 </div>
