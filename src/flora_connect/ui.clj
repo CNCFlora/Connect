@@ -20,7 +20,7 @@
   (render-file
     (str "templates/" html ".html")
     (assoc data
-          :base   @context-path
+          :base   (str @context-path @proxy-path)
           :logged (session/get :logged) 
           :admin  (session/get :admin)
           :user   (session/get :user))))

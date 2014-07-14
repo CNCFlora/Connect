@@ -28,6 +28,8 @@
 
 (def context-path (atom nil))
 
+(def proxy-path (atom (or (System/getenv "PROXY") nil)))
+
 (defn- get-context-path
     "Returns the context path when running as a servlet"
     ([] @context-path)
@@ -66,7 +68,7 @@
       (if (= 302 (:status res))
         (let [location (get-in res [:headers "Location"])]
           (assoc-in res [:headers "Location"]
-           (str (or (System/getenv "PROXY") "/")
-            (.substring location 1))))
+           (str (or (System/getenv "PROXY") "")
+             location)))
         res))))
 
