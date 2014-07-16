@@ -10,7 +10,11 @@ It's based on the ideas of Mozilla Persona.
 
 Docker uses the uberwar and jetty:
 
-docker run -d -v /var/floraconnect:/var/floraconnect:rw -p 8080:8080 -p 2828:22 -t cncflora/connect 
+    docker run -d -v /var/floraconnect:/var/floraconnect:rw -p 8080:8080 -p 2828:22 -t cncflora/connect 
+
+If running behind a proxy:
+
+    docker run -d -v /var/floraconnect:/var/floraconnect:rw -e PROXY=/connect -p 8080:8080 -p 2828:22 -t cncflora/connect 
 
 ### Manual
 
@@ -26,6 +30,7 @@ To authenticate other systems with Connect, here is an example:
     <script src="http://connect-domain.com/js/connect.js"></script>
     <script>
         Connect({
+            context: 'my-app',
             onlogin: function(user) {
                 // your after login code here
             },
@@ -42,14 +47,17 @@ To authenticate other systems with Connect, here is an example:
 You can use Vagrant, or just Leiningen.
 
 To run the tests:
+
     lein midje :autotest
 
 To run the server (need permissions on /var/floraconnect):
+
     lein ring server-headless
 
 To Generate deploy artifacts:
-    lein ring uberwar
-    lein uberjar
+
+    lein ring uberwar # war to deploy on jetty or tomcat
+    lein uberjar # standalone jar
 
 ## License
 
