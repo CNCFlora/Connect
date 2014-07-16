@@ -24,9 +24,13 @@
             logout_btn = document.getElementById("logout_btn");
 
         Connect({
+            context: 'connect',
             onlogin: function(user) {
               in_div.style.display='block';
               login_div.style.display='none';
+              $.getJSON('http://192.168.50.3:3000/api/token?callback=?&token='+user.token,function(user){
+                  console.log(user);
+              });
             },
             onlogout: function(nothing){
               in_div.style.display='none';

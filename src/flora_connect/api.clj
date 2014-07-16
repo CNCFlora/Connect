@@ -11,31 +11,31 @@
 
 (defroutes app
 
-  (ANY "/auth" {user :params}
-    (if (valid-user? user)
-      (let [user0 (find-by-email (:email user))
+  (ANY "/auth" {params :params}
+    (if (valid-user? params)
+      (let [user0 (find-by-email (:email params))
             roles (assign-tree user0)
             user  (assoc user0 :roles roles)]
           (session/put! :logged true) 
           (session/put! :user user)
           (session/put! :admin (have-role? user "connect" "admin"))
-          (write-str (assoc user :token (create-token user (:context user)))))
+          (write-str (assoc user :token (create-token user (:context params)))))
       (write-str {:status "nok"})))
 
   (ANY "/logout" []
     (session/clear!) (write-str {}))
 
-  (GET "/user" []
+  (GET "/user" {params :params}
    (let [user (session/get :user)
-         roles (assign-tree user)]
-     (session/put! :foo "bar")
-     (write-str (assoc user :roles roles))))
+         roles (assign-tree user)
+         token (create-token user (:context params))]
+     (write-str (assoc user :roles roles :token token))))
 
-  (GET "/token" {params :params}
-    (if-let [user0 (find-by-token (:email user))]
+  (ANY "/token" {params :params}
+    (if-let [user0 (find-by-token (:token params))]
       (let [roles (assign-tree user0 (:context user0))
             user  (assoc user0 :roles roles)]
-          (write-str (assoc user :token (create-token user))))
+          (write-str user))
       (write-str {:status "nok"})))
 
   )

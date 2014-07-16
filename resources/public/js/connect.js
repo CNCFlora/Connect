@@ -34,7 +34,7 @@ var Connect = (function() {
         opts = config;
         if(opts.api) api = opts.api;
         $.ajax({
-                url: api+'/api/user?callback=?',
+                url: api+'/api/user?context='+opts.context+'&callback=?',
                 type: "GET",
                 dataType: 'json',
                 success: function(u) {
