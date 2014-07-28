@@ -115,7 +115,12 @@
                     (map :entity
                       (filter #(= role (:role %))
                         (filter #(not (nil? (:entity %))) assigns))))))})))
-   ([user ctx] (:roles (first (filter #(= ctx (:context %)) (assign-tree user))))))
+   ([user ctx] 
+    (if-let [roles (:roles (first (filter #(= ctx (:context %)) (assign-tree user))))]
+      roles
+      []
+      )
+    ))
 
 (defn user-assignments
   ""

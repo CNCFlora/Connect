@@ -34,6 +34,8 @@
       (assign-tree foo "context2")
         => (list
               {:role "editor" :entities (list "vicia:alba")} )
+      (assign-tree foo "context3")
+        => (list )
       (unassign-entity foo "context1" "editor" "vicia:alba")
       (unassign-entity foo "context2" "editor" "vicia:alba")
       (user-assignments foo)
