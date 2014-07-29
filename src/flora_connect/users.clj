@@ -1,5 +1,12 @@
 (ns flora-connect.users
-  (:use flora-connect.db))
+  (:use flora-connect.db
+        postal.core))
+
+(def smtp
+  {:host (or (System/getenv "SMTP_HOST") "smtp.gmail.com")
+   :ssl true
+   :user (or (System/getenv "SMTP_USER") "sistema@cncflora.net")
+   :pass (or (System/getenv "SMTP_PASS") "sistema@cncflora")})
 
 (defn sha1
   ""
@@ -20,6 +27,17 @@
 (defn notify-approval
   "Notify responsable users the approval of another user."
   [user] user)
+
+(defn notify-pass
+  [user new-pass]
+   (send-message smtp
+      {:from "diogo@cncflora.net"
+       :to (:email user)
+       :subject "CNCFlora - Nova senha"
+       :body (str "Prezado " (:name user) 
+                  ", sua nova senha é " new-pass ".\n"
+                  "\n\nEquipe CNCFlora." )})
+    )
 
 (defn uuid 
   "Generate some random uuid"
@@ -116,7 +134,7 @@
   ""
   [user]
   (execute! db
-    "UPDATE users SET passoword=? where uuid=?"
+    "UPDATE users SET password=? where uuid=?"
       [(sha1 (:password user)) (:uuid user)]))
 
 (defn have-admin?

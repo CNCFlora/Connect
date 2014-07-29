@@ -66,9 +66,10 @@
 
   (GET "/recover" [] (page "recover" {}))
   (POST "/recover" {user :params} 
-        (let [new-pass (apply str "cnc-" (for [n (range 4)] (rand-int 9)))
+        (let [new-pass (apply str "cnc" (for [n (range 4)] (rand-int 9)))
               user     (find-by-email (:email user))]
-          (comment (update-pass (assoc user :password new-pass)))
+          (update-pass (assoc user :password new-pass))
+          (notify-pass user new-pass)
           (redirect "/recover-ok")))
   (GET "/recover-ok" [] (page "recover-ok" {}))
 

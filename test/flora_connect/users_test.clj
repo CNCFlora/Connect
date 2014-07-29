@@ -43,9 +43,17 @@
      (delete-user user)))
 
 (fact "Can update user"
-  (create-user {:email "diogo"})
+  (create-user {:email "diogo" :password "1"})
+  (approve-user (find-by-email "diogo"))
+  (valid-user? {:email "diogo" :password "123"}) => false
+  (valid-user? {:email "diogo" :password "1"}) => true
   (update-user (assoc (find-by-email "diogo") :name "didi"))
   (:name (find-by-email "diogo"))
       => "didi"
+  (update-pass (assoc (find-by-email "diogo") :password "123"))
+  (valid-user? {:email "diogo" :password "123"}) => true
+  (update-pass (assoc (find-by-email "diogo") :password "321"))
+  (valid-user? {:email "diogo" :password "321"}) => true
+  (valid-user? {:email "diogo" :password "123"}) => false
   (delete-user (find-by-email "diogo")))
 
