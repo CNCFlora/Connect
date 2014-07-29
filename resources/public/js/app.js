@@ -50,4 +50,10 @@ var app = function(base,$) {
          }
     });
 
+    $(".glyphicon-remove").each(function(i,e){
+        $(e).parent().click(function(t){
+            return confirm("Confirma excluir "+ $(t.currentTarget).parent().text().trim()+" desse perfil?");
+        });
+    });
+
 };
