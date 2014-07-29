@@ -33,6 +33,12 @@ To authenticate other systems with Connect, here is an example:
             context: 'my-app',
             onlogin: function(user) {
                 // your after login code here
+                // the user will have a token that you can send to the server
+                // to verify, but can be used in js
+                console.log(user);
+                $.getJSON("http://connect-domain.com/api/token?callback=?&token="+user.token,function(verified_user){
+                    console.log(verified_user);
+                });
             },
             onlogout: function(){
                 // your after logout code here
