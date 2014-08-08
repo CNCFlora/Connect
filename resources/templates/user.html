@@ -68,10 +68,18 @@
         <h3>Delegar papel</h3>
         <fieldset>
             <div class='form-group'>
-                <input id="context_for_entity" name="context" type="text" placeholder="Contexto/Recorte" rel='complete' complete='contexts'  class='form-control'/>
+                <select id="context-for-role" name="context" class='form-control'>
+                    {{#all_contexts}}
+                    <option value="{{.}}">{{.}}</option>
+                    {{/all_contexts}}
+                </select>
             </div>
             <div class='form-group'>
-                <input id="role_for_entity" name="role" type="text" placeholder="Papel" rel='complete' complete='roles'  class='form-control'/>
+                <select id="role-for-entity" name="role" class='form-control'>
+                    {{#all_roles}}
+                    <option value="{{.}}">{{.}}</option>
+                    {{/all_roles}}
+                </select>
             </div>
             <button class="btn btn-success">Adicionar</button>
         </fieldset>
@@ -80,10 +88,18 @@
         <h3>Delegar entidade</h3>
         <fieldset>
             <div class='form-group'>
-                <input id="context_for_entity" name="context" type="text" placeholder="Contexto/Recorte" rel='complete' complete='contexts' class='form-control'/>
+                <select id="context-for-entity" name="context" class='form-control'>
+                    {{#all_contexts}}
+                    <option value="{{.}}">{{.}}</option>
+                    {{/all_contexts}}
+                </select>
             </div>
             <div class='form-group'>
-                <input id="role_for_entity" name="role" type="text" placeholder="Papel" rel='complete' complete='roles'  class='form-control'/>
+                <select id="role-for-entity" name="role" class='form-control'>
+                    {{#all_roles}}
+                    <option value="{{.}}">{{.}}</option>
+                    {{/all_roles}}
+                </select>
             </div>
             <div class='form-group'>
                 <input id="entity" name="entity" type="text" placeholder="Entidade" rel='complete' complete='entities'  class='form-control'/>

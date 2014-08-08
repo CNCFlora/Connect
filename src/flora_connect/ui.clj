@@ -16,7 +16,7 @@
 (defn page 
   ""
   [html data]
-  #_(println data)
+  (println data)
   (render-file
     (str "templates/" html ".html")
     (assoc data
@@ -89,6 +89,8 @@
 
   (GET "/user/:uuid" [uuid] 
    (page "user" {:profile_user (find-by-uuid uuid)
+                 :all_contexts (list-contexts)
+                 :all_roles (list-roles)
                  :contexts (assign-tree (find-by-uuid uuid))}))
   (POST "/user/:uuid" {user :params}
     (update-user user)
