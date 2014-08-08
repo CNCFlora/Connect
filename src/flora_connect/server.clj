@@ -1,4 +1,5 @@
 (ns flora-connect.server
+  (:gen-class)
   (:use ring.adapter.jetty
         ring.util.response
         ring.middleware.session.memory

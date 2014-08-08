@@ -1,4 +1,4 @@
-(defproject flora-connect "0.2.4"
+(defproject flora-connect "0.2.5"
   :description "Single Sign On for the CNCFlora systems"
   :url "http://github.com/CNCFlora/connect"
   :main flora-connect.server
@@ -21,6 +21,7 @@
                  [ring-cors "0.1.1"]
                  [com.draines/postal "1.11.1"]
                  [clj-http "0.7.1"]]
-  :profiles {:dev {:dependencies [[midje "1.5.1"]]
+  :profiles {:uberjar {:aot :all}
+             :dev {:dependencies [[midje "1.5.1"]]
                    :plugins [[lein-ring "0.8.6"]
                              [lein-midje "3.0.0"]]}})
