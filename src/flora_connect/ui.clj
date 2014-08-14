@@ -16,7 +16,7 @@
 (defn page 
   ""
   [html data]
-  (println data)
+  (println "UI:" data)
   (render-file
     (str "templates/" html ".html")
     (assoc data

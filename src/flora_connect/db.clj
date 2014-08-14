@@ -39,7 +39,7 @@
 
 (defn log
   [ what ]
-  #_(println what)
+  (println "DB:" what)
   what)
 
 (defn execute!
