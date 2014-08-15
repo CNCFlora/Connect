@@ -9,7 +9,7 @@ RUN mkdir /var/lib/floraconnect
 ADD start.sh /root/start.sh
 RUN chmod +x /root/start.sh
 
-ADD target/flora-connect-0.2.5-standalone.war /root/connect.war
+ADD target/flora-connect-0.2.6-standalone.war /root/connect.war
 
 ADD supervisord.conf /etc/supervisor/conf.d/proxy.conf
 
