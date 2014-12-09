@@ -34,7 +34,7 @@
       {:from "diogo@cncflora.net"
        :to (:email user)
        :subject "CNCFlora - Nova senha"
-       :body (str "Prezado " (:name user) 
+       :body (str "Prezado(a) " (:name user) 
                   ", sua nova senha é " new-pass ".\n"
                   "\n\nEquipe CNCFlora." )})
     )

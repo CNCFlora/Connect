@@ -46,5 +46,13 @@
         (println "API Token no user.")
         (write-str {:status "nok"}))))
 
+  (GET "/users" req
+    (write-str
+      (map 
+        #(assoc % :roles
+           (distinct
+             (map :role (user-assignments %))))
+           (get-users))))
+
   )
 
