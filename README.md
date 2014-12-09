@@ -10,11 +10,11 @@ It's based on the ideas of Mozilla Persona.
 
 Docker uses the uberwar and jetty:
 
-    docker run -d -v /var/floraconnect:/var/floraconnect:rw -p 8080:8080 -p 2828:22 -t cncflora/connect 
+    docker run -d -v /var/floraconnect:/var/floraconnect:rw -p 8080:8080 -t cncflora/connect 
 
 If running behind a proxy:
 
-    docker run -d -v /var/floraconnect:/var/floraconnect:rw -e PROXY=/connect -p 8080:8080 -p 2828:22 -t cncflora/connect 
+    docker run -d -v /var/floraconnect:/var/floraconnect:rw -e PROXY=/connect -p 8080:8080 -t cncflora/connect 
 
 ### Manual
 
@@ -30,7 +30,7 @@ To authenticate other systems with Connect, here is an example:
     <script src="http://connect-domain.com/js/connect.js"></script>
     <script>
         Connect({
-            context: 'my-app',
+            context: 'my-app', // optional, if omitted return all contexts
             onlogin: function(user) {
                 // your after login code here
                 // the user will have a token that you can send to the server
