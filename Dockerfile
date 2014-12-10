@@ -1,7 +1,5 @@
 FROM cncflora/java8
 
-RUN apt-get install supervisor ruby -y
-
 RUN mkdir /var/lib/floraconnect
 
 RUN wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-runner/9.2.0.M0/jetty-runner-9.2.0.M0.jar -O /root/jetty.jar
