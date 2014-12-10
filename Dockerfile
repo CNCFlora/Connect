@@ -2,7 +2,7 @@ FROM cncflora/java8
 
 RUN mkdir /var/lib/floraconnect
 
-RUN wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-runner/9.2.0.M0/jetty-runner-9.2.0.M0.jar -O /root/jetty.jar
+RUN wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-runner/9.2.2.v20140723/jetty-runner-9.2.2.v20140723.jar -O /root/jetty.jar
 
 ADD start.sh /root/start.sh
 RUN chmod +x /root/start.sh
