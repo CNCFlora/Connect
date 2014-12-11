@@ -33,8 +33,12 @@ var Connect = (function() {
     var Connect = function(config) {
         opts = config;
         if(opts.api) api = opts.api;
+        var url = api +'/api/user?callback=?';
+        if(typeof opts[ 'context' ] == 'string') {
+          url += "&context="+opts['context'];
+        }
         $.ajax({
-                url: api+'/api/user?context='+opts.context+'&callback=?',
+                url: url,
                 type: "GET",
                 dataType: 'json',
                 success: function(u) {
