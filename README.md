@@ -10,11 +10,11 @@ It's based on the ideas of Mozilla Persona.
 
 Docker uses the uberwar and jetty:
 
-    docker run -d -v /var/floraconnect:/var/floraconnect:rw -p 8080:8080 -t cncflora/connect 
+    docker run -d -v /var/floraconnect:/var/floraconnect:rw -p 8080:80 -t cncflora/connect 
 
 If running behind a proxy:
 
-    docker run -d -v /var/floraconnect:/var/floraconnect:rw -e PROXY=/connect -p 8080:8080 -t cncflora/connect 
+    docker run -d -v /var/floraconnect:/var/floraconnect:rw -e PROXY=/connect -p 8080:80 -t cncflora/connect 
 
 ### Manual
 
