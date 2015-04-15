@@ -14,10 +14,10 @@
     (create-user foo)
     (let [foo (to-user foo)]
       (assign-role foo "context1" "editor")
-      (assign-role foo "context1" "editor")
+      (assign-role foo "context1" "editor ")
       (assign-role foo "context1" "tester")
       (assign-entity foo "context1" "editor" "vicia:faba")
-      (assign-entity foo "context1" "editor" "vicia:alba")
+      (assign-entity foo "context1" "editor " "vicia:alba")
       (assign-entity foo "context1" "editor" "vicia:alba")
       (assign-entity foo "context2" "editor" "vicia:alba")
       (user-assignments foo)

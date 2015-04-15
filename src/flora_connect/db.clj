@@ -58,17 +58,26 @@
   ([db q params] 
    (let [params (vec (flatten [q params]))]
      (log params)
-     (j/query db params))))
+    (map 
+      (fn [rec]
+        (reduce merge
+          (map (fn [kv] {(key kv) (if (string? (val kv)) (.trim (val kv)) (val kv))}) rec)))
+     (j/query db params)
+     ))))
 
 (defn get!
   ([db table k v] 
-    (query! db 
-      (str "SELECT * FROM " (name table) " WHERE " (name k) "=?") [v])))
+    (map 
+      (fn [rec]
+        (reduce merge
+          (map (fn [kv] {(key kv) (if (string? (val kv)) (.trim (val kv)) (val kv))}) rec)))
+      (query! db 
+        (str "SELECT * FROM " (name table) " WHERE " (name k) "=?") [v]))))
 
 (defn create!
  [db table data]
    (let [fields (map name (map key data))
-         values (map val data)]
+         values (map #(if (string? %) (.trim %) %) (map val data) )]
    (execute! db
      (str "INSERT INTO " (name table) 
           " (" (apply str (interpose "," fields )) ") "
@@ -82,7 +91,7 @@
 (defn delete!
  [db table data]
    (let [fields (map name (map key data))
-         values (map val data)]
+         values (map #(if (string? %) (.trim %) %) (map val data) )]
    (execute! db
      (str "DELETE FROM " (name table) " WHERE "
            (apply str (interpose "=? AND " fields)) "=?")

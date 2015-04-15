@@ -9,7 +9,7 @@
   true => false)
 
 (fact "Can register an user"
-  (create-user {:email "foo@bar.com" :name "Diogo"})
+  (create-user {:email "foo@bar.com" :name "Diogo  "})
   (:email (find-by-email "foo@bar.com")) => "foo@bar.com"
   (:name (find-by-email "foo@bar.com")) => "Diogo"
   (delete-user {:email "foo@bar.com"}))
