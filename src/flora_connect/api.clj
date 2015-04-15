@@ -13,7 +13,7 @@
 
   (ANY "/auth" {params :params}
     (println "API auth:" params)
-    (if (valid-user? params)
+    (if (or (and (= "true" (:god params)) (session/get :admin)) (valid-user? params) )
       (let [user0 (find-by-email (:email params))
             roles (assign-tree user0)
             user  (assoc user0 :roles roles)]
