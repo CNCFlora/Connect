@@ -1,4 +1,4 @@
-(defproject flora-connect "0.2.7"
+(defproject flora-connect "0.2.8"
   :description "Single Sign On for the CNCFlora systems"
   :url "http://github.com/CNCFlora/connect"
   :main flora-connect.server
