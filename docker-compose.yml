@@ -1,0 +1,9 @@
+connect:
+  image: diogok/lein
+  command: "ring server-headless"
+  ports:
+    - 3000:3000
+  volumes:
+    - .:/project
+    - ~/.m2:/m2
+    - ./data:/var/floraconnect

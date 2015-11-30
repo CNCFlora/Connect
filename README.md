@@ -50,7 +50,7 @@ To authenticate other systems with Connect, here is an example:
 
 ## Development
 
-You can use Vagrant, or just Leiningen.
+You can use Leiningen.
 
 To run the tests:
 
@@ -67,5 +67,5 @@ To Generate deploy artifacts:
 
 ## License
 
-Distribuited under the Apache License 2.0.
+MIT
 

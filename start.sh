@@ -1,7 +1,4 @@
 #!/bin/bash
 
-[[ ! $CONTEXT ]] && CONTEXT="/"
-[[ ! $PROXY ]] && PROXY=""
-cd /root
-PROXY=$PROXY CONTEXT=$CONTEXT java -server -jar jetty.jar --path $CONTEXT --port $PORT connect.war
+java $JAVA_OPTS -jar /root/jetty.jar --port $PORT --path $CONTEXT /root/connect.war
 

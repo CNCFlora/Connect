@@ -1,4 +1,4 @@
-(defproject flora-connect "0.2.8"
+(defproject flora-connect "0.3.0"
   :description "Single Sign On for the CNCFlora systems"
   :url "http://github.com/CNCFlora/connect"
   :main flora-connect.server
@@ -7,21 +7,20 @@
           :destroy flora-connect.server/start
           :reload-paths ["src"] }
   :resources-path "resources"
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.5.0"]
-                 [org.clojure/java.jdbc "0.3.3"]
+  :license {:name "MIT" }
+  :dependencies [[org.clojure/clojure "1.7.0"]
+                 [org.clojure/java.jdbc "0.4.2"]
                  [org.apache.derby/derby "10.10.2.0"]
-                 [compojure "1.1.5"]
-                 [ring "1.1.8"]
-                 [ring/ring-jetty-adapter "1.1.8"]
-                 [stencil "0.3.2"]
-                 [lib-noir "0.4.6"]
-                 [org.clojure/data.json "0.2.0"]
-                 [ring-cors "0.1.1"]
-                 [com.draines/postal "1.11.1"]
-                 [clj-http "0.7.1"]]
+                 [compojure "1.4.0"]
+                 [ring "1.4.0"]
+                 [stencil "0.5.0"]
+                 [lib-noir "0.9.9"]
+                 [org.clojure/data.json "0.2.6"]
+                 [ring-cors "0.1.7"]
+                 [com.draines/postal "1.11.3"]
+                 [clj-http "2.0.0"]]
   :profiles {:uberjar {:aot :all}
-             :dev {:dependencies [[midje "1.5.1"]]
-                   :plugins [[lein-ring "0.8.6"]
-                             [lein-midje "3.0.0"]]}})
+             :dev {:dependencies [[midje "1.8.2"]
+                                  [javax.servlet/servlet-api "2.5"]]
+                   :plugins [[lein-ring "0.9.7"]
+                             [lein-midje "3.1.3"]]}})

@@ -3,7 +3,7 @@
   (:use ring.adapter.jetty
         ring.util.response
         ring.middleware.session.memory
-        compojure.core
+        [compojure.core :exlude [wrap-context]]
         flora-connect.db
         flora-connect.web-wrap
         [noir.cookies  :only [wrap-noir-cookies]])
