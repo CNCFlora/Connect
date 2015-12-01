@@ -79,7 +79,7 @@ var Connect = (function() {
     
     Connect.login = function() {
         if(win != null) win.close();
-        win = window.open(api+'/connect?'+(window.location.protocol + "//" + window.location.host ),'connect','width=350,height=300,location=0,menubar=0,toolbar=0',true);
+        win = window.open(api+'/connect?'+(window.location.protocol + "//" + window.location.host ),'connect','width=350,height=350,location=0,menubar=0,toolbar=0',true);
     };
 
     Connect.logout = function() {

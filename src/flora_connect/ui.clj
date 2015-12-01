@@ -64,7 +64,7 @@
   (POST "/login-test" {params :params} 
     (page "login-test" {:got true :found (search (:email params))}))
 
-  (GET "/recover" [] (page "recover" {}))
+  (GET "/recover" {{email :email} :params} (page "recover" {:email email}))
   (POST "/recover" {user :params} 
         (let [new-pass (apply str "cnc" (for [n (range 4)] (rand-int 9)))
               user     (find-by-email (:email user))]
