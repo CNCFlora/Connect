@@ -1,11 +1,16 @@
 {{> templates/header.html}}
 
+<div class="col-md-6">
 {{^found}}
 <form method="POST" class='sixteen columns' id='login_test' action='{{base}}/login-test'>
     <fieldset>
         <h2>Não sei se possuo cadastro:</h2>
-        <input id="email" name="email" type="text" placeholder='Digite seu e-mail' />
+        <p>
+        <input id="email" name="email" type="text" placeholder='Digite seu e-mail' class='form-control'/>
+        </p>
+        <p>
         <button class="btn btn-primary">Pesquisar</button>
+        </p>
     </fieldset>
 </form>
 {{/found}}
@@ -15,9 +20,9 @@
 <form id="login" action="" class='sixteen columns main-form'>
     <fieldset>
         <h2>Encontrado: {{name}} &lt;{{email}}&gt;</h2>
-        <button class="btn btn-success">Acessar conta</button>
-        <br />
-        <br />
+        <p>
+          <button class="btn btn-success">Acessar conta</button>
+        </p>
         <p>
           <a href="{{base}}/recover?email={{email}}">Recuperar senha</a> 
         </p>
@@ -30,5 +35,7 @@
 {{/got}}
 
 <p><a href='{{base}}/'>Voltar</a></p>
+
+</div>
 
 {{> templates/footer.html}}

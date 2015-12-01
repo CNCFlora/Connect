@@ -38,7 +38,6 @@
       (wrap-jsonp)
       (wrap-options)
       (wrap-noir-cookies)
-      (wrap-cors :access-control-allow-origin #".*")
       (session/wrap-noir-session 
         {:store (memory-store session/mem)
          :cookie-name "ring-connect-session"})))
