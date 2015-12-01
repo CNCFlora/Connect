@@ -16,5 +16,5 @@ CMD ["/root/start.sh"]
 ADD start.sh /root/start.sh
 RUN chmod +x /root/start.sh
 
-ADD target/flora-connect-0.3.0-standalone.war /root/connect.war
+ADD target/flora-connect-0.3.1-standalone.war /root/connect.war
 
