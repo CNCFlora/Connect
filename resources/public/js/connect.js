@@ -129,7 +129,8 @@ var Connect = (function() {
 (function(){
     var allow = {
         "Firefox": 29,
-        "Chromium": 34
+        "Chromium": 34,
+        "Chrome": 34
     };
     var ok = false;
     var matches = navigator.userAgent.match(/([\w]+)\/([\d]+)/g);
